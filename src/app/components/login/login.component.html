@@ -1,0 +1,135 @@
+<div class="main">
+  <div class="container" *ngIf="isLoginPage && !isForgotPasswordPage">
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 650px"
+    >
+      <div class="login-container">
+        <form class="login-form example-form">
+          <h2>Login</h2>
+          <div class="">
+            <mat-form-field class="example-full-width">
+              <mat-label>Email</mat-label>
+              <input type="email" matInput placeholder="Ex. pat@example.com" />
+            </mat-form-field>
+          </div>
+          <div class="">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Password</mat-label>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                matInput
+                placeholder="Enter your password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility()"
+                type="button"
+              >
+                <mat-icon>{{
+                  isPasswordVisible ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" class="w-100" type="button">
+            <span>Login</span>
+          </button>
+          <p class="signup-link">
+            Don't have an account?
+            <a href="#" (click)="openSignupPage()">Sign Up</a>
+          </p>
+          <p class="signup-link">
+            Forgot Password via
+            <a href="#" (click)="openOtpPage()">Email</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- for sign up -->
+  <div class="container" *ngIf="!isLoginPage && !isForgotPasswordPage">
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 650px"
+    >
+      <div class="login-container">
+        <form class="login-form example-form">
+          <h2>Sign Up</h2>
+          <div class="">
+            <mat-form-field class="example-full-width">
+              <mat-label>Name</mat-label>
+              <input type="text" matInput placeholder="Ex. Danny" />
+            </mat-form-field>
+          </div>
+          <div class="">
+            <mat-form-field class="example-full-width">
+              <mat-label>Email</mat-label>
+              <input type="email" matInput placeholder="Ex. pat@example.com" />
+            </mat-form-field>
+          </div>
+          <div class="">
+            <mat-form-field class="example-full-width">
+              <mat-label>Contact No.</mat-label>
+              <input type="text" matInput placeholder="Ex. 1234567890" />
+            </mat-form-field>
+          </div>
+
+          <button mat-raised-button color="primary" class="w-100" type="button">
+            <span> Sign Up </span>
+          </button>
+          <p class="signup-link">
+            Already have an account?
+            <a href="#" (click)="openLoginPage()">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- for otp -->
+  <div class="container" *ngIf="isForgotPasswordPage">
+    <!-- *ngIf="isForgotPasswordPage" -->
+    <div
+      class="d-flex justify-content-center align-items-center"
+      style="height: 650px"
+    >
+      <div class="login-container">
+        <form class="login-form example-form">
+          <h2>Please Enter OTP</h2>
+          <h5>
+            We have sent you one time password to your email: abc@gmail.com
+          </h5>
+          <h2>{{ minutes }}:{{ seconds < 10 ? "0" + seconds : seconds }}</h2>
+          <div class="d-flex justify-content-around align-items-center">
+            <ng-otp-input
+              (onInputChange)="onOtpChange($event)"
+              [config]="otpConfig"
+            ></ng-otp-input>
+          </div>
+
+          <h5 class="mt-3">
+            Did'nt recieve the OTP?
+            <a href="#" (click)="resendOtp()"> RESEND</a>
+          </h5>
+          <button
+            mat-raised-button
+            color="primary"
+            class="w-100"
+            type="button"
+            [disabled]="otp.length < 4"
+          >
+            <span>Validate OTP</span>
+          </button>
+          <p class="signup-link">
+            Already have an account?
+            <a href="#" (click)="openLoginPage()">Login</a>
+          </p>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,122 @@
+<app-sidenavbar></app-sidenavbar>
+<div [formGroup]="options" class="w-auto">
+  <div class="dashboard-content">
+    <div class="header-section w-100 pt-3 px-3">
+      <h4>Welcome Admin</h4>
+    </div>
+    <div class="grid-section d-flex justify-content-evenly m-0">
+      <div class="grid-options d-flex bg-white" routerLink="/student-list">
+        <div class="w-50">
+          <div class="m-3 p-2 mb-0 mt-4 pb-0">
+            <span class="font fs-7 fw-normal">Students</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="font fs-5 fw-normal">2</span>
+          </div>
+        </div>
+        <div class="w-50 m-2 pt-1">
+          <img
+            src="https://icon-library.com/images/graduate-icon/graduate-icon-5.jpg"
+            alt="student icon"
+            class="grid-image"
+          />
+        </div>
+      </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-50">
+          <div class="m-3 p-2 mb-0 mt-4 pb-0">
+            <span class="font fs-7 fw-normal">Teachers</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="font fs-5 fw-normal">3</span>
+          </div>
+        </div>
+        <div class="w-50 m-2 pt-1">
+          <img
+            src="https://i.pinimg.com/originals/63/99/e3/6399e316aae14e64cd68cabf1e22aacd.jpg"
+            alt="Teacher icon"
+            class="grid-image"
+          />
+        </div>
+      </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-50">
+          <div class="m-3 p-2 mb-0 mt-4 pb-0">
+            <span class="font fs-7 fw-normal">Books</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="font fs-5 fw-normal">18</span>
+          </div>
+        </div>
+        <div class="w-50 m-2 pt-1">
+          <img
+            src="http://pluspng.com/img-png/book-png-book-stack-png-image-25686-1024.png"
+            alt="book icon"
+            class="grid-image"
+          />
+        </div>
+      </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-50">
+          <div class="m-1 p-2 mb-0 mt-4 pb-0">
+            <span class="font fs-7 fw-normal">Available Books</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="font fs-5 fw-normal">14</span>
+          </div>
+        </div>
+        <div class="w-50 m-2 pt-1">
+          <img
+            src="http://pluspng.com/img-png/book-png-opened-book-png-transparent-image-1850.png"
+            alt="book icon"
+            class="grid-image"
+          />
+        </div>
+      </div>
+    </div>
+    <div class="d-flex w-100 pb-2">
+      <div class="list-section w-75">
+        <div class="mx-1 px-2 pt-3 w-100">
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold mx-2">Books</h4>
+                  </div>
+                </div>
+                <div class="header-section pt-0 px-0">
+                  <mat-icon>more_vert</mat-icon>
+                </div>
+              </div>
+              <app-table
+                [data]="bookDataSource"
+                [columns]="BookDataColumns"
+              ></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="list-section" style="width: 24%">
+        <div class="mx-1 px-1 pt-3 w-100">
+          <mat-card appearance="outlined">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <h4 class="fs-6 fw-bold">Author Names</h4>
+                </div>
+                <div class="header-section pt-0 px-0">
+                  <mat-icon>more_vert</mat-icon>
+                </div>
+              </div>
+              <app-table
+                [data]="authorsDataSource"
+                [columns]="AuthorDataColumns"
+              ></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

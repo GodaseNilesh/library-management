@@ -1,0 +1,70 @@
+.main {
+  background: linear-gradient(135deg, #627ced, #643197);
+  align-items: center;
+  justify-content: center;
+  height: 100%;
+}
+.login-container {
+  background-color: white;
+  padding: 2rem 3rem;
+  border-radius: 10px;
+  box-shadow: 0 10px 25px rgba(9, 9, 9, 0.2);
+  width: 100%;
+  max-width: 400px;
+  display: block;
+  margin-left: 5%;
+  min-height: 55%;
+}
+
+.login-form h2 {
+  text-align: center;
+  margin-bottom: 1.5rem;
+  color: #333;
+}
+.signup-link {
+  text-align: center;
+  margin-top: 1rem;
+  font-size: 0.9rem;
+}
+
+.signup-link a {
+  color: #667eea;
+  text-decoration: none;
+}
+
+.signup-link a:hover {
+  text-decoration: underline;
+}
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+
+.example-full-width {
+  width: 100%;
+}
+i,
+.fa {
+  font-family: "Font Awesome 6 Free" !important;
+  font-weight: 900;
+}
+.eye-icon {
+  position: relative;
+  top: -30%;
+  right: 0;
+  left: 100%;
+}
+
+::ng-deep .custom-otp-input {
+  font-weight: 300;
+  font-size: 8px;
+  border: 2px solid rgb(63, 81, 181);
+  border-radius: 6px;
+  text-align: center;
+  color: rgb(63, 81, 181);
+  width: 50px;
+  height: 50px;
+  margin: 0 5px;
+  box-shadow: none !important;
+}
