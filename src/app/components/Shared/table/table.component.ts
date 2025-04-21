@@ -1,4 +1,11 @@
-import { Component, Input, SimpleChanges, ViewChild } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  Output,
+  SimpleChanges,
+  ViewChild,
+} from '@angular/core';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatTableDataSource } from '@angular/material/table';
 
@@ -11,6 +18,10 @@ export class TableComponent {
   @Input() data: any[] = [];
   @Input() pageSize: number = 5;
   @Input() columns: { columnDef: string; header: string }[] = [];
+
+  @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDetails: EventEmitter<any> = new EventEmitter<any>();
+
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
   dataSource = new MatTableDataSource<any>();
@@ -32,5 +43,16 @@ export class TableComponent {
   ngAfterViewInit() {
     this.pageSize = this.pageSize;
     this.dataSource.paginator = this.paginator;
+  }
+  onEditClicked(element: any) {
+    this.onEdit.emit(element);
+    console.log(element);
+  }
+
+  onDelete(element: any) {}
+
+  onDetailsClicked(element: any) {
+    this.onDetails.emit(element);
+    console.log(element);
   }
 }

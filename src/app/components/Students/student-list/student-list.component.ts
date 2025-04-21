@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-student-list',
@@ -6,6 +7,7 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./student-list.component.css'],
 })
 export class StudentListComponent implements OnInit {
+  constructor(private router: Router) {}
   // For students list
   StudentData = [
     {
@@ -15,6 +17,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCA I',
       department: 'Comp',
       contactNumber: '9876543210',
+      action:"edit,delete,details"
     },
     {
       studentId: 102,
@@ -23,6 +26,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCS II',
       department: 'Comp',
       contactNumber: '9123456780',
+      action:"edit,delete,details"
     },
     {
       studentId: 103,
@@ -31,6 +35,7 @@ export class StudentListComponent implements OnInit {
       className: 'BTech III',
       department: 'Mech',
       contactNumber: '9988776655',
+      action:"edit,delete,details"
     },
     {
       studentId: 104,
@@ -39,6 +44,7 @@ export class StudentListComponent implements OnInit {
       className: 'MSc I',
       department: 'Physics',
       contactNumber: '9898989898',
+      action:"edit,delete,details"
     },
     {
       studentId: 105,
@@ -47,6 +53,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCom II',
       department: 'Comp',
       contactNumber: '9112233445',
+      action:"edit,delete,details"
     },
     {
       studentId: 106,
@@ -55,6 +62,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCS III',
       department: 'Physics',
       contactNumber: '9001122334',
+      action:"edit,delete,details"
     },
     {
       studentId: 107,
@@ -63,6 +71,7 @@ export class StudentListComponent implements OnInit {
       className: 'BTech I',
       department: 'Mech',
       contactNumber: '9023456789',
+      action:"edit,delete,details"
     },
     {
       studentId: 108,
@@ -71,6 +80,7 @@ export class StudentListComponent implements OnInit {
       className: 'MSc II',
       department: 'Physics',
       contactNumber: '9345678901',
+      action:"edit,delete,details"
     },
     {
       studentId: 109,
@@ -79,6 +89,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCA II',
       department: 'Comp',
       contactNumber: '9870012345',
+      action:"edit,delete,details"
     },
     {
       studentId: 110,
@@ -87,6 +98,7 @@ export class StudentListComponent implements OnInit {
       className: 'BCom III',
       department: 'Mech',
       contactNumber: '9765432109',
+      action:"edit,delete,details"
     },
   ];
 
@@ -97,6 +109,7 @@ export class StudentListComponent implements OnInit {
     { columnDef: 'className', header: 'Class' },
     { columnDef: 'department', header: 'Department' },
     { columnDef: 'contactNumber', header: 'Contact Number' },
+    { columnDef: 'action', header: 'Action' },
   ];
 
   studentsDisplayedColumns = this.StudentDataColumns.map((c) => c.columnDef);
@@ -118,5 +131,15 @@ export class StudentListComponent implements OnInit {
       );
       this.studentsDataSource = [...filtered];
     }
+  }
+  onEditClicked(event: any) {
+    debugger
+    console.log(event);
+    this.router.navigate([`student-list/create-student/${event.studentId}`])
+  }
+  onDetailsClicked(event:any){
+    debugger
+    console.log(event);
+    this.router.navigate([`student-list/student-details/${event.studentId}`])
   }
 }

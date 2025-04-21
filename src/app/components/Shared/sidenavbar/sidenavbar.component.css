@@ -18,7 +18,8 @@
     background: rgba(247, 247, 247, 0.5);
   }
   .active {
-    border-left: 3px solid blue;
+    color: rgb(8, 20, 245);
+    font-weight: 500;
   }
   .example-sidenav {
     display: flex;

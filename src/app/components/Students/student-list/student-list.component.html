@@ -13,11 +13,11 @@
                 <input type="email" (keyup)="quickFilter($event)" matInput placeholder="Ex. pat@example.com" />
               </mat-form-field>
             </div>
-            <div class="header-section p-1 col-md-1" >
+            <!-- <div class="header-section p-1 col-md-1" >
               <button mat-raised-button color="primary" class="w-100" type="button">Search</button>
-            </div>
+            </div> -->
             <div class="header-section p-1">
-              <button mat-raised-button color="primary" class="w-25" type="button"> <span class="fs-3">+</span></button>
+              <button mat-raised-button color="primary" class="w-25" type="button" routerLink="create-student"> <span class="fs-3">+</span></button>
             </div>
           </div>
           <div>
@@ -25,6 +25,8 @@
             [data]="studentsDataSource"
             [columns]="StudentDataColumns"
             [pageSize]="10"
+            (onEdit)="onEditClicked($event)"
+            (onDetails)="onDetailsClicked($event)"
             ></app-table>
           </div>
         </mat-card-content>

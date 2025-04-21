@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-sidenavbar',
@@ -7,6 +8,10 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./sidenavbar.component.css'],
 })
 export class SidenavbarComponent {
+
+  constructor(public router: Router) {    
+  }
+
   private _formBuilder = inject(FormBuilder);
 
   options = this._formBuilder.group({

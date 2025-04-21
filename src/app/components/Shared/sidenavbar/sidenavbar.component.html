@@ -2,25 +2,34 @@
     <mat-sidenav #sidenav mode="side" opened class="example-sidenav">
       <mat-nav-list class="nav-list">
         <mat-list-item class="nav-list">
-          <div class="d-flex">
+          <div class="d-flex" routerLink="/dashboard" routerLinkActive="active">
             <mat-icon class="mx-2">dashboard</mat-icon>
-            <span routerLink="/dashboard"> Dashboard </span>
+            <span > Dashboard </span>
           </div>
         </mat-list-item>
   
         <mat-expansion-panel class="nav-list">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <div class="d-flex">
+              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/student-list') }">
                 <mat-icon class="m-0">format_list_bulleted</mat-icon>
-                <span class="mx-2"> Students </span>
+                <span class="mx-2">Students</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
-          <mat-nav-list>
-            <mat-list-item>Student List</mat-list-item>
-            <mat-list-item>Item 2</mat-list-item>
-            <mat-list-item>Item 3</mat-list-item>
+          <mat-nav-list >
+            <mat-list-item class="nav-list" >
+              <div class="d-flex" routerLink="/student-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+                <mat-icon class="mx-2">list</mat-icon>
+                <span > Student List </span>
+              </div>
+            </mat-list-item>
+            <mat-list-item class="nav-list">
+              <div class="d-flex" routerLink="/student-list/create-student" routerLinkActive="active">
+              <mat-icon class="mx-2">person_add</mat-icon>
+              <span >Add Student</span>
+              </div>
+            </mat-list-item>
           </mat-nav-list>
         </mat-expansion-panel>
   
@@ -29,14 +38,23 @@
             <mat-panel-title>
               <div class="d-flex">
                 <mat-icon class="m-0">view_list</mat-icon>
-                <span class="mx-2"> Teachers </span>
+                <span class="mx-2">Teachers</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-nav-list>
-            <mat-list-item>Item 1</mat-list-item>
-            <mat-list-item>Item 2</mat-list-item>
-            <mat-list-item>Item 3</mat-list-item>
+            <mat-list-item routerLink="/teacher-list" routerLinkActive="active">
+              <div class="d-flex">
+              <mat-icon class="mx-2">list</mat-icon>
+              <span>Teacher List</span>
+              </div>
+            </mat-list-item>
+            <mat-list-item routerLink="/add-teacher" routerLinkActive="active">
+              <div class="d-flex">
+              <mat-icon class="mx-2">person_add</mat-icon>
+              <span>Add Teacher</span>
+              </div>
+            </mat-list-item>
           </mat-nav-list>
         </mat-expansion-panel>
   
@@ -45,24 +63,40 @@
             <mat-panel-title>
               <div class="d-flex">
                 <mat-icon class="m-0">library_books</mat-icon>
-                <span class="mx-2"> Books </span>
+                <span class="mx-2">Books</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-nav-list>
-            <mat-list-item>Item 1</mat-list-item>
-            <mat-list-item>Item 2</mat-list-item>
-            <mat-list-item>Item 3</mat-list-item>
+            <mat-list-item routerLink="/book-list" routerLinkActive="active">
+              <div class="d-flex">
+              <mat-icon class="mx-2">menu_book</mat-icon>
+              <span>Book List</span>
+              </div>
+            </mat-list-item>
+            <mat-list-item routerLink="/add-book" routerLinkActive="active">
+              <div class="d-flex">
+              <mat-icon class="mx-2">library_add</mat-icon>
+              <span>Add Book</span>
+              </div>
+            </mat-list-item>
+            <mat-list-item routerLink="/categories" routerLinkActive="active">
+              <div class="d-flex">
+              <mat-icon class="mx-2">category</mat-icon>
+              <span>Categories</span>
+              </div>
+            </mat-list-item>
           </mat-nav-list>
         </mat-expansion-panel>
   
         <mat-list-item class="nav-list">
           <div class="d-flex">
             <mat-icon class="m-2">assignment</mat-icon>
-            <span class="mx-2"> Issued Books </span>
+            <span class="mt-2"> Issued Books </span>
           </div>
         </mat-list-item>
       </mat-nav-list>
+
     </mat-sidenav>
   </mat-sidenav-container>
   
