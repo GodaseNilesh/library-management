@@ -1,0 +1,29 @@
+.font {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+.dashboard-content {
+  background-color: rgb(236, 243, 245);
+  height: 100%;
+  min-height: 700px;
+  width: 80%;
+  padding: 1%;
+  margin-left: 20%;
+  margin-top: 60px;
+}
+
+.login-container {
+  background-color: white;
+  border-radius: 10px;
+  width: 100% !important;
+  display: block;
+  height: 100% !important;
+}
+.personal-details {
+  min-height: 500px;
+  width: 30%;
+}
+.book-details {
+  min-height: 500px;
+  width: 69%;
+}

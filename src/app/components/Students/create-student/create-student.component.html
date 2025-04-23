@@ -1,0 +1,349 @@
+<app-sidenavbar></app-sidenavbar>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="d-flex justify-content-start">
+      <div class="header-section mx-1">
+        <h4 class="font fs-6 fw-bolder">
+          <mat-icon class="fs-6 mt-2 custom-tooltip" routerLink="/student-list">
+            arrow_back_ios
+          </mat-icon>
+        </h4>
+      </div>
+      <div class="header-section">
+        <h4 class="font p-1 fs-6 fw-bolder">
+          {{ this.studentId != "" ? "Update" : "Add" }} Student
+        </h4>
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="login-container">
+            <form
+              class="login-form example-form w-100"
+              [formGroup]="studentForm"
+            >
+              <h2 class="font text-align-left mb-4">Student Info:</h2>
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >First Name:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. John"
+                      formControlName="firstName"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('firstName')?.touched &&
+                        studentForm?.get('firstName')?.hasError('required')
+                      "
+                    >
+                      First Name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Last Name: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. Doe"
+                      formControlName="lastName"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('lastName')?.touched &&
+                        studentForm?.get('lastName')?.hasError('required')
+                      "
+                    >
+                      Last Name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Email/Gmail:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="email"
+                      matInput
+                      placeholder="Ex. john@gmail.com"
+                      formControlName="email"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('email')?.touched &&
+                        studentForm.get('email')?.hasError('required')
+                      "
+                    >
+                      Email should be required.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('email')?.touched &&
+                        studentForm.get('email')?.hasError('lowerCaseOnly')
+                      "
+                    >
+                      Email should contain only lowercase letters.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('email')?.touched &&
+                        studentForm.get('email')?.hasError('noSpaces')
+                      "
+                    >
+                      Email should not contain spaces.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('email')?.touched &&
+                        studentForm.get('email')?.hasError('singleAt') &&
+                        !studentForm.get('email')?.hasError('lowerCaseOnly')
+                      "
+                    >
+                      Email must contain one "@" symbol.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('email')?.touched &&
+                        studentForm.get('email')?.hasError('gmailOnly')
+                      "
+                    >
+                      Email must end with @gmail.com.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between mx-1 font w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label style="width: 25%" class="mx-1"
+                    >Class Name:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field style="width: 70%" class="example-full-width">
+                    <mat-select formControlName="className">
+                      <mat-option value="class-1">class-1</mat-option>
+                      <mat-option value="class-2">class-2</mat-option>
+                      <mat-option value="class-3">class-3</mat-option>
+                      <mat-option value="class-4">class-4</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('className')?.touched &&
+                        studentForm?.get('className')?.hasError('required')
+                      "
+                    >
+                      Class Name is required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label style="width: 25%" class="mx-1"
+                    >Department:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field style="width: 70%" class="example-full-width">
+                    <mat-select formControlName="department">
+                      <mat-option value="department-1">Department-1</mat-option>
+                      <mat-option value="department-2">Department-2</mat-option>
+                      <mat-option value="department-3">Department-3</mat-option>
+                      <mat-option value="department-4">Department-4</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('department')?.touched &&
+                        studentForm?.get('department')?.hasError('required')
+                      "
+                    >
+                      Department is required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label style="width: 25%" class="mx-1"
+                    >Phone No.:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field style="width: 70%" class="example-full-width">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. 1234567890"
+                      formControlName="phoneNo"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('phoneNo')?.touched &&
+                        studentForm?.get('phoneNo')?.hasError('required')
+                      "
+                    >
+                      Phone No. is required.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('phoneNo')?.touched &&
+                        studentForm?.get('phoneNo')?.hasError('minlength')
+                      "
+                    >
+                      Phone No. should be 10 digits.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('phoneNo')?.touched &&
+                        studentForm?.get('phoneNo')?.hasError('maxlength')
+                      "
+                    >
+                      Phone No. should be 10 digits.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('phoneNo')?.touched &&
+                        studentForm?.get('phoneNo')?.hasError('pattern')
+                      "
+                    >
+                      Phone No. should be only digits.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Username:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. John"
+                      formControlName="username"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('username')?.touched &&
+                        studentForm?.get('username')?.hasError('required')
+                      "
+                    >
+                      Username is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Password: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. Doe"
+                      formControlName="password"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('password')?.touched &&
+                        studentForm?.get('password')?.hasError('required')
+                      "
+                    >
+                      Password is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Confirm Password:<span class="text-danger fs-5"
+                      >*</span
+                    ></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. john@gmail.com"
+                      formControlName="confirmPassword"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        studentForm?.get('confirmPassword')?.touched &&
+                        studentForm.get('confirmPassword')?.hasError('required')
+                      "
+                    >
+                      Confirm Password is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="m-2 mx-3">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="px-4"
+                  type="button"
+                  (click)="saveStudent()"
+                  [disabled]="studentForm.invalid"
+                >
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
