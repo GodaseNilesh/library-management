@@ -36,21 +36,21 @@
         <mat-expansion-panel class="nav-list">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <div class="d-flex">
+              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/teacher-list') }">
                 <mat-icon class="m-0">view_list</mat-icon>
                 <span class="mx-2">Teachers</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-nav-list>
-            <mat-list-item routerLink="/teacher-list" routerLinkActive="active">
-              <div class="d-flex">
+            <mat-list-item >
+              <div class="d-flex" routerLink="/teacher-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <mat-icon class="mx-2">list</mat-icon>
               <span>Teacher List</span>
               </div>
             </mat-list-item>
-            <mat-list-item routerLink="/add-teacher" routerLinkActive="active">
-              <div class="d-flex">
+            <mat-list-item >
+              <div class="d-flex" routerLink="/teacher-list/create-teacher" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <mat-icon class="mx-2">person_add</mat-icon>
               <span>Add Teacher</span>
               </div>

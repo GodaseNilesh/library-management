@@ -5,11 +5,18 @@ import { SharedRoutingModule } from './shared-routing.module';
 import { SidenavbarComponent } from './sidenavbar/sidenavbar.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { TableComponent } from './table/table.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
-const components = [SidenavbarComponent,TableComponent];
+const components = [SidenavbarComponent, TableComponent];
 @NgModule({
   declarations: [components],
-  imports: [CommonModule, SharedRoutingModule, MaterialModule],
+  imports: [
+    CommonModule,
+    SharedRoutingModule,
+    MaterialModule,
+    FormsModule,
+    ReactiveFormsModule,
+  ],
   exports: [components],
 })
 export class SharedModule {}

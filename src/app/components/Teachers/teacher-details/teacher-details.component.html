@@ -1,0 +1,98 @@
+<app-sidenavbar></app-sidenavbar>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="d-flex justify-content-start">
+      <div class="header-section mx-1">
+        <h4 class="font fs-6 fw-bolder">
+          <mat-icon
+            class="fs-6 mt-2 custom-tooltip"
+            matTooltip="Back"
+            matTooltipClass="my-tooltip"
+            matTooltipPosition="above"
+            routerLink="/teacher-list"
+          >
+            arrow_back_ios
+          </mat-icon>
+        </h4>
+      </div>
+      <div class="header-section">
+        <h4 class="font p-1 fs-6 fw-bolder">Teacher Details</h4>
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="login-container d-flex justify-content-between">
+            <mat-card appearance="outlined" class="personal-details">
+              <mat-card-content>
+                <div class="font">
+                  <h4 class="fs-5 font mb-2">Personal Details :</h4>
+                  <div class="d-block mx-4 mt-4">
+                    <span class="font d-flex align-items-center">
+                      <!-- <mat-icon>account_circle</mat-icon> -->
+                      <i class="fa-regular fa-user mx-1 px-1"></i>
+                      <span class="mx-1 font fw-bold"> Student Name: </span>
+                    </span>
+                    <p class="font mx-4 px-2 lh-1">John Doe</p>
+                  </div>
+                </div>
+                <div class="font mt-4">
+                  <div class="d-block mx-4">
+                    <span class="font d-flex align-items-center">
+                      <!-- <mat-icon>account_circle</mat-icon> -->
+                      <i class="fa-solid fa-chalkboard-user px-1"></i>
+                      <span class="mx-1 font fw-bold"> Class Name: </span>
+                    </span>
+                    <p class="font mx-4 px-2 lh-1">BCA-1</p>
+                  </div>
+                </div>
+                <div class="font mt-4">
+                  <div class="d-block mx-4">
+                    <span class="font d-flex align-items-center">
+                      <!-- <mat-icon>account_circle</mat-icon> -->
+                      <i class="fa-solid fa-building-user px-1"></i>
+                      <span class="mx-1 font fw-bold"> Department Name: </span>
+                    </span>
+                    <p class="font mx-4 px-2 lh-1">Computer</p>
+                  </div>
+                </div>
+                <div class="font mt-4">
+                  <div class="d-block mx-4">
+                    <span class="font d-flex align-items-center">
+                      <!-- <mat-icon>account_circle</mat-icon> -->
+                      <i class="fa-solid fa-mobile-screen-button px-1"></i>
+                      <span class="mx-1 font fw-bold ps-1"> Mobile No.: </span>
+                    </span>
+                    <p class="font mx-3 px-2 lh-1 ps-2">7845968745</p>
+                  </div>
+                </div>
+                <div class="font mt-4">
+                  <div class="d-block mx-4">
+                    <span class="font d-flex align-items-center">
+                      <!-- <mat-icon>account_circle</mat-icon> -->
+                      <i class="fa-regular fa-envelope px-1"></i>
+                      <span class="mx-1 font fw-bold"> Email: </span>
+                    </span>
+                    <p class="font mx-4 px-1 lh-1">john@gmail.com</p>
+                  </div>
+                </div>
+              </mat-card-content>
+            </mat-card>
+            <mat-card appearance="outlined" class="book-details">
+              <mat-card-content>
+                <div>
+                  <app-table
+                    [data]="teacherDataSource"
+                    [columns]="teacherDataColumns"
+                    [pageSize]="10"
+                  >
+                  </app-table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

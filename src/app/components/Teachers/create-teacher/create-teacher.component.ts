@@ -1,27 +1,18 @@
-import { Component, OnInit } from '@angular/core';
-import {
-  AbstractControl,
-  FormBuilder,
-  FormControl,
-  FormGroup,
-  MinLengthValidator,
-  ValidationErrors,
-  Validators,
-} from '@angular/forms';
+import { Component } from '@angular/core';
+import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
-import { min } from 'rxjs';
 
 @Component({
-  selector: 'app-create-student',
-  templateUrl: './create-student.component.html',
-  styleUrls: ['./create-student.component.css'],
+  selector: 'app-create-teacher',
+  templateUrl: './create-teacher.component.html',
+  styleUrls: ['./create-teacher.component.css'],
 })
-export class CreateStudentComponent implements OnInit {
-  studentForm!: FormGroup;
-  studentId: string = '';
+export class CreateTeacherComponent {
+  teacherForm!: FormGroup;
+  teacherId: string = '';
 
   constructor(private fb: FormBuilder, private route: ActivatedRoute) {
-    this.studentForm = this.fb.group({
+    this.teacherForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, this.customValidator]),
@@ -31,8 +22,7 @@ export class CreateStudentComponent implements OnInit {
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(10),
-        // Validators.pattern('^[0-9]{10}$'),
-        Validators.pattern(/^\d*$/)
+        Validators.pattern(/^\d*$/),
       ]),
       username: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
@@ -43,12 +33,12 @@ export class CreateStudentComponent implements OnInit {
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      id && (this.studentId = id);
+      id && (this.teacherId = id);
     });
   }
 
-  saveStudent() {
-    console.log(this.studentForm.value);
+  saveTeacher() {
+    console.log(this.teacherForm.value);
   }
 
   customValidator(control: AbstractControl): ValidationErrors | null {

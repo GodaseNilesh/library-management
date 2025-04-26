@@ -1,0 +1,36 @@
+<app-sidenavbar></app-sidenavbar>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="header-section w-100">
+      <h4 class="font p-1 fs-6 fw-bolder">Teacher List</h4>
+    </div>
+    <div class="w-100">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="d-flex justify-content-end">
+            <div class="header-section pt-0 px-0 col-md-4"  >
+              <mat-form-field class="example-full-width p-1 w-100"  >
+                <input type="email" (keyup)="quickFilter($event)" matInput placeholder="Ex. pat@example.com" />
+              </mat-form-field>
+            </div>
+            <!-- <div class="header-section p-1 col-md-1" >
+              <button mat-raised-button color="primary" class="w-100" type="button">Search</button>
+            </div> -->
+            <div class="header-section p-1">
+              <button mat-raised-button color="primary" class="w-25" type="button" routerLink="create-teacher"> <span class="fs-3">+</span></button>
+            </div>
+          </div>
+          <div>
+            <app-table
+            [data]="teacherDataSource"
+            [columns]="teacherDataColumns"
+            [pageSize]="10"
+            (onEdit)="onEditClicked($event)"
+            (onDetails)="onDetailsClicked($event)"
+            ></app-table>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
