@@ -6,6 +6,12 @@ import {
   ViewChildren,
 } from '@angular/core';
 import { DatePipe } from '@angular/common';
+import {
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  Validators,
+} from '@angular/forms';
 
 @Component({
   selector: 'app-login',
@@ -27,9 +33,33 @@ export class LoginComponent implements OnInit {
   seconds: number = 10;
   timer: any;
   timeUp: boolean = false;
-  otp:string='';
+  otp: string = '';
 
-  ngOnInit(): void {
+  loginForm!: FormGroup;
+  signUpForm!:FormGroup;
+
+  constructor(private fb: FormBuilder) {
+    this.loginForm = this.fb.group({
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+    });
+
+    this.signUpForm=this.fb.group({
+      fullName:new FormControl('',[Validators.required]),
+      email:new FormControl('',[Validators.required]),
+      password:new FormControl('',[Validators.required]),
+      confirmPassword:new FormControl('',[Validators.required])
+    })
+  }
+
+  ngOnInit(): void {}
+
+  login() {
+    console.log(this.loginForm.value);
+  }
+  signUp(){
+    console.log(this.signUpForm.value);
+    
   }
 
   ngOnDestroy() {
@@ -62,9 +92,8 @@ export class LoginComponent implements OnInit {
   }
 
   onOtpChange(event: any) {
-    this.otp=event;
-    console.log('otp:',this.otp);
-    
+    this.otp = event;
+    console.log('otp:', this.otp);
   }
 
   togglePasswordVisibility() {

@@ -20,6 +20,10 @@ const routes: Routes = [
   {
     path:'student-list',
     loadChildren:()=>import('src/app/components/Students/student.module').then(m=>m.StudentModule)
+  },
+  {
+    path:'teacher-list',
+    loadChildren:()=>import('src/app/components/Teachers/teachers.module').then(m=>m.TeachersModule)
   }
 ];
 

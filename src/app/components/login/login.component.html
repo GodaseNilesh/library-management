@@ -5,12 +5,12 @@
       style="height: 650px"
     >
       <div class="login-container">
-        <form class="login-form example-form">
+        <form class="login-form example-form" [formGroup]="loginForm">
           <h2>Login</h2>
           <div class="">
             <mat-form-field class="example-full-width">
               <mat-label>Email</mat-label>
-              <input type="email" matInput placeholder="Ex. pat@example.com" />
+              <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com" />
             </mat-form-field>
           </div>
           <div class="">
@@ -19,6 +19,7 @@
               <input
                 [type]="isPasswordVisible ? 'text' : 'password'"
                 matInput
+                formControlName="password"
                 placeholder="Enter your password"
               />
               <button
@@ -34,7 +35,7 @@
             </mat-form-field>
           </div>
 
-          <button mat-raised-button color="primary" class="w-100" type="button">
+          <button mat-raised-button color="primary" [disabled]="loginForm.invalid" class="w-100" type="button" (click)="login()">
             <span>Login</span>
           </button>
           <p class="signup-link">
@@ -57,28 +58,69 @@
       style="height: 650px"
     >
       <div class="login-container">
-        <form class="login-form example-form">
+        <form class="login-form example-form" [formGroup]="signUpForm">
           <h2>Sign Up</h2>
           <div class="">
             <mat-form-field class="example-full-width">
-              <mat-label>Name</mat-label>
-              <input type="text" matInput placeholder="Ex. Danny" />
+              <mat-label>Full Name</mat-label>
+              <input type="text" matInput formControlName="fullName" placeholder="Ex. Danny patil" />
             </mat-form-field>
           </div>
           <div class="">
             <mat-form-field class="example-full-width">
               <mat-label>Email</mat-label>
-              <input type="email" matInput placeholder="Ex. pat@example.com" />
+              <input type="email" matInput formControlName="email" placeholder="Ex. danny@example.com" />
             </mat-form-field>
           </div>
           <div class="">
-            <mat-form-field class="example-full-width">
-              <mat-label>Contact No.</mat-label>
-              <input type="text" matInput placeholder="Ex. 1234567890" />
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Password</mat-label>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                matInput
+                formControlName="password"
+                #password
+                placeholder="Enter your password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility()"
+                type="button"
+              >
+                <mat-icon>{{
+                  isPasswordVisible ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
             </mat-form-field>
           </div>
+          <div class="d-block">
+            <mat-form-field class="example-full-width" appearance="fill">
+              <mat-label>Confirm Password</mat-label>
+              <input
+                [type]="isPasswordVisible ? 'text' : 'password'"
+                matInput
+                #confirmPassword
+                formControlName="confirmPassword"
+                placeholder="Enter your password"
+              />
+              <button
+                mat-icon-button
+                matSuffix
+                (click)="togglePasswordVisibility()"
+                type="button"
+              >
+                <mat-icon>{{
+                  isPasswordVisible ? "visibility_off" : "visibility"
+                }}</mat-icon>
+              </button>
+            </mat-form-field>
+            <div class="custom-error mb-2 fw-semibold" *ngIf="password.value != confirmPassword.value">
+              <mat-error>Password does not match.</mat-error>
+            </div>
+          </div>
 
-          <button mat-raised-button color="primary" class="w-100" type="button">
+          <button mat-raised-button color="primary" class="w-100" type="button" (click)="signUp()" [disabled]="signUpForm.invalid || (password.value != confirmPassword.value)">
             <span> Sign Up </span>
           </button>
           <p class="signup-link">
@@ -92,7 +134,6 @@
 
   <!-- for otp -->
   <div class="container" *ngIf="isForgotPasswordPage">
-    <!-- *ngIf="isForgotPasswordPage" -->
     <div
       class="d-flex justify-content-center align-items-center"
       style="height: 650px"

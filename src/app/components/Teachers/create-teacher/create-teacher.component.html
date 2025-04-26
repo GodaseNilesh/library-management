@@ -4,14 +4,14 @@
     <div class="d-flex justify-content-start">
       <div class="header-section mx-1">
         <h4 class="font fs-6 fw-bolder">
-          <mat-icon class="fs-6 mt-2 custom-tooltip" routerLink="/student-list">
+          <mat-icon class="fs-6 mt-2 custom-tooltip" routerLink="/teacher-list">
             arrow_back_ios
           </mat-icon>
         </h4>
       </div>
       <div class="header-section">
         <h4 class="font p-1 fs-6 fw-bolder">
-          {{ this.studentId != "" ? "Update" : "Add" }} Student
+          {{ this.teacherId != "" ? "Update" : "Add" }} Teacher
         </h4>
       </div>
     </div>
@@ -21,9 +21,9 @@
           <div class="login-container">
             <form
               class="login-form example-form w-100"
-              [formGroup]="studentForm"
+              [formGroup]="teacherForm"
             >
-              <h2 class="font text-align-left mb-4">Student Info:</h2>
+              <h2 class="font text-align-left mb-4">Teacher Info:</h2>
               <div class="d-flex justify-content-between font mx-1 w-100">
                 <div
                   class="mb-4 d-block justify-content-center align-items-center"
@@ -43,8 +43,8 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('firstName')?.touched &&
-                        studentForm?.get('firstName')?.hasError('required')
+                        teacherForm?.get('firstName')?.touched &&
+                        teacherForm?.get('firstName')?.hasError('required')
                       "
                     >
                       First Name is required.
@@ -69,8 +69,8 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('lastName')?.touched &&
-                        studentForm?.get('lastName')?.hasError('required')
+                        teacherForm?.get('lastName')?.touched &&
+                        teacherForm?.get('lastName')?.hasError('required')
                       "
                     >
                       Last Name is required.
@@ -95,41 +95,41 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('email')?.touched &&
-                        studentForm.get('email')?.hasError('required')
+                        teacherForm?.get('email')?.touched &&
+                        teacherForm.get('email')?.hasError('required')
                       "
                     >
                       Email should be required.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('lowerCaseOnly')
+                        teacherForm?.get('email')?.dirty &&
+                        teacherForm.get('email')?.hasError('lowerCaseOnly')
                       "
                     >
                       Email should contain only lowercase letters.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('noSpaces')
+                        teacherForm?.get('email')?.dirty &&
+                        teacherForm.get('email')?.hasError('noSpaces')
                       "
                     >
                       Email should not contain spaces.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('singleAt') &&
-                        !studentForm.get('email')?.hasError('lowerCaseOnly')
+                        teacherForm?.get('email')?.dirty &&
+                        teacherForm.get('email')?.hasError('singleAt') &&
+                        !teacherForm.get('email')?.hasError('lowerCaseOnly')
                       "
                     >
                       Email must contain one "@" symbol.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('gmailOnly')
+                        teacherForm?.get('email')?.dirty &&
+                        teacherForm.get('email')?.hasError('gmailOnly')
                       "
                     >
                       Email must end with @gmail.com.
@@ -139,7 +139,7 @@
               </div>
 
               <div class="d-flex justify-content-between mx-1 font w-100">
-                <div
+                <!-- <div
                   class="mb-4 d-block justify-content-center align-items-center"
                   style="width: 32%"
                 >
@@ -157,14 +157,14 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('className')?.touched &&
-                        studentForm?.get('className')?.hasError('required')
+                        teacherForm?.get('className')?.touched &&
+                        teacherForm?.get('className')?.hasError('required')
                       "
                     >
                       Class Name is required.
                     </mat-error>
                   </div>
-                </div>
+                </div> -->
 
                 <div
                   class="mb-4 d-block justify-content-center align-items-center"
@@ -184,8 +184,8 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('department')?.touched &&
-                        studentForm?.get('department')?.hasError('required')
+                        teacherForm?.get('department')?.touched &&
+                        teacherForm?.get('department')?.hasError('required')
                       "
                     >
                       Department is required.
@@ -211,41 +211,38 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('required')
+                        teacherForm?.get('phoneNo')?.touched &&
+                        teacherForm?.get('phoneNo')?.hasError('required')
                       "
                     >
                       Phone No. is required.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('minlength')
+                        teacherForm?.get('phoneNo')?.touched &&
+                        teacherForm?.get('phoneNo')?.hasError('minlength')
                       "
                     >
                       Phone No. should be 10 digits.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('maxlength')
+                        teacherForm?.get('phoneNo')?.touched &&
+                        teacherForm?.get('phoneNo')?.hasError('maxlength')
                       "
                     >
                       Phone No. should be 10 digits.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('pattern')
+                        teacherForm?.get('phoneNo')?.touched &&
+                        teacherForm?.get('phoneNo')?.hasError('pattern')
                       "
                     >
                       Phone No. should be only digits.
                     </mat-error>
                   </div>
                 </div>
-              </div>
-
-              <div class="d-flex justify-content-between font mx-1 w-100">
                 <div
                   class="mb-4 d-block justify-content-center align-items-center"
                   style="width: 32%"
@@ -264,14 +261,43 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('username')?.touched &&
-                        studentForm?.get('username')?.hasError('required')
+                        teacherForm?.get('username')?.touched &&
+                        teacherForm?.get('username')?.hasError('required')
                       "
                     >
                       Username is required.
                     </mat-error>
                   </div>
                 </div>
+              </div>
+
+              <div class="d-flex justify-content-start font mx-1 w-100">
+                <!-- <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Username:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. John"
+                      formControlName="username"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        teacherForm?.get('username')?.touched &&
+                        teacherForm?.get('username')?.hasError('required')
+                      "
+                    >
+                      Username is required.
+                    </mat-error>
+                  </div>
+                </div> -->
                 <div
                   class="mb-4 d-block justify-content-center align-items-center"
                   style="width: 32%"
@@ -290,8 +316,8 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('password')?.touched &&
-                        studentForm?.get('password')?.hasError('required')
+                        teacherForm?.get('password')?.touched &&
+                        teacherForm?.get('password')?.hasError('required')
                       "
                     >
                       Password is required.
@@ -299,7 +325,7 @@
                   </div>
                 </div>
                 <div
-                  class="mb-4 d-block justify-content-center align-items-center"
+                  class="mb-4 mx-4 d-block justify-content-center align-items-center"
                   style="width: 32%"
                 >
                   <label class="mx-1" style="width: 25%"
@@ -318,16 +344,16 @@
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        studentForm?.get('confirmPassword')?.touched &&
-                        studentForm.get('confirmPassword')?.hasError('required')
+                        teacherForm?.get('confirmPassword')?.touched &&
+                        teacherForm.get('confirmPassword')?.hasError('required')
                       "
                     >
                       Confirm Password is required.
                     </mat-error>
                     <mat-error
                       *ngIf="
-                        studentForm?.get('confirmPassword')?.dirty &&
-                        studentForm?.get('password')?.value !== studentForm?.get('confirmPassword')?.value
+                        teacherForm?.get('confirmPassword')?.dirty &&
+                        teacherForm?.get('password')?.value !== teacherForm?.get('confirmPassword')?.value
                       "
                     >
                       Confirm Password does not match.
@@ -342,8 +368,8 @@
                   color="primary"
                   class="px-4"
                   type="button"
-                  (click)="saveStudent()"
-                  [disabled]="studentForm.invalid"
+                  (click)="saveTeacher()"
+                  [disabled]="teacherForm.invalid"
                 >
                   <span>Save</span>
                 </button>
