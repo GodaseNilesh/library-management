@@ -1,0 +1,330 @@
+<app-sidenavbar></app-sidenavbar>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="d-flex justify-content-start">
+      <div class="header-section mx-1">
+        <h4 class="font fs-6 fw-bolder">
+          <mat-icon class="fs-6 mt-2 custom-tooltip" routerLink="/book-list">
+            arrow_back_ios
+          </mat-icon>
+        </h4>
+      </div>
+      <div class="header-section">
+        <h4 class="font p-1 fs-6 fw-bolder">
+          {{ this.bookId != "" ? "Update" : "Add" }} Book
+        </h4>
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="login-container">
+            <form class="login-form example-form w-100" [formGroup]="bookForm">
+              <h2 class="font text-align-left mb-4">Book Info:</h2>
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Title:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. Java basics"
+                      formControlName="title"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('title')?.touched &&
+                        bookForm?.get('title')?.hasError('required')
+                      "
+                    >
+                      Title Name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Author: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. John Doe"
+                      formControlName="author"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('author')?.touched &&
+                        bookForm?.get('author')?.hasError('required')
+                      "
+                    >
+                      Author name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Language:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. English"
+                      formControlName="language"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('language')?.touched &&
+                        bookForm.get('language')?.hasError('required')
+                      "
+                    >
+                      Book language should be required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between mx-1 font w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >ISBN No.:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="Ex. 123456"
+                      formControlName="isbn"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('isbn')?.touched &&
+                        bookForm.get('isbn')?.hasError('required')
+                      "
+                    >
+                      ISBN number should be required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Subject:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. Java"
+                      formControlName="subject"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('subject')?.touched &&
+                        bookForm?.get('subject')?.hasError('required')
+                      "
+                    >
+                      subject name is required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label style="width: 25%" class="mx-1"
+                    >Total Quan.:<span class="text-danger fs-5"
+                      >*</span
+                    ></label
+                  >
+                  <mat-form-field style="width: 70%" class="example-full-width">
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="Ex. 5"
+                      formControlName="totalQuantity"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('totalQuantity')?.touched &&
+                        bookForm?.get('totalQuantity')?.hasError('required')
+                      "
+                    >
+                      Total Quantity is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Available Quantity:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="number"
+                      matInput
+                      placeholder="Ex. 5"
+                      formControlName="availableQuantity"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('availableQuantity')?.touched &&
+                        bookForm?.get('availableQuantity')?.hasError('required')
+                      "
+                    >
+                      Available Quantity is required.
+                    </mat-error>
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('availableQuantity')?.value >
+                        bookForm?.get('totalQuantity')?.value
+                      "
+                    >
+                      Available Quantity should be less than total quantity.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Publisher: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. ABC books"
+                      formControlName="publisher"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('publisher')?.touched &&
+                        bookForm?.get('publisher')?.hasError('required')
+                      "
+                    >
+                      Publisher name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Publication Date:<span class="text-danger fs-5"
+                      >*</span
+                    ></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      matInput
+                      [matDatepicker]="picker"
+                      formControlName="publicationDate"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="picker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('publicationDate')?.touched &&
+                        bookForm.get('publicationDate')?.hasError('required')
+                      "
+                    >
+                      Publication Date is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Status:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field style="width: 70%" class="example-full-width">
+                    <mat-select formControlName="availableStatus">
+                      <mat-option value="available">Available</mat-option>
+                      <mat-option value="unavailable">Unavailable</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        bookForm?.get('availableStatus')?.touched &&
+                        bookForm?.get('availableStatus')?.hasError('required')
+                      "
+                    >
+                      Available Status is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="m-2 mx-3">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="px-4"
+                  type="button"
+                  (click)="saveBook()"
+                  [disabled]="bookForm.invalid"
+                >
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
