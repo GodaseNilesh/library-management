@@ -12,6 +12,9 @@ import { MatListModule } from '@angular/material/list';
 import { MatExpansionModule } from '@angular/material/expansion';
 import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
+import {MatDatepickerModule} from '@angular/material/datepicker';
+import { MatNativeDateModule } from '@angular/material/core';
+import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
 const components: any = [
@@ -26,7 +29,10 @@ const components: any = [
   MatListModule,
   MatExpansionModule,
   MatTableModule,
-  MatPaginatorModule
+  MatPaginatorModule,
+  MatDatepickerModule,
+  MatNativeDateModule,
+  MatProgressSpinnerModule
 ];
 @NgModule({
   declarations: [],

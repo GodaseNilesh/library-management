@@ -1,0 +1,39 @@
+.font {
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+.dashboard-content {
+  background-color: rgb(236, 243, 245);
+  height: auto;
+  width: 80%;
+  padding: 1%;
+  margin-left: 20%;
+  margin-top: 60px;
+}
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined)
+  .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 8px;
+}
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  height: 0px !important;
+}
+::ng-deep
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+    .mdc-text-field--textarea
+  )
+  .mat-mdc-form-field-infix {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: 35px;
+}
+.table-container {
+  overflow-x: auto;
+  width: 100%;
+}
+.table-container .table {
+  min-width: 130%;
+}

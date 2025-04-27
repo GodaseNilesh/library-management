@@ -61,21 +61,21 @@
         <mat-expansion-panel class="nav-list">
           <mat-expansion-panel-header>
             <mat-panel-title>
-              <div class="d-flex">
+              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/book-list') }">
                 <mat-icon class="m-0">library_books</mat-icon>
                 <span class="mx-2">Books</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
           <mat-nav-list>
-            <mat-list-item routerLink="/book-list" routerLinkActive="active">
-              <div class="d-flex">
+            <mat-list-item>
+              <div class="d-flex" routerLink="/book-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <mat-icon class="mx-2">menu_book</mat-icon>
               <span>Book List</span>
               </div>
             </mat-list-item>
-            <mat-list-item routerLink="/add-book" routerLinkActive="active">
-              <div class="d-flex">
+            <mat-list-item>
+              <div class="d-flex" routerLink="/book-list/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
               <mat-icon class="mx-2">library_add</mat-icon>
               <span>Add Book</span>
               </div>

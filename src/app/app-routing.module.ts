@@ -24,6 +24,10 @@ const routes: Routes = [
   {
     path:'teacher-list',
     loadChildren:()=>import('src/app/components/Teachers/teachers.module').then(m=>m.TeachersModule)
+  },
+  {
+    path:'book-list',
+    loadChildren:()=>import('src/app/components/books/book.module').then(m=>m.BookModule)
   }
 ];
 
