@@ -28,6 +28,10 @@ const routes: Routes = [
   {
     path:'book-list',
     loadChildren:()=>import('src/app/components/books/book.module').then(m=>m.BookModule)
+  },
+  {
+    path:'issue-book-history',
+    loadChildren:()=>import('src/app/components/issued books/issued-books.module').then(m=>m.IssuedBooksModule)
   }
 ];
 

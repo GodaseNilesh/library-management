@@ -75,7 +75,7 @@
               </div>
             </mat-list-item>
             <mat-list-item>
-              <div class="d-flex" routerLink="/book-list/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
+              <div class="d-flex" routerLink="/book-list/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
               <mat-icon class="mx-2">library_add</mat-icon>
               <span>Add Book</span>
               </div>
@@ -90,7 +90,7 @@
         </mat-expansion-panel>
   
         <mat-list-item class="nav-list">
-          <div class="d-flex">
+          <div class="d-flex" routerLink="/issue-book-history" routerLinkActive="active">
             <mat-icon class="m-2">assignment</mat-icon>
             <span class="mt-2"> Issued Books </span>
           </div>
