@@ -1,5 +1,5 @@
 .main {
-  background: linear-gradient(135deg, #627ced, #643197);
+  background: linear-gradient(135deg, #627ced 0%, #7e57c2 50%, #643197 100%);
   align-items: center;
   justify-content: center;
   height: 100%;

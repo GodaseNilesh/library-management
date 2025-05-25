@@ -1,4 +1,4 @@
-<mat-toolbar class="example-header">
+<mat-toolbar class="example-header" *ngIf="loginService.isUserLoggedIn()">
   <div class="d-flex w-100 justify-content-between align-items-center h-100">
     <div class="d-flex justify-content-center align-items-center">
       <div>
@@ -23,10 +23,10 @@
           >
         </div>
         <div class="d-flex">
-          <select name="" id="" class="m-0 user-action">
-            <option value="">Administrator</option>
-            <option value="">Profile</option>
-            <option value="">Logout</option>
+          <select name="user-action" id="user-action" class="m-0 user-action" (change)="onActionChange($event)">
+            <option value="administrator">Administrator</option>
+            <option value="profile">Profile</option>
+            <option value="logout">Logout</option>
           </select>
         </div>
       </div>

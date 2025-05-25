@@ -6,8 +6,9 @@ import { SidenavbarComponent } from './sidenavbar/sidenavbar.component';
 import { MaterialModule } from 'src/app/material/material.module';
 import { TableComponent } from './table/table.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { CommonDialogComponent } from './common-dialog/common-dialog.component';
 
-const components = [SidenavbarComponent, TableComponent];
+const components = [SidenavbarComponent, TableComponent,CommonDialogComponent];
 @NgModule({
   declarations: [components],
   imports: [

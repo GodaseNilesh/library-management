@@ -14,6 +14,7 @@ import { MatTableModule } from '@angular/material/table';
 import {MatPaginatorModule} from '@angular/material/paginator';
 import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
+import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 
 
@@ -32,7 +33,8 @@ const components: any = [
   MatPaginatorModule,
   MatDatepickerModule,
   MatNativeDateModule,
-  MatProgressSpinnerModule
+  MatProgressSpinnerModule,
+  MatDialogModule
 ];
 @NgModule({
   declarations: [],
