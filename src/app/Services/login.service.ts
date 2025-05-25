@@ -1,0 +1,76 @@
+import { Injectable } from '@angular/core';
+import { environment } from '../environment';
+import { ApplicationService } from './application.service';
+import { Router } from '@angular/router';
+import { CommonDialogComponent } from '../components/Shared/common-dialog/common-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+
+@Injectable({
+  providedIn: 'root',
+})
+export class LoginService {
+  tokenExpirationCheckInterval: any;
+
+  constructor(
+    private application: ApplicationService,
+    private router: Router,
+    private dialog: MatDialog
+  ) {}
+
+  userSignup(data: any) {
+    let url = environment.apiUrl + '/Auth/register';
+    return this.application.postData(url, data);
+  }
+
+  userLogin(data: any) {
+    let url = environment.apiUrl + '/Auth/login';
+    return this.application.postData(url, data);
+  }
+  isUserLoggedIn(): boolean {
+    let userId = sessionStorage.getItem('userId');
+    return userId ? true : false;
+  }
+
+  checkTokenExpiry() {
+    let token = sessionStorage.getItem('token');
+    let expiryTime: any = sessionStorage.getItem('expiresAt');
+    const expirationDate = new Date(expiryTime);
+    const currentTime = new Date();
+    return currentTime > expirationDate;
+  }
+  startTokenExpirationCheck() {
+    this.tokenExpirationCheckInterval = setInterval(() => {
+      if (this.checkTokenExpiry()) {
+        this.handleSessionExpired();
+      }
+    }, 60000);
+  }
+
+  handleSessionExpired() {
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      data: {
+        status: '404',
+        message: 'Session has expired. Please log in again.',
+      },
+    });
+
+    dialogRef.afterClosed().subscribe(() => {
+      setTimeout(() => {
+        this.userLogout();
+      }, 1000);
+      if (this.tokenExpirationCheckInterval) {
+        clearInterval(this.tokenExpirationCheckInterval);
+      }
+    });
+  } 
+
+  ngOnDestroy(): void {
+    if (this.tokenExpirationCheckInterval) {
+      clearInterval(this.tokenExpirationCheckInterval);
+    }
+  }
+  userLogout() {
+    sessionStorage.clear();
+    this.router.navigate(['']);
+  }
+}

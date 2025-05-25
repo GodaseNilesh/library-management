@@ -1,17 +1,14 @@
-import {
-  Component,
-  ElementRef,
-  OnInit,
-  QueryList,
-  ViewChildren,
-} from '@angular/core';
-import { DatePipe } from '@angular/common';
+import { Component, inject, OnInit } from '@angular/core';
 import {
   FormBuilder,
   FormControl,
   FormGroup,
   Validators,
 } from '@angular/forms';
+import { CommonDialogComponent } from '../Shared/common-dialog/common-dialog.component';
+import { MatDialog } from '@angular/material/dialog';
+import { LoginService } from 'src/app/Services/login.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -22,6 +19,7 @@ export class LoginComponent implements OnInit {
   isPasswordVisible: boolean = false;
   isLoginPage: boolean = true;
   isForgotPasswordPage: boolean = false;
+  readonly dialog = inject(MatDialog);
 
   otpConfig = {
     length: 4,
@@ -36,30 +34,78 @@ export class LoginComponent implements OnInit {
   otp: string = '';
 
   loginForm!: FormGroup;
-  signUpForm!:FormGroup;
+  signUpForm!: FormGroup;
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private loginService: LoginService,
+    private router: Router
+  ) {
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
+      userName: new FormControl('', [Validators.required]),
     });
 
-    this.signUpForm=this.fb.group({
-      fullName:new FormControl('',[Validators.required]),
-      email:new FormControl('',[Validators.required]),
-      password:new FormControl('',[Validators.required]),
-      confirmPassword:new FormControl('',[Validators.required])
-    })
+    this.signUpForm = this.fb.group({
+      fullName: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required]),
+      password: new FormControl('', [Validators.required]),
+      confirmPassword: new FormControl('', [Validators.required]),
+    });
   }
 
   ngOnInit(): void {}
 
   login() {
     console.log(this.loginForm.value);
+    let reqBody = {
+      userName: this.loginForm.value.userName,
+      emailId: this.loginForm.value.email,
+      password: this.loginForm.value.password,
+    };
+    this.loginService.userLogin(reqBody).subscribe(
+      (next:any) => {
+        console.log(next);
+        sessionStorage.setItem('userId',next.user.id);
+        sessionStorage.setItem('user Name',next.user.userName);
+        sessionStorage.setItem('token',next.token);
+        sessionStorage.setItem('expiresAt',next.expiresAt);
+        this.loginService.startTokenExpirationCheck();
+        this.router.navigate(['/dashboard']);
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
   }
-  signUp(){
+  signUp() {
     console.log(this.signUpForm.value);
-    
+    let reqBody = {
+      userName: this.signUpForm.value.fullName,
+      emailId: this.signUpForm.value.email,
+      password: this.signUpForm.value.password,
+    };
+    this.loginService.userSignup(reqBody).subscribe(
+      (next) => {
+        console.log(next);
+        this.openLoginPage();
+      },
+      (error) => {
+        console.log(error);
+      }
+    );
+  }
+
+  openDialog(): void {
+    const dialogRef = this.dialog.open(CommonDialogComponent, {});
+
+    dialogRef.afterClosed().subscribe((result: undefined) => {
+      console.log('The dialog was closed');
+      if (result !== undefined) {
+        // this.animal.set(result);
+      }
+    });
   }
 
   ngOnDestroy() {

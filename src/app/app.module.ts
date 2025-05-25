@@ -10,13 +10,11 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { NgOtpInputModule } from 'ng-otp-input';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SharedModule } from './components/Shared/shared.module';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { AuthInterceptor } from './auth.interceptor';
 
 @NgModule({
-  declarations: [
-    AppComponent,
-    LoginComponent,
-    DashboardComponent,
-  ],
+  declarations: [AppComponent, LoginComponent, DashboardComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -26,8 +24,15 @@ import { SharedModule } from './components/Shared/shared.module';
     NgOtpInputModule,
     ReactiveFormsModule,
     SharedModule,
+    HttpClientModule,
   ],
-  providers: [],
+  providers: [
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: AuthInterceptor,
+      multi: true,
+    },
+  ],
   exports: [],
   bootstrap: [AppComponent],
 })
