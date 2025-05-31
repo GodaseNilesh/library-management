@@ -21,6 +21,7 @@ export class TableComponent {
 
   @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDetails: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onDelete: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -46,13 +47,13 @@ export class TableComponent {
   }
   onEditClicked(element: any) {
     this.onEdit.emit(element);
-    console.log(element);
   }
 
-  onDelete(element: any) {}
+  onDeleteClicked(element: any) {
+    this.onDelete.emit(element);
+  }
 
   onDetailsClicked(element: any) {
     this.onDetails.emit(element);
-    console.log(element);
   }
 }

@@ -122,12 +122,10 @@ export class TeacherListComponent {
     }
   }
   onEditClicked(event: any) {
-    debugger;
     console.log(event);
     this.router.navigate([`teacher-list/create-teacher/${event.teacherId}`]);
   }
   onDetailsClicked(event: any) {
-    debugger;
     console.log(event);
     this.router.navigate([`teacher-list/teacher-details/${event.teacherId}`]);
   }

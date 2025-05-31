@@ -34,8 +34,14 @@ export class LoginService {
   checkTokenExpiry() {
     let token = sessionStorage.getItem('token');
     let expiryTime: any = sessionStorage.getItem('expiresAt');
+    if (!token || !expiryTime) {
+      return true;
+    }
     const expirationDate = new Date(expiryTime);
     const currentTime = new Date();
+    console.log(currentTime);
+    console.log(expiryTime);
+
     return currentTime > expirationDate;
   }
   startTokenExpirationCheck() {
@@ -62,7 +68,7 @@ export class LoginService {
         clearInterval(this.tokenExpirationCheckInterval);
       }
     });
-  } 
+  }
 
   ngOnDestroy(): void {
     if (this.tokenExpirationCheckInterval) {

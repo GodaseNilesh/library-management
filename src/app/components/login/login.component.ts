@@ -19,6 +19,7 @@ export class LoginComponent implements OnInit {
   isPasswordVisible: boolean = false;
   isLoginPage: boolean = true;
   isForgotPasswordPage: boolean = false;
+  isClicked:boolean=false;
   readonly dialog = inject(MatDialog);
 
   otpConfig = {
@@ -58,23 +59,25 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
-    console.log(this.loginForm.value);
     let reqBody = {
       userName: this.loginForm.value.userName,
       emailId: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
+    this.isClicked=true;
     this.loginService.userLogin(reqBody).subscribe(
       (next:any) => {
         console.log(next);
-        sessionStorage.setItem('userId',next.user.id);
-        sessionStorage.setItem('user Name',next.user.userName);
+        sessionStorage.setItem('userId',next.userId);
+        sessionStorage.setItem('user Name',next.userName);
         sessionStorage.setItem('token',next.token);
         sessionStorage.setItem('expiresAt',next.expiresAt);
         this.loginService.startTokenExpirationCheck();
         this.router.navigate(['/dashboard']);
+        this.isClicked=true;
       },
       (error) => {
+        this.isClicked=false;
         console.log(error);
       }
     );
@@ -86,12 +89,16 @@ export class LoginComponent implements OnInit {
       emailId: this.signUpForm.value.email,
       password: this.signUpForm.value.password,
     };
+    this.isClicked=true;
     this.loginService.userSignup(reqBody).subscribe(
       (next) => {
         console.log(next);
+        this.isClicked=true;
+        this.signUpForm.reset();
         this.openLoginPage();
       },
       (error) => {
+        this.isClicked=false;
         console.log(error);
       }
     );
@@ -153,6 +160,7 @@ export class LoginComponent implements OnInit {
   openLoginPage() {
     this.isLoginPage = true;
     this.isForgotPasswordPage = false;
+    this.isClicked=false;
   }
   openSignupPage() {
     this.isLoginPage = false;

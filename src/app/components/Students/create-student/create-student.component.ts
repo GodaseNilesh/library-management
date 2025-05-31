@@ -8,8 +8,9 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { min } from 'rxjs';
+import { StudentService } from 'src/app/Services/student.service';
 
 @Component({
   selector: 'app-create-student',
@@ -20,7 +21,12 @@ export class CreateStudentComponent implements OnInit {
   studentForm!: FormGroup;
   studentId: string = '';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private student: StudentService
+  ) {
     this.studentForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
@@ -32,23 +38,82 @@ export class CreateStudentComponent implements OnInit {
         Validators.minLength(10),
         Validators.maxLength(10),
         // Validators.pattern('^[0-9]{10}$'),
-        Validators.pattern(/^\d*$/)
+        Validators.pattern(/^\d*$/),
       ]),
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required]),
+      // username: new FormControl('', [Validators.required]),
+      // password: new FormControl('', [Validators.required]),
+      // confirmPassword: new FormControl('', [Validators.required]),
     });
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      id && (this.studentId = id);
+      if (id) {
+        this.studentId = id;
+        this.student.getStudentById(id).subscribe(
+          (res: any) => {
+            this.studentForm.patchValue({
+              studentId: res.studentId,
+              firstName: res.firstName,
+              lastName: res.lastName,
+              email: res.email,
+              className: res.class,
+              department: res.department,
+              phoneNo: res.phone,
+            });
+            console.log(this.studentForm.value);
+          },
+          (error) => {
+            console.log(error);
+          }
+        );
+      }
     });
   }
 
   saveStudent() {
-    console.log(this.studentForm.value);
+    if (this.studentId == '') {
+      const reqBody = {
+        studentId: 0,
+        firstName: this.studentForm.value.firstName,
+        lastName: this.studentForm.value.lastName,
+        email: this.studentForm.value.email,
+        class: this.studentForm.value.className,
+        department: this.studentForm.value.department,
+        phone: this.studentForm.value.phoneNo,
+      };
+      this.student.saveStudent(reqBody).subscribe(
+        (next) => {
+          console.log(next);
+          this.router.navigate(['/student-list']);
+        },
+        (error) => {
+          console.log(error);
+        }
+      );
+    } else {
+      console.log(this.studentForm.value);
+      const reqBody = {
+        studentId: this.studentId || 0,
+        firstName: this.studentForm.value.firstName,
+        lastName: this.studentForm.value.lastName,
+        email: this.studentForm.value.email,
+        class: this.studentForm.value.className,
+        department: this.studentForm.value.department,
+        phone: this.studentForm.value.phoneNo,
+      };
+
+      this.student.updateStudentById(reqBody).subscribe(
+        (res) => {
+          console.log(res);
+          this.router.navigate(['/student-list']);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   customValidator(control: AbstractControl): ValidationErrors | null {

@@ -15,11 +15,13 @@ import { MatDialog } from '@angular/material/dialog';
 export class AuthInterceptor implements HttpInterceptor {
   constructor(private dialog: MatDialog) {}
 
+  methodType:string='';
+
   intercept(
     request: HttpRequest<any>,
     next: HttpHandler
   ): Observable<HttpEvent<any>> {
-    debugger
+    let token=sessionStorage.getItem('token');
     let requestToSend = request;
 
     if (request.headers.has('skip-interceptor')) {
@@ -28,11 +30,12 @@ export class AuthInterceptor implements HttpInterceptor {
     } else {
       requestToSend = request.clone({
         setHeaders: {
-          Authorization: `Bearer YOUR_ACCESS_TOKEN`,
+          Authorization: 'Bearer '+token,
         },
       });
     }
 
+    this.methodType=requestToSend.method;
     return next.handle(requestToSend).pipe(
       tap((event) => {
         if (event instanceof HttpResponse) {
@@ -47,21 +50,26 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleSuccessResponse(response: HttpResponse<any>): void {
-    debugger
-    this.dialog.open(CommonDialogComponent, {
-      data: {
-        status: response.status,
-        message: response.statusText || 'Request succeeded',
-      },
-    });
+    let message='';
+    if(response.status==200 && response.url?.includes('/Auth/login')){
+      message=`Welcome back, ${response.body.userName}`;
+    }
+    if(!(this.methodType=='GET')){
+      this.dialog.open(CommonDialogComponent, {
+        data: {
+          status: response.status,
+          message: message && message || response.body.meessage || 'Data added successfully',
+        },
+      });
+    }
   }
 
   private handleErrorResponse(error: HttpErrorResponse): void {
-    debugger
     this.dialog.open(CommonDialogComponent, {
       data: {
         status: error.status,
-        message: error.name+": An error occured" || 'Request failed',
+        // message: error.name+": An error occured" || 'Request failed',
+        message: typeof (error.error)=='object' ? error.error.error : error.error
       },
     });
   }

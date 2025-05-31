@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { LoginService } from './Services/login.service';
 import { Router } from '@angular/router';
 
@@ -7,9 +7,16 @@ import { Router } from '@angular/router';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.css'],
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
   constructor(public loginService: LoginService, private router: Router) {}
   title = 'library';
+
+  ngOnInit(): void {
+    let token = sessionStorage.getItem('token');
+    if (token) {
+      this.loginService.startTokenExpirationCheck();
+    }
+  }
 
   onActionChange(event: any): void {
     const selectedValue = event.target.value;
