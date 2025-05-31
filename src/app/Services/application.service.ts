@@ -5,17 +5,37 @@ import { Injectable } from '@angular/core';
   providedIn: 'root',
 })
 export class ApplicationService {
-  constructor(private http: HttpClient) {}
+  token: string | null = '';
+  constructor(private http: HttpClient) {
+    this.token = sessionStorage.getItem('token');
+  }
 
-  headers = new HttpHeaders({
-    'Content-Type': 'application/json',
-    // Authorization: 'Bearer YOUR_ACCESS_TOKEN',
-  });
+  private buildHeaders(skipInterceptor: boolean = false): HttpHeaders {
+    let headers = new HttpHeaders({
+      'Content-Type': 'application/json',
+    });
+
+    if (skipInterceptor) {
+      headers = headers.set('skip-interceptor', 'true');
+    }
+    return headers;
+  }
 
   postData(url: string, params: any) {
-    if (url.includes('/Auth')) {
-      this.headers = this.headers.set('skip-interceptor', 'true');
-    }
-    return this.http.post(url, params, { headers: this.headers });
+    const skipInterceptor = url.includes('/Auth');
+    const headers = this.buildHeaders(skipInterceptor);
+    return this.http.post(url, params, { headers: headers });
+  }
+  getData(url: string) {
+    const headers = this.buildHeaders();
+    return this.http.get(url, { headers: headers });
+  }
+  putData(url: string, params: any) {
+    const headers = this.buildHeaders();
+    return this.http.put(url, params, { headers: headers });
+  }
+  deleteData(url: string) {
+    const headers = this.buildHeaders();
+    return this.http.delete(url, { headers: headers });
   }
 }

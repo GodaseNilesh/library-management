@@ -41,7 +41,7 @@
             </mat-form-field>
           </div>
 
-          <button mat-raised-button color="primary" [disabled]="loginForm.invalid" class="w-100" type="button" (click)="login()">
+          <button mat-raised-button color="primary" [disabled]="loginForm.invalid || isClicked" class="w-100" type="button" (click)="login()">
             <span>Login</span>
           </button>
           <p class="signup-link">
