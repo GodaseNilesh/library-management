@@ -19,7 +19,8 @@ export class LoginComponent implements OnInit {
   isPasswordVisible: boolean = false;
   isLoginPage: boolean = true;
   isForgotPasswordPage: boolean = false;
-  isClicked:boolean=false;
+  isClicked: boolean = false;
+  isLoading: boolean = false;
   readonly dialog = inject(MatDialog);
 
   otpConfig = {
@@ -59,53 +60,57 @@ export class LoginComponent implements OnInit {
   ngOnInit(): void {}
 
   login() {
+    this.isLoading = true;
     let reqBody = {
       userName: this.loginForm.value.userName,
       emailId: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
-    this.isClicked=true;
+    this.isClicked = true;
     this.loginService.userLogin(reqBody).subscribe(
-      (next:any) => {
+      (next: any) => {
+        this.isLoading = false;
         console.log(next);
-        sessionStorage.setItem('userId',next.userId);
-        sessionStorage.setItem('user Name',next.userName);
-        sessionStorage.setItem('token',next.token);
-        sessionStorage.setItem('expiresAt',next.expiresAt);
+        sessionStorage.setItem('userId', next.userId);
+        sessionStorage.setItem('user Name', next.userName);
+        sessionStorage.setItem('token', next.token);
+        sessionStorage.setItem('expiresAt', next.expiresAt);
         this.loginService.startTokenExpirationCheck();
         this.router.navigate(['/dashboard']);
-        this.isClicked=true;
+        this.isClicked = true;
       },
       (error) => {
-        this.isClicked=false;
+        this.isClicked = false;
+        this.isLoading = false;
         console.log(error);
       }
     );
   }
   signUp() {
-    console.log(this.signUpForm.value);
+    this.isLoading = true;
     let reqBody = {
       userName: this.signUpForm.value.fullName,
       emailId: this.signUpForm.value.email,
       password: this.signUpForm.value.password,
     };
-    this.isClicked=true;
+    this.isClicked = true;
     this.loginService.userSignup(reqBody).subscribe(
       (next) => {
-        console.log(next);
-        this.isClicked=true;
+        this.isLoading = false;
+        this.isClicked = true;
         this.signUpForm.reset();
         this.openLoginPage();
       },
       (error) => {
-        this.isClicked=false;
+        this.isLoading = false;
+        this.isClicked = false;
         console.log(error);
       }
     );
   }
 
   ngOnDestroy() {
-    clearInterval(this.timer); // clean up
+    clearInterval(this.timer);
   }
 
   startTimer() {
@@ -149,7 +154,7 @@ export class LoginComponent implements OnInit {
   openLoginPage() {
     this.isLoginPage = true;
     this.isForgotPasswordPage = false;
-    this.isClicked=false;
+    this.isClicked = false;
   }
   openSignupPage() {
     this.isLoginPage = false;

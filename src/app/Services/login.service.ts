@@ -4,6 +4,7 @@ import { ApplicationService } from './application.service';
 import { Router } from '@angular/router';
 import { CommonDialogComponent } from '../components/Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { AuthService } from './auth.service';
 
 @Injectable({
   providedIn: 'root',
@@ -14,7 +15,8 @@ export class LoginService {
   constructor(
     private application: ApplicationService,
     private router: Router,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private authService: AuthService
   ) {}
 
   userSignup(data: any) {
@@ -80,6 +82,7 @@ export class LoginService {
   }
   userLogout() {
     sessionStorage.clear();
+    this.authService.isUserLoggedIn = false;
     this.router.navigate(['']);
   }
 }

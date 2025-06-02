@@ -2,6 +2,7 @@ import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
 import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { authGuardGuard } from './auth-guards/auth-guard.guard';
 
 const routes: Routes = [
   {
@@ -14,6 +15,7 @@ const routes: Routes = [
   //   pathMatch: 'full' 
   // },
   {
+    canActivate: [authGuardGuard],
     path:'dashboard',
     component:DashboardComponent
   },
