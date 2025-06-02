@@ -54,18 +54,21 @@ export class LoginService {
 
   handleSessionExpired() {
     const dialogRef = this.dialog.open(CommonDialogComponent, {
+      disableClose: true,
       data: {
-        status: '404',
+        status: 'Session Timeout',
         message: 'Session has expired. Please log in again.',
       },
     });
 
-    dialogRef.afterClosed().subscribe(() => {
-      setTimeout(() => {
-        this.userLogout();
-      }, 1000);
-      if (this.tokenExpirationCheckInterval) {
-        clearInterval(this.tokenExpirationCheckInterval);
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        setTimeout(() => {
+          this.userLogout();
+        }, 1000);
+        if (this.tokenExpirationCheckInterval) {
+          clearInterval(this.tokenExpirationCheckInterval);
+        }
       }
     });
   }

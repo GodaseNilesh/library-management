@@ -104,17 +104,6 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  openDialog(): void {
-    const dialogRef = this.dialog.open(CommonDialogComponent, {});
-
-    dialogRef.afterClosed().subscribe((result: undefined) => {
-      console.log('The dialog was closed');
-      if (result !== undefined) {
-        // this.animal.set(result);
-      }
-    });
-  }
-
   ngOnDestroy() {
     clearInterval(this.timer); // clean up
   }

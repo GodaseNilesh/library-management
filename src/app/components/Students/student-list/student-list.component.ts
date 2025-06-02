@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/Services/student.service';
+import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 
 @Component({
   selector: 'app-student-list',
@@ -8,8 +10,11 @@ import { StudentService } from 'src/app/Services/student.service';
   styleUrls: ['./student-list.component.css'],
 })
 export class StudentListComponent implements OnInit {
-  constructor(private router: Router, private studentService: StudentService) {}
-  // For students list
+  constructor(
+    private router: Router,
+    private studentService: StudentService,
+    private dialog: MatDialog
+  ) {}
   StudentData: any = [];
 
   StudentDataColumns = [
@@ -74,14 +79,28 @@ export class StudentListComponent implements OnInit {
   }
   onDeleteClicked(event: any) {
     console.log(event);
-    this.studentService.deleteStudentById(event.studentId).subscribe(
-      (res) => {
-        console.log(res);
-        this.loadData();
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      disableClose: true,
+      data: {
+        status: 'Confirm!',
+        message: 'Do you want delete this record?',
+        action: {
+          cancel: true,
+        },
       },
-      (err) => {
-        console.log(err);
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.studentService.deleteStudentById(event.studentId).subscribe(
+          (res) => {
+            console.log(res);
+            this.loadData();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
       }
-    );
+    });
   }
 }

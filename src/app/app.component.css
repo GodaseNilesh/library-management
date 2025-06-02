@@ -23,6 +23,7 @@
   margin-top: 0;
   border: none;
   padding: 0px 5px;
+  background-color: rgb(110, 63, 167);
 }
 .example-header {
   position: fixed;
@@ -31,4 +32,5 @@
   right: 0;
   height: 60px;
   z-index: 101;
+  background: linear-gradient(135deg, #627ced 0%, #7e57c2 50%, #643197 100%);
 }
