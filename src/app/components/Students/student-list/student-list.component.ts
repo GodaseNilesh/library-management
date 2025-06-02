@@ -16,6 +16,7 @@ export class StudentListComponent implements OnInit {
     private dialog: MatDialog
   ) {}
   StudentData: any = [];
+  isLoading: boolean = false;
 
   StudentDataColumns = [
     { columnDef: 'studentId', header: 'Student ID' },
@@ -33,6 +34,7 @@ export class StudentListComponent implements OnInit {
     this.loadData();
   }
   loadData() {
+    this.isLoading = true;
     this.studentService.getAllStudents().subscribe(
       (value: any) => {
         console.log(value);
@@ -52,6 +54,7 @@ export class StudentListComponent implements OnInit {
         console.log(error);
       }
     );
+    this.isLoading = false;
   }
 
   quickFilter(event: Event): void {
@@ -91,6 +94,7 @@ export class StudentListComponent implements OnInit {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirm') {
+        this.isLoading = true;
         this.studentService.deleteStudentById(event.studentId).subscribe(
           (res) => {
             console.log(res);
@@ -100,6 +104,7 @@ export class StudentListComponent implements OnInit {
             console.log(err);
           }
         );
+        this.isLoading = false;
       }
     });
   }

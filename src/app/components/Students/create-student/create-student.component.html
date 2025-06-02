@@ -1,4 +1,6 @@
 <app-sidenavbar></app-sidenavbar>
+<app-loader *ngIf="isLoading"></app-loader>
+
 <div class="w-auto">
   <div class="dashboard-content">
     <div class="d-flex justify-content-start">
@@ -343,9 +345,15 @@
                   class="px-4"
                   type="button"
                   (click)="saveStudent()"
-                  [disabled]="studentForm.invalid || studentForm?.get('password')?.value !== studentForm?.get('confirmPassword')?.value"
+                  [disabled]="
+                    studentForm.invalid ||
+                    studentForm?.get('password')?.value !==
+                      studentForm?.get('confirmPassword')?.value
+                  "
                 >
-                  <span>{{ this.studentId != "" ? "Update" : "Add" }} Student</span>
+                  <span
+                    >{{ this.studentId != "" ? "Update" : "Add" }} Student</span
+                  >
                 </button>
               </div>
             </form>

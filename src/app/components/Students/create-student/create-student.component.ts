@@ -20,6 +20,7 @@ import { StudentService } from 'src/app/Services/student.service';
 export class CreateStudentComponent implements OnInit {
   studentForm!: FormGroup;
   studentId: string = '';
+  isLoading: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -47,6 +48,7 @@ export class CreateStudentComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.isLoading = true;
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
@@ -68,11 +70,13 @@ export class CreateStudentComponent implements OnInit {
             console.log(error);
           }
         );
+        this.isLoading = false;
       }
     });
   }
 
   saveStudent() {
+    this.isLoading = true;
     if (this.studentId == '') {
       const reqBody = {
         studentId: 0,
@@ -92,6 +96,7 @@ export class CreateStudentComponent implements OnInit {
           console.log(error);
         }
       );
+      this.isLoading = false;
     } else {
       console.log(this.studentForm.value);
       const reqBody = {
@@ -113,6 +118,7 @@ export class CreateStudentComponent implements OnInit {
           console.log(err);
         }
       );
+      this.isLoading = false;
     }
   }
 

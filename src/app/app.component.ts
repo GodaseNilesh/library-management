@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { LoginService } from './Services/login.service';
 import { Router } from '@angular/router';
+import { AuthService } from './Services/auth.service';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +9,11 @@ import { Router } from '@angular/router';
   styleUrls: ['./app.component.css'],
 })
 export class AppComponent implements OnInit {
-  constructor(public loginService: LoginService, private router: Router) {}
+  constructor(
+    public loginService: LoginService,
+    private router: Router,
+    public authService: AuthService
+  ) {}
   title = 'library';
 
   ngOnInit(): void {
@@ -33,6 +38,7 @@ export class AppComponent implements OnInit {
   }
   logout() {
     sessionStorage.clear();
+    this.authService.isUserLoggedIn = false;
     this.router.navigate(['']);
   }
 }
