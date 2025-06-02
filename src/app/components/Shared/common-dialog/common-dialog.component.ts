@@ -12,9 +12,9 @@ export class CommonDialogComponent {
   readonly data = inject(MAT_DIALOG_DATA);
   
   onNoClick(): void {
-    this.dialogRef.close();
+    this.dialogRef.close('cancel');
   }
-  onOkClick(){
-    this.dialogRef.close();
+  onOkClick() {
+    this.dialogRef.close('confirm');
   }
 }

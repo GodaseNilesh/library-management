@@ -1,8 +1,24 @@
-<h2 mat-dialog-title>Status - {{data.status}}</h2>
-<mat-dialog-content>
-    <p>{{data.message}}</p>
-</mat-dialog-content>
-<mat-dialog-actions>
-  <!-- <button mat-button (click)="onNoClick()">No Thanks</button> -->
-  <button mat-button (click)="onOkClick()" cdkFocusInitial>Ok</button>
-</mat-dialog-actions>
+<div class="dialog-modal">
+  <div class="inner-modal">
+    <mat-icon class="text-danger" *ngIf="data.status == 'Error!' || data.status == 'Session Timeout'">warning</mat-icon>
+    <mat-icon class="text-success" *ngIf="data.status == 'Success'">check_circle_outline</mat-icon>
+    <mat-icon class="text-info" *ngIf="data.status == 'Confirm!'">error_outline</mat-icon>
+    <span mat-dialog-title class="text-center title">{{ data.status }}</span>
+    <mat-dialog-content>
+      <p class="message">{{ data.message }}</p>
+    </mat-dialog-content>
+    <mat-dialog-actions>
+      <div class="m-auto">
+        <button mat-button (click)="onOkClick()" class="rounded">Ok</button>
+        <button
+          mat-button
+          (click)="onNoClick()"
+          *ngIf="data?.action?.cancel"
+          class="btn btn-danger rounded"
+        >
+          Cancel
+        </button>
+      </div>
+    </mat-dialog-actions>
+  </div>
+</div>
