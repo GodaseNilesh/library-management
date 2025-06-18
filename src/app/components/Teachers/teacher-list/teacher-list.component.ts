@@ -1,5 +1,8 @@
 import { Component } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
+import { TeacherService } from 'src/app/Services/teacher.service';
+import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 
 @Component({
   selector: 'app-teacher-list',
@@ -7,114 +10,61 @@ import { Router } from '@angular/router';
   styleUrls: ['./teacher-list.component.css'],
 })
 export class TeacherListComponent {
-  constructor(private router: Router) {}
-  // For students list
-  teacherData = [
-    {
-      teacherId: 101,
-      teacherName: 'Aarav Sharma',
-      email: 'aarav.sharma@example.com',
-      department: 'Comp',
-      contactNumber: '9876543210',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 102,
-      teacherName: 'Priya Gupta',
-      email: 'priya.gupta@example.com',
-      department: 'Math',
-      contactNumber: '9876543211',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 103,
-      teacherName: 'Vikram Yadav',
-      email: 'vikram.yadav@example.com',
-      department: 'Physics',
-      contactNumber: '9876543212',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 104,
-      teacherName: 'Neha Singh',
-      email: 'neha.singh@example.com',
-      department: 'Chemistry',
-      contactNumber: '9876543213',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 105,
-      teacherName: 'Manoj Kumar',
-      email: 'manoj.kumar@example.com',
-      department: 'Biology',
-      contactNumber: '9876543214',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 106,
-      teacherName: 'Sangeeta Rani',
-      email: 'sangeeta.rani@example.com',
-      department: 'English',
-      contactNumber: '9876543215',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 107,
-      teacherName: 'Ravi Mehta',
-      email: 'ravi.mehta@example.com',
-      department: 'History',
-      contactNumber: '9876543216',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 108,
-      teacherName: 'Shweta Verma',
-      email: 'shweta.verma@example.com',
-      department: 'Economics',
-      contactNumber: '9876543217',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 109,
-      teacherName: 'Siddharth Rao',
-      email: 'siddharth.rao@example.com',
-      department: 'Computer Science',
-      contactNumber: '9876543218',
-      action: 'edit,delete,details',
-    },
-    {
-      teacherId: 110,
-      teacherName: 'Anjali Sharma',
-      email: 'anjali.sharma@example.com',
-      department: 'Philosophy',
-      contactNumber: '9876543219',
-      action: 'edit,delete,details',
-    },
-  ];
+  isLoading: boolean = false;
+  constructor(
+    private router: Router,
+    private teacherService: TeacherService,
+    private dialog: MatDialog
+  ) {}
 
   teacherDataColumns = [
     { columnDef: 'teacherId', header: 'Teacher ID' },
     { columnDef: 'teacherName', header: 'Teacher Name' },
     { columnDef: 'email', header: 'Email' },
     { columnDef: 'department', header: 'Department' },
-    { columnDef: 'contactNumber', header: 'Contact Number' },
+    { columnDef: 'phone', header: 'Contact Number' },
     { columnDef: 'action', header: 'Action' },
   ];
 
   teacherDisplayedColumns = this.teacherDataColumns.map((c) => c.columnDef);
-  teacherDataSource = this.teacherData;
+  teacherDataSource: any[] = [];
+  teachersData: any[] = [];
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.loadData();
+  }
+  loadData() {
+    this.isLoading = true;
+    this.teacherService.getAllTeachers().subscribe(
+      (res: any) => {
+        this.teachersData = res;
+        this.teachersData = this.teachersData.map((x: any) => {
+          x.teacherName = x.firstName + ' ' + x.lastName;
+          x.action = 'edit,delete,details';
+          return x;
+        });
+        this.teacherDisplayedColumns = this.teacherDataColumns.map(
+          (c) => c.columnDef
+        );
+        this.teacherDataSource = this.teachersData;
+        this.isLoading = false;
+      },
+      (err) => {
+        console.log(err);
+        this.isLoading = false;
+      }
+    );
+  }
 
   quickFilter(event: Event): void {
     const element = event.target as HTMLInputElement;
     const value = element.value.trim().toLowerCase();
 
     if (value === '') {
-      this.teacherDataSource = [...this.teacherData];
+      this.teacherDataSource = [...this.teachersData];
     } else {
-      const filtered = this.teacherData.filter((teacher) =>
-        Object.values(teacher).some((val) =>
+      const filtered = this.teachersData.filter((teacher) =>
+        Object.values(teacher).some((val: any) =>
           val.toString().toLowerCase().includes(value)
         )
       );
@@ -128,5 +78,33 @@ export class TeacherListComponent {
   onDetailsClicked(event: any) {
     console.log(event);
     this.router.navigate([`teacher-list/teacher-details/${event.teacherId}`]);
+  }
+  onDeleteClicked(event: any) {
+    console.log(event);
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      disableClose: true,
+      data: {
+        status: 'Confirm!',
+        message: 'Do you want delete this record?',
+        action: {
+          cancel: true,
+        },
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'confirm') {
+        this.isLoading = true;
+        this.teacherService.deleteTeacherById(event.teacherId).subscribe(
+          (res) => {
+            console.log(res);
+            this.loadData();
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+        this.isLoading = false;
+      }
+    });
   }
 }

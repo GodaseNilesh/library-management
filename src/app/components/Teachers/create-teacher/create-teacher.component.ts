@@ -1,6 +1,14 @@
 import { Component } from '@angular/core';
-import { AbstractControl, FormBuilder, FormControl, FormGroup, ValidationErrors, Validators } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
+import {
+  AbstractControl,
+  FormBuilder,
+  FormControl,
+  FormGroup,
+  ValidationErrors,
+  Validators,
+} from '@angular/forms';
+import { ActivatedRoute, Router } from '@angular/router';
+import { TeacherService } from 'src/app/Services/teacher.service';
 
 @Component({
   selector: 'app-create-teacher',
@@ -11,12 +19,17 @@ export class CreateTeacherComponent {
   teacherForm!: FormGroup;
   teacherId: string = '';
 
-  constructor(private fb: FormBuilder, private route: ActivatedRoute) {
+  constructor(
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router,
+    private teacherService: TeacherService
+  ) {
     this.teacherForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, this.customValidator]),
-      className: new FormControl('', [Validators.required]),
+      // className: new FormControl('', [Validators.required]),
       department: new FormControl('', [Validators.required]),
       phoneNo: new FormControl('', [
         Validators.required,
@@ -24,21 +37,66 @@ export class CreateTeacherComponent {
         Validators.maxLength(10),
         Validators.pattern(/^\d*$/),
       ]),
-      username: new FormControl('', [Validators.required]),
-      password: new FormControl('', [Validators.required]),
-      confirmPassword: new FormControl('', [Validators.required]),
+      // username: new FormControl('', [Validators.required]),
+      // password: new FormControl('', [Validators.required]),
+      // confirmPassword: new FormControl('', [Validators.required]),
     });
   }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
-      id && (this.teacherId = id);
+      if (id) {
+        this.teacherId = id;
+        this.teacherService.getTeacherById(this.teacherId).subscribe(
+          (res: any) => {
+            this.teacherForm.patchValue({
+              firstName: res.firstName,
+              lastName: res.lastName,
+              email: res.email,
+              department: res.department,
+              phoneNo: res.phone,
+            });
+          },
+          (err) => {
+            console.log(err);
+          }
+        );
+      }
     });
   }
 
   saveTeacher() {
-    console.log(this.teacherForm.value);
+    let requestBody = {
+      teacherId: 0,
+      firstName: this.teacherForm.value.firstName,
+      lastName: this.teacherForm.value.lastName,
+      email: this.teacherForm.value.email,
+      phone: this.teacherForm.value.phoneNo,
+      department: this.teacherForm.value.department,
+    };
+    if (!this.teacherId) {
+      this.teacherService.saveTeacher(requestBody).subscribe(
+        (res) => {
+          console.log(res);
+          this.router.navigate(['/teacher-list']);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    } else {
+      requestBody.teacherId = Number(this.teacherId);
+      this.teacherService.updateTeacherById(requestBody).subscribe(
+        (res) => {
+          console.log(res);
+          this.router.navigate(['/teacher-list']);
+        },
+        (err) => {
+          console.log(err);
+        }
+      );
+    }
   }
 
   customValidator(control: AbstractControl): ValidationErrors | null {
