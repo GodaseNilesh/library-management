@@ -27,7 +27,7 @@
                 color="primary"
                 class="w-25"
                 type="button"
-                routerLink="add-book"
+                routerLink="create-book-issue"
               >
                 <span class="fs-3">+</span>
               </button>
@@ -40,6 +40,7 @@
                 [columns]="issuedBookDataColumns"
                 [pageSize]="10"
                 (onEdit)="onEditClicked($event)"
+                (onDelete)="onDeleteClicked($event)"
                 (onDetails)="onDetailsClicked($event)"
               ></app-table>
             </div>

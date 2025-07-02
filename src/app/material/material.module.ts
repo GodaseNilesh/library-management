@@ -16,6 +16,7 @@ import {MatDatepickerModule} from '@angular/material/datepicker';
 import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatAutocompleteModule} from '@angular/material/autocomplete';
 
 
 const components: any = [
@@ -34,7 +35,8 @@ const components: any = [
   MatDatepickerModule,
   MatNativeDateModule,
   MatProgressSpinnerModule,
-  MatDialogModule
+  MatDialogModule,
+  MatAutocompleteModule
 ];
 @NgModule({
   declarations: [],
