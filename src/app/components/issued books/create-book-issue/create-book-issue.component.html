@@ -1,1 +1,330 @@
-<p>create-book-issue works!</p>
+<app-sidenavbar></app-sidenavbar>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="d-flex justify-content-start">
+      <div class="header-section mx-1">
+        <h4 class="font fs-6 fw-bolder">
+          <mat-icon
+            class="fs-6 mt-2 custom-tooltip"
+            routerLink="/issue-book-history"
+          >
+            arrow_back_ios
+          </mat-icon>
+        </h4>
+      </div>
+      <div class="header-section">
+        <h4 class="font p-1 fs-6 fw-bolder">Issued Book</h4>
+      </div>
+    </div>
+    <div class="w-100">
+      <div class="mb-2">
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <h2 class="font text-align-left">Search Book:</h2>
+            <div>
+              <form class="example-form">
+                <mat-form-field class="w-50">
+                  <input
+                    type="text"
+                    placeholder="Choose book"
+                    aria-label="book"
+                    matInput
+                    [formControl]="searchBookCtrl"
+                    [matAutocomplete]="auto"
+                  />
+                  <mat-autocomplete
+                    #auto="matAutocomplete"
+                    (optionSelected)="onBookSelected($event.option.value)"
+                  >
+                    <mat-option
+                      class="border-bottom m-1 p-1"
+                      *ngFor="
+                        let book of filteredOptions | async;
+                        let i = index
+                      "
+                      [value]="book.title"
+                    >
+                      <div class="d-flex flex-column">
+                        <div class="font gradient-text fw-bold text-primary">
+                          #{{ i + 1 }} - {{ book.title }}
+                        </div>
+                        <div class="font text-muted small">
+                          <b class="font fw-bold">Author:</b> {{ book.author }}
+                        </div>
+                        <div class="font text-muted small">
+                          <b class="font fw-bold">Language:</b> {{ book.language }}
+                        </div>
+                        <div class="font text-muted small">
+                          <b class="font fw-bold">Subject:</b> {{ book.subject }}
+                        </div>
+                        <div class="font text-muted small">
+                          <b class="font fw-bold">Available Qty:</b> {{ book.availableQuantity }}
+                        </div>
+                      </div>
+                    </mat-option>
+                  </mat-autocomplete>
+                </mat-form-field>
+              </form>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="login-container">
+            <form
+              class="login-form example-form w-100"
+              [formGroup]="issuedBookForm"
+            >
+              <h2 class="font text-align-left mb-4">Issued Book Info:</h2>
+              <div class="d-flex justify-content-between font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Book Name:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. Java basics"
+                      formControlName="bookName"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('bookName')?.touched &&
+                        issuedBookForm?.get('bookName')?.hasError('required')
+                      "
+                    >
+                      Book Name Name is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Book Id: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. 101"
+                      formControlName="bookId"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('bookId')?.touched &&
+                        issuedBookForm?.get('bookId')?.hasError('required')
+                      "
+                    >
+                      BookId is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >User Type:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <mat-select formControlName="userType">
+                      <mat-option value="teacher">Teacher</mat-option>
+                      <mat-option value="student">Student</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('userType')?.touched &&
+                        issuedBookForm.get('userType')?.hasError('required')
+                      "
+                    >
+                      userType should be required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-between mx-1 font w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >User Name:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      min="0"
+                      placeholder="Ex. User1"
+                      formControlName="userName"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('userName')?.touched &&
+                        issuedBookForm.get('userName')?.hasError('required')
+                      "
+                    >
+                      UserName should be required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Issued Date:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      matInput
+                      [matDatepicker]="issuedDatePicker"
+                      formControlName="issuedDate"
+                      [max]="today"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="issuedDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #issuedDatePicker></mat-datepicker>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('issuedDate')?.touched &&
+                        issuedBookForm?.get('issuedDate')?.hasError('required')
+                      "
+                    >
+                      Issued Date is required.
+                    </mat-error>
+                  </div>
+                </div>
+
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label style="width: 25%" class="mx-1"
+                    >Due Date:<span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      matInput
+                      [matDatepicker]="dueDatePicker"
+                      formControlName="dueDate"
+                      [max]="today"
+                    />
+                    <mat-datepicker-toggle
+                      matIconSuffix
+                      [for]="dueDatePicker"
+                    ></mat-datepicker-toggle>
+                    <mat-datepicker #dueDatePicker></mat-datepicker>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('dueDate')?.touched &&
+                        issuedBookForm?.get('dueDate')?.hasError('required')
+                      "
+                    >
+                      Due Date is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="d-flex justify-content-start font mx-1 w-100">
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center me-4"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Issued Quantity:<span class="text-danger fs-5">*</span>
+                  </label>
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <input
+                      type="text"
+                      matInput
+                      placeholder="Ex. 5"
+                      min="0"
+                      formControlName="issuedQuantity"
+                    />
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('issuedQuantity')?.touched &&
+                        issuedBookForm
+                          ?.get('issuedQuantity')
+                          ?.hasError('required')
+                      "
+                    >
+                      Issued Quantity is required.
+                    </mat-error>
+                  </div>
+                </div>
+                <div
+                  class="mb-4 d-block justify-content-center align-items-center"
+                  style="width: 32%"
+                >
+                  <label class="mx-1" style="width: 25%"
+                    >Status: <span class="text-danger fs-5">*</span></label
+                  >
+                  <mat-form-field class="example-full-width" style="width: 70%">
+                    <mat-select formControlName="issuedStatus">
+                      <mat-option value="pending">Pending</mat-option>
+                      <mat-option value="submitted">Submitted</mat-option>
+                      <mat-option value="duedate">over Due Date</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                  <div style="display: block" class="custom-error">
+                    <mat-error
+                      *ngIf="
+                        issuedBookForm?.get('issuedStatus')?.touched &&
+                        issuedBookForm
+                          ?.get('issuedStatus')
+                          ?.hasError('required')
+                      "
+                    >
+                      Issued Status is required.
+                    </mat-error>
+                  </div>
+                </div>
+              </div>
+
+              <div class="m-2 mx-3">
+                <button
+                  mat-raised-button
+                  color="primary"
+                  class="px-4"
+                  type="button"
+                  (click)="saveIssuedBook()"
+                  [disabled]="issuedBookForm.invalid"
+                >
+                  <span>Save</span>
+                </button>
+              </div>
+            </form>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>

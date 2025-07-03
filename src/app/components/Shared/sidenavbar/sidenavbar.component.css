@@ -1,32 +1,34 @@
 .font {
-    font-family: "Playfair Display", serif;
-    font-weight: 500;
-  }
-  .example-container {
-    position: absolute;
-    top: 60px;
-    bottom: 60px;
-    left: 0;
-    right: 0;
-    height: 100%;
-    width: 20%;
-    position: fixed;
-    top: 60px;
-    left: 0;
-  }
-  .nav-list {
-    background: rgba(247, 247, 247, 0.5);
-  }
-  .active {
-    color: rgb(8, 20, 245);
-    font-weight: 500;
-  }
-  .example-sidenav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: 100%;
-    height: 100%;
-    background: rgba(247, 247, 247, 0.5);
-  }
-  
+  font-family: "Playfair Display", serif;
+  font-weight: 500;
+}
+.example-container {
+  position: absolute;
+  top: 60px;
+  bottom: 60px;
+  left: 0;
+  right: 0;
+  height: 100%;
+  width: 20%;
+  position: fixed;
+  top: 60px;
+  left: 0;
+}
+.nav-list {
+  background: rgba(247, 247, 247, 0.5);
+}
+.active {
+  background: linear-gradient(135deg, #2e52f3 0%, #921bfa 50%, #6f02dc 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+  font-weight: 500;
+}
+.example-sidenav {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: rgba(247, 247, 247, 0.5);
+}
