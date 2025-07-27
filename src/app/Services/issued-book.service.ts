@@ -18,8 +18,18 @@ export class IssuedBookService {
     return this.application.getData(url);
   }
 
+  updateIssuedBookById(bookDetails: any) {
+    let url = environment.apiUrl + '/BookIssue/' + bookDetails.issueId;
+    return this.application.putData(url, bookDetails);
+  }
+
   deleteIssuedBookById(issuedId:string) {
     let url = environment.apiUrl + '/BookIssue/'+issuedId;
     return this.application.deleteData(url);
+  }
+
+  getIssuedBookById(issuedId: string) {
+    let url = environment.apiUrl + '/BookIssue/' + issuedId;
+    return this.application.getData(url);
   }
 }

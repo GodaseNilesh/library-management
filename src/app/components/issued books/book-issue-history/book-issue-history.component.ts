@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { BookService } from 'src/app/Services/book.service';
 
 @Component({
   selector: 'app-book-issue-history',
@@ -15,6 +16,7 @@ export class BookIssueHistoryComponent implements OnInit {
   constructor(
     private router: Router,
     private issuedBookService: IssuedBookService,
+    private bookService: BookService,
     private dialog: MatDialog
   ) {}
   // For issued book list
@@ -22,10 +24,10 @@ export class BookIssueHistoryComponent implements OnInit {
   issuedBooksDataSource: any[] = [];
   issuedBookDataColumns = [
     { columnDef: 'issueId', header: 'ID' },
-    { columnDef: 'userName', header: 'User Name' },
-    { columnDef: 'userType', header: 'user Type' },
     { columnDef: 'bookId', header: 'Book Id' },
     { columnDef: 'bookName', header: 'Book Name' },
+    { columnDef: 'userName', header: 'User Name' },
+    { columnDef: 'userType', header: 'user Type' },
     { columnDef: 'issueDate', header: 'Issue Date' },
     { columnDef: 'dueDate', header: 'Due Date' },
     { columnDef: 'quantity', header: 'Quantity' },
@@ -41,6 +43,11 @@ export class BookIssueHistoryComponent implements OnInit {
     this.loadData();
   }
   loadData() {
+    this.isLoading = true;
+    let allBooksData: any[] = [];
+    this.bookService.getAllBooks().subscribe((allBooks: any) => {
+      allBooksData = allBooks;
+    });
     this.issuedBookService.getAllIssuedBooks().subscribe(
       (res: any) => {
         this.issueBookRecords = res;
@@ -48,9 +55,18 @@ export class BookIssueHistoryComponent implements OnInit {
           x.action = 'edit,delete,details';
           return x;
         });
+
+        this.issueBookRecords = this.issueBookRecords.map((x)=>{
+          let book = allBooksData.filter((y)=>{return y.bookId == x.bookId});
+          x.bookName = book[0]?.title;
+          return x;
+        })
+
         this.issuedBooksDataSource = this.issueBookRecords;
+        this.isLoading = false;
       },
       (err) => {
+        this.isLoading = false;
         console.log(err);
       }
     );
@@ -73,7 +89,9 @@ export class BookIssueHistoryComponent implements OnInit {
   }
   onEditClicked(event: any) {
     console.log(event);
-    // this.router.navigate([`book-list/add-book/${event.bookId}`]);
+    this.router.navigate([
+      `issue-book-history/create-book-issue/${event.issueId}`,
+    ]);
   }
   onDeleteClicked(event: any) {
     console.log(event);
