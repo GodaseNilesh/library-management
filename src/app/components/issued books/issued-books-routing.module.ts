@@ -15,6 +15,11 @@ const routes: Routes = [
     component: CreateBookIssueComponent,
     canActivate: [authGuardGuard],
   },
+   {
+    path: 'create-book-issue/:id',
+    component: CreateBookIssueComponent,
+    canActivate: [authGuardGuard],
+  },
 ];
 
 @NgModule({

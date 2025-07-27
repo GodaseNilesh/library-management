@@ -64,6 +64,11 @@
                     </mat-option>
                   </mat-autocomplete>
                 </mat-form-field>
+                <mat-error
+                  *ngIf="quantityAvailable == 0"
+                  style="font-weight: 500"
+                  >This book currently not available.</mat-error
+                >
               </form>
             </div>
           </mat-card-content>
@@ -171,7 +176,20 @@
                       min="0"
                       placeholder="Ex. User1"
                       formControlName="userName"
+                      [matAutocomplete]="userName"
                     />
+                    <mat-autocomplete #userName="matAutocomplete">
+                      <mat-option class="border-bottom" *ngFor="
+                                            let user of allUsers | async;
+                                            let i = index
+                                          " [value]="user.fullName">
+                        <div class="d-flex flex-column">
+                          <span>
+                            {{ i + 1 }} - {{ user.fullName }}
+                          </span>
+                        </div>
+                      </mat-option>
+                    </mat-autocomplete>
                   </mat-form-field>
                   <div style="display: block" class="custom-error">
                     <mat-error
@@ -197,7 +215,7 @@
                       matInput
                       [matDatepicker]="issuedDatePicker"
                       formControlName="issuedDate"
-                      [max]="today"
+                      [min]="today"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -229,7 +247,7 @@
                       matInput
                       [matDatepicker]="dueDatePicker"
                       formControlName="dueDate"
-                      [max]="today"
+                      [min]="today"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -278,6 +296,10 @@
                     >
                       Issued Quantity is required.
                     </mat-error>
+                    <mat-error
+                      *ngIf="issuedBookForm.get('issuedQuantity')?.hasError('quantityExceeded')">
+                      Available Quantity is {{quantityAvailable}}
+                    </mat-error>
                   </div>
                 </div>
                 <div
@@ -316,7 +338,7 @@
                   class="px-4"
                   type="button"
                   (click)="saveIssuedBook()"
-                  [disabled]="issuedBookForm.invalid"
+                  [disabled]="issuedBookForm.invalid || quantityAvailable == 0"
                 >
                   <span>Save</span>
                 </button>
