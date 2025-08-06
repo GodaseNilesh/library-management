@@ -49,12 +49,13 @@ export class StudentListComponent implements OnInit {
           (c) => c.columnDef
         );
         this.studentsDataSource = this.StudentData;
+        this.isLoading = false;
       },
       (error) => {
         console.log(error);
+        this.isLoading = false;
       }
     );
-    this.isLoading = false;
   }
 
   quickFilter(event: Event): void {

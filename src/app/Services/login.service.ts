@@ -23,6 +23,9 @@ export class LoginService {
     let url = environment.apiUrl + '/Auth/register';
     return this.application.postData(url, data);
   }
+  get userName() {
+    return sessionStorage.getItem('user Name');
+  }
 
   userLogin(data: any) {
     let url = environment.apiUrl + '/Auth/login';

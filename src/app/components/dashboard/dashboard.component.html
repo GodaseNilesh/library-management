@@ -2,7 +2,7 @@
 <div [formGroup]="options" class="w-auto">
   <div class="dashboard-content">
     <div class="header-section w-100 pt-3 px-3">
-      <h4>Welcome Admin</h4>
+      <h4>Welcome {{loginService.userName}}</h4>
     </div>
     <div class="grid-section d-flex justify-content-evenly m-0">
       <div class="grid-options d-flex bg-white" routerLink="/student-list">

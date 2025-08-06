@@ -1,5 +1,6 @@
 import { Component, inject } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { LoginService } from 'src/app/Services/login.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,6 +8,8 @@ import { FormBuilder } from '@angular/forms';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  
+  constructor(public loginService:LoginService){}
 
   private _formBuilder = inject(FormBuilder);
   

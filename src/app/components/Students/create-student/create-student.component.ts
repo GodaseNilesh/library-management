@@ -72,6 +72,7 @@ export class CreateStudentComponent implements OnInit {
         );
         this.isLoading = false;
       }
+      this.isLoading = false;
     });
   }
 
