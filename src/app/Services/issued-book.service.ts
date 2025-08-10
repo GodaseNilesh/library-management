@@ -13,9 +13,16 @@ export class IssuedBookService {
     return this.application.postData(url, bookDetails);
   }
 
-  getAllIssuedBooks() {
-    let url = environment.apiUrl + '/BookIssue';
-    return this.application.getData(url);
+  // getAllIssuedBooks(bookId: string = '', userId: number = 0) {
+  //   let url = environment.apiUrl + '/BookIssue';
+  //   return this.application.getData(url);
+  // }
+
+  getAllIssuedBooks(bookId: string = '', userId: string = '') {
+    const url = new URL(`${environment.apiUrl}/BookIssue`);
+    if (bookId) url.searchParams.set('bookId', bookId);
+    if (userId) url.searchParams.set('userId', userId.toString());
+    return this.application.getData(url.toString());
   }
 
   updateIssuedBookById(bookDetails: any) {

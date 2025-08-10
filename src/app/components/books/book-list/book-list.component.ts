@@ -68,8 +68,7 @@ export class BookListComponent {
     this.router.navigate([`book-list/add-book/${event.bookId}`]);
   }
   onDetailsClicked(event: any) {
-    console.log(event);
-    // this.router.navigate([`student-list/student-details/${event.studentId}`]);
+    this.router.navigate([`book-list/book-details/${event.bookId}`]);
   }
   onDeleteClicked(event: any) {
     const dialogRef = this.dialog.open(CommonDialogComponent, {

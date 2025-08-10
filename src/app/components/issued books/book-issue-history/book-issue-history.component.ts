@@ -52,7 +52,7 @@ export class BookIssueHistoryComponent implements OnInit {
       (res: any) => {
         this.issueBookRecords = res;
         this.issueBookRecords = this.issueBookRecords.map((x: any) => {
-          x.action = 'edit,delete,details';
+          x.action = 'edit,delete';
           return x;
         });
 
