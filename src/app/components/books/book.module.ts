@@ -7,12 +7,14 @@ import { AddBooksComponent } from './add-books/add-books.component';
 import { SharedModule } from '../Shared/shared.module';
 import { MaterialModule } from 'src/app/material/material.module';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { BookDetailsComponent } from './book-details/book-details.component';
 
 
 @NgModule({
   declarations: [
     BookListComponent,
-    AddBooksComponent
+    AddBooksComponent,
+    BookDetailsComponent
   ],
   imports: [
     CommonModule,

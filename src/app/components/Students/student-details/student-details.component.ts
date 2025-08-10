@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { forkJoin, map } from 'rxjs';
+import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { StudentService } from 'src/app/Services/student.service';
 
 @Component({
@@ -15,7 +17,8 @@ export class StudentDetailsComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
-    private studentService: StudentService
+    private studentService: StudentService,
+    private issuedBookService: IssuedBookService
   ) {
     this.studentDetailsForm = this.fb.group({
       studentId: new FormControl(''),
@@ -27,53 +30,47 @@ export class StudentDetailsComponent implements OnInit {
     });
   }
 
-  StudentData = [
-    {
-      srNo: 1,
-      issueId: 4,
-      userId: 2,
-      bookId: 3,
-      issueDate: '2024-03-01',
-      status: 'Submitted',
-      action: 'Return Book',
-    },
-  ];
+  StudentData = [];
 
   StudentDataColumns = [
-    { columnDef: 'srNo', header: 'Sr No.' },
     { columnDef: 'issueId', header: 'Issue Id' },
-    { columnDef: 'userId', header: 'User Id' },
+    { columnDef: 'userName', header: 'User Name' },
     { columnDef: 'bookId', header: 'Book Id' },
     { columnDef: 'issueDate', header: 'Issue Date' },
+    { columnDef: 'dueDate', header: 'Due Date' },
     { columnDef: 'status', header: 'Status' },
-    { columnDef: 'action', header: 'Action' },
+    // { columnDef: 'action', header: 'Action' },
   ];
 
   studentsDisplayedColumns = this.StudentDataColumns.map((c) => c.columnDef);
-  studentsDataSource = this.StudentData;
+  studentsDataSource:any = this.StudentData;
 
   ngOnInit(): void {
     this.isLoading = true;
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
-        this.studentService.getStudentById(id).subscribe(
-          (res: any) => {
-            this.studentDetailsForm.patchValue({
-              studentId: res.studentId,
-              email: res.email,
-              className: res.class,
-              department: res.department,
-              mobileNo: res.phone,
-              fullName: res.firstName + ' ' + res.lastName,
-            });
-            console.log(this.studentDetailsForm.value);
-          },
-          (error) => {
-            console.log(error);
-          }
-        );
-        this.isLoading = false;
+        forkJoin(
+          this.studentService
+            .getStudentById(id)
+            .pipe(map((student) => [student])),
+          this.issuedBookService.getAllIssuedBooks('',id)
+        ).subscribe((res) => {
+          //patch student information
+          let studentInfo: any = res[0][0];
+          this.studentDetailsForm.patchValue({
+            studentId: studentInfo.studentId,
+            email: studentInfo.email,
+            className: studentInfo.class,
+            department: studentInfo.department,
+            mobileNo: studentInfo.phone,
+            fullName: studentInfo.firstName + ' ' + studentInfo.lastName,
+          });
+
+          this.studentsDataSource = res[1];
+
+          this.isLoading = false;
+        });
       }
     });
   }

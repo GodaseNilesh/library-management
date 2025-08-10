@@ -1,0 +1,129 @@
+<app-sidenavbar></app-sidenavbar>
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="w-auto">
+  <div class="dashboard-content">
+    <div class="d-flex justify-content-start">
+      <div class="header-section mx-1">
+        <h4 class="font fs-6 fw-bolder">
+          <mat-icon
+            class="fs-6 mt-2 custom-tooltip"
+            matTooltip="Back"
+            matTooltipClass="my-tooltip"
+            matTooltipPosition="above"
+            routerLink="/book-list"
+          >
+            arrow_back_ios
+          </mat-icon>
+        </h4>
+      </div>
+      <div class="header-section">
+        <h4 class="font p-1 fs-6 fw-bolder">Book Details</h4>
+      </div>
+    </div>
+    <div class="w-100">
+      <mat-card appearance="outlined">
+        <mat-card-content>
+          <div class="login-container d-flex justify-content-between">
+            <mat-card appearance="outlined" class="personal-details">
+              <h4 class="fs-5 font m-3 mb-1">Book Information :</h4>
+              <form [formGroup]="bookDetailsForm">
+                <mat-card-content>
+                  <div class="font mt-4">
+                    <div class="d-block mx-4">
+                      <span class="font d-flex align-items-center">
+                        <mat-icon>library_books</mat-icon>
+                        <!-- <i class="fa-regular fa-book mx-1 px-1"></i> -->
+                        <span class="mx-1 font fw-bold"> Book Name: </span>
+                      </span>
+                      <input
+                        type="text"
+                        formControlName="bookTitle"
+                        class="border-0 mx-4 px-2 lh-1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="font mt-4">
+                    <div class="d-block mx-4">
+                      <span class="font d-flex align-items-center">
+                        <mat-icon>subject</mat-icon>
+                        <!-- <i class="fa-solid fa-chalkboard-user px-1"></i> -->
+                        <span class="mx-1 font fw-bold"> Subject: </span>
+                      </span>
+                      <input
+                        type="text"
+                        formControlName="subject"
+                        class="border-0 mx-4 px-2 lh-1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="font mt-4">
+                    <div class="d-block mx-4">
+                      <span class="font d-flex align-items-center">
+                        <mat-icon>language</mat-icon>
+                        <!-- <i class="fa-solid fa-building-user px-1"></i> -->
+                        <span class="mx-1 font fw-bold">
+                          Language:
+                        </span>
+                      </span>
+                      <input
+                        type="text"
+                        formControlName="language"
+                        class="border-0 mx-4 px-2 lh-1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="font mt-4">
+                    <div class="d-block mx-4">
+                      <span class="font d-flex align-items-center">
+                        <mat-icon>all_inclusive</mat-icon>
+                        <!-- <i class="fa-solid fa-mobile-screen-button px-1"></i> -->
+                        <span class="mx-1 font fw-bold ps-1">
+                          Total Quantity.:
+                        </span>
+                      </span>
+                      <input
+                        type="text"
+                        formControlName="totalQuantity"
+                        class="border-0 mx-3 px-2 lh-1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                  <div class="font mt-4">
+                    <div class="d-block mx-4">
+                      <span class="font d-flex align-items-center">
+                        <mat-icon>warning</mat-icon>
+                        <!-- <i class="fa-regular fa-envelope px-1"></i> -->
+                        <span class="mx-1 font fw-bold"> Available Quantity: </span>
+                      </span>
+                      <input
+                        type="text"
+                        formControlName="availableQuantity"
+                        class="border-0 mx-3 px-2 lh-1"
+                        readonly
+                      />
+                    </div>
+                  </div>
+                </mat-card-content>
+              </form>
+            </mat-card>
+            <mat-card appearance="outlined" class="book-details">
+              <mat-card-content>
+                <div>
+                  <app-table
+                    [data]="studentsDataSource"
+                    [columns]="StudentDataColumns"
+                    [pageSize]="10">
+                  </app-table>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
