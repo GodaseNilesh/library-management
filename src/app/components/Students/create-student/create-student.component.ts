@@ -9,6 +9,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { ToastrService } from 'ngx-toastr';
 import { min } from 'rxjs';
 import { StudentService } from 'src/app/Services/student.service';
 
@@ -26,7 +27,8 @@ export class CreateStudentComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
-    private student: StudentService
+    private student: StudentService,
+    private toastr:ToastrService
   ) {
     this.studentForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
@@ -64,10 +66,10 @@ export class CreateStudentComponent implements OnInit {
               department: res.department,
               phoneNo: res.phone,
             });
-            console.log(this.studentForm.value);
           },
           (error) => {
             console.log(error);
+            this.toastr.error('Something went wrong!');
           }
         );
         this.isLoading = false;
@@ -90,16 +92,15 @@ export class CreateStudentComponent implements OnInit {
       };
       this.student.saveStudent(reqBody).subscribe(
         (next) => {
-          console.log(next);
           this.router.navigate(['/student-list']);
         },
         (error) => {
           console.log(error);
+          this.toastr.error('Something went wrong!');
         }
       );
       this.isLoading = false;
     } else {
-      console.log(this.studentForm.value);
       const reqBody = {
         studentId: this.studentId || 0,
         firstName: this.studentForm.value.firstName,
@@ -112,11 +113,11 @@ export class CreateStudentComponent implements OnInit {
 
       this.student.updateStudentById(reqBody).subscribe(
         (res) => {
-          console.log(res);
           this.router.navigate(['/student-list']);
         },
         (err) => {
           console.log(err);
+          this.toastr.error('Something went wrong!');
         }
       );
       this.isLoading = false;

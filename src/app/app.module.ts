@@ -12,6 +12,7 @@ import { DashboardComponent } from './components/dashboard/dashboard.component';
 import { SharedModule } from './components/Shared/shared.module';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [AppComponent, LoginComponent, DashboardComponent],
@@ -25,6 +26,7 @@ import { AuthInterceptor } from './auth.interceptor';
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
+    ToastrModule.forRoot(),
   ],
   providers: [
     {

@@ -10,10 +10,11 @@ import {
 import { catchError, Observable, tap, throwError } from 'rxjs';
 import { CommonDialogComponent } from './components/Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private dialog: MatDialog) {}
+  constructor(private dialog: MatDialog, private toastr:ToastrService) {}
 
   methodType: string = '';
 
@@ -52,46 +53,26 @@ export class AuthInterceptor implements HttpInterceptor {
   private handleSuccessResponse(response: HttpResponse<any>): void {
     let message = '';
     if (response.status == 200 && response.url?.includes('/Auth/login')) {
-      message = `Welcome back, ${response.body.userName}`;
+      this.toastr.info(
+        `Welcome back, ${response.body.userName}!`,
+        'Login Successful',
+        {
+          positionClass: 'toast-top-right',
+          timeOut: 4000,
+          closeButton: true,
+        }
+      );
     }
     if (this.methodType == 'PUT') {
-      this.dialog.open(CommonDialogComponent, {
-        disableClose: true,
-        data: {
-          status: 'Success',
-          message: response.body.meessage || 'Data Updated successfully',
-        },
-      });
+      this.toastr.success('Data updated successfully!');
     } else if (this.methodType == 'DELETE') {
-      this.dialog.open(CommonDialogComponent, {
-        disableClose: true,
-        data: {
-          status: 'Success',
-          message: response.body.meessage || 'Data Deleted successfully',
-        },
-      });
-    } else if (!(this.methodType == 'GET')) {
-      this.dialog.open(CommonDialogComponent, {
-        disableClose: true,
-        data: {
-          status: 'Success',
-          message:
-            (message && message) ||
-            response.body.meessage ||
-            'Data added successfully',
-        },
-      });
+      this.toastr.success('Data deleted successfully!');
+    } else if (this.methodType == 'POST' && !response.url?.includes('/Auth/login')) {
+      this.toastr.success('Data added successfully!');
     }
   }
 
   private handleErrorResponse(error: HttpErrorResponse): void {
-    this.dialog.open(CommonDialogComponent, {
-      disableClose: true,
-      data: {
-        status: 'Error!',
-        message:
-          typeof error.error == 'object' ? error.error.error : error.error,
-      },
-    });
+    this.toastr.error('Something went wrong!');
   }
 }

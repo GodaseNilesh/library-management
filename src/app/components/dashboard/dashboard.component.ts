@@ -1,16 +1,24 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
+import { forkJoin } from 'rxjs';
+import { BookService } from 'src/app/Services/book.service';
 import { LoginService } from 'src/app/Services/login.service';
+import { StudentService } from 'src/app/Services/student.service';
+import { TeacherService } from 'src/app/Services/teacher.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
-  styleUrls: ['./dashboard.component.css']
+  styleUrls: ['./dashboard.component.css'],
 })
-export class DashboardComponent {
-  
-  constructor(public loginService:LoginService){}
+export class DashboardComponent implements OnInit {
+  studentCount: number = 0;
+  teacherCount: number = 0;
+  booksCount: number = 0;
+  availableBooksCount: number = 0;
 
+  allBooksData: any = [];
+  allAuthorsData: any[] = [];
   private _formBuilder = inject(FormBuilder);
   
     options = this._formBuilder.group({
@@ -18,122 +26,59 @@ export class DashboardComponent {
       fixed: false,
       top: 0,
     });
-  
-    //for authors list
-    AuthorData = [
-      { position: 1, name: 'George Orwell' },
-      { position: 2, name: 'Jane Austen' },
-      { position: 3, name: 'Mark Twain' },
-      { position: 4, name: 'J.K. Rowling' },
-      { position: 5, name: 'Ernest Hemingway' },
-      { position: 6, name: 'F. Scott Fitzgerald' },
-      { position: 7, name: 'Leo Tolstoy' },
-      { position: 8, name: 'Agatha Christie' },
-      { position: 9, name: 'Stephen King' },
-      { position: 10, name: 'Haruki Murakami' },
-    ];
-    
-    AuthorDataColumns = [
-      { columnDef: 'position', header: 'No.' },
-      { columnDef: 'name', header: 'Author Name' },
-    ];
-    
-    authorsDisplayedColumns = this.AuthorDataColumns.map(c => c.columnDef);
-    authorsDataSource = this.AuthorData;
-  
-    // For books list
-    BookData = [
-      {
-        id: 1,
-        title: '1984',
-        author: 'George Orwell',
-        genre: 'Dystopian',
-        published: 1949,
-        rating: 4.8,
-      },
-      {
-        id: 2,
-        title: 'Brave New World',
-        author: 'Aldous Huxley',
-        genre: 'Science Fiction',
-        published: 1932,
-        rating: 4.4,
-      },
-      {
-        id: 3,
-        title: 'To Kill a Mockingbird',
-        author: 'Harper Lee',
-        genre: 'Classic',
-        published: 1960,
-        rating: 4.9,
-      },
-      {
-        id: 4,
-        title: 'The Great Gatsby',
-        author: 'F. Scott Fitzgerald',
-        genre: 'Classic',
-        published: 1925,
-        rating: 4.3,
-      },
-      {
-        id: 5,
-        title: 'The Hobbit',
-        author: 'J.R.R. Tolkien',
-        genre: 'Fantasy',
-        published: 1937,
-        rating: 4.7,
-      },
-      {
-        id: 6,
-        title: 'Fahrenheit 451',
-        author: 'Ray Bradbury',
-        genre: 'Dystopian',
-        published: 1953,
-        rating: 4.5,
-      },
-      {
-        id: 7,
-        title: 'Moby Dick',
-        author: 'Herman Melville',
-        genre: 'Adventure',
-        published: 1851,
-        rating: 4.0,
-      },
-      {
-        id: 8,
-        title: 'Pride and Prejudice',
-        author: 'Jane Austen',
-        genre: 'Romance',
-        published: 1813,
-        rating: 4.6,
-      },
-      {
-        id: 9,
-        title: 'The Catcher in the Rye',
-        author: 'J.D. Salinger',
-        genre: 'Coming-of-Age',
-        published: 1951,
-        rating: 4.2,
-      },
-      {
-        id: 10,
-        title: 'The Alchemist',
-        author: 'Paulo Coelho',
-        genre: 'Philosophical Fiction',
-        published: 1988,
-        rating: 4.7,
-      },
-    ];
-    
+
+  bookDataSource: any[] = [];
+  booksDisplayedColumns: any[] = [];
+
+  authorsDataSource: any[] = [];
+  authorsDisplayedColumns: any[] = [];
+
     BookDataColumns = [
       { columnDef: 'id', header: 'ID' },
       { columnDef: 'title', header: 'Title' },
       { columnDef: 'author', header: 'Author' },
-      { columnDef: 'genre', header: 'Genre' },
-      { columnDef: 'published', header: 'Published' },
-      { columnDef: 'rating', header: 'Rating' },
-    ];
-  
-  booksDisplayedColumns = this.BookDataColumns.map(c => c.columnDef);
-  bookDataSource = this.BookData;
+      { columnDef: 'subject', header: 'Subject' },
+      { columnDef: 'language', header: 'Language' },
+      { columnDef: 'publisher', header: 'Publisher' },
+      { columnDef: 'availableQuantity', header: 'Available Qty.' },
+  ];
+
+  AuthorDataColumns = [
+    { columnDef: 'id', header: 'ID' },
+    { columnDef: 'name', header: 'Author Name' },
+  ];
+
+  constructor(
+    public loginService: LoginService,
+    private studentService: StudentService,
+    private teacherService: TeacherService,
+    private bookService: BookService
+  ) {}
+
+  ngOnInit(): void {
+    forkJoin(
+      this.studentService.getAllStudents(),
+      this.teacherService.getAllTeachers(),
+      this.bookService.getAllBooks()
+    ).subscribe(([studentRes, teacherRes, booksRes]: any) => {
+      this.studentCount = studentRes.length;
+      this.teacherCount = teacherRes.length;
+      this.booksCount = booksRes.length;
+      this.allBooksData = booksRes.map((x: any, index: number) => ({
+        ...x,
+        id: index + 1,
+      }));
+
+      this.booksDisplayedColumns = this.BookDataColumns.map((c) => c.columnDef);
+      this.bookDataSource = this.allBooksData;
+
+      this.authorsDisplayedColumns = this.AuthorDataColumns.map(
+        (c) => c.columnDef
+      );
+      this.authorsDataSource = this.allBooksData.map((x: any) => ({
+        id: x.id,
+        name: x.author,
+      }));
+    });
+  }
 }

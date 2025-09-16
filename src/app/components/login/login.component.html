@@ -7,25 +7,36 @@
     >
       <div class="login-container">
         <form class="login-form example-form" [formGroup]="loginForm">
-          <h2>Login</h2>
-          <div class="">
+          <div class="d-flex m-1 mb-2">
+            <div class="book-logo">
+              <img src="../../../assets/images/books.png" alt="book icon" class="grid-image" />
+            </div>
+            <div class="login-text pt-4 w-75 px-2">
+              <h1 class="library-text px-1 pt-2"><span style="font-size: 32px;">L</span>IBRARY</h1>
+              <h5 class="management"><span style="font-size: 24px;">R</span>EAD, <span style="font-size: 24px;">L</span>EARN, <span style="font-size: 24px;">G</span>ROW</h5>
+            </div>
+          </div>
+         
+          <div class="d-flex">
+            <mat-label class="w-25 font mt-2">User Name</mat-label>
             <mat-form-field class="example-full-width">
-              <mat-label>User Name</mat-label>
-              <input type="text" matInput formControlName="userName" placeholder="Ex. pattrix" />
+              <input type="text" class="text-warning" matInput formControlName="userName" placeholder="Ex. pattrix" />
             </mat-form-field>
           </div>
-          <div class="">
+          <div class="d-flex">
+            <mat-label class="w-25 font mt-2">Email</mat-label>
             <mat-form-field class="example-full-width">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput formControlName="email" placeholder="Ex. pat@example.com" />
+              <input type="email" matInput class="text-warning" formControlName="email" placeholder="Ex. pat@example.com" />
             </mat-form-field>
           </div>
-          <div class="">
+          
+          <div class="d-flex ">
+            <mat-label class="w-25 font mt-2">Password</mat-label>
             <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Password</mat-label>
               <input
                 [type]="isPasswordVisible ? 'text' : 'password'"
                 matInput
+                class="text-warning"
                 formControlName="password"
                 placeholder="Enter your password"
               />
@@ -42,7 +53,7 @@
             </mat-form-field>
           </div>
 
-          <button mat-raised-button color="primary" [disabled]="loginForm.invalid || isClicked" class="w-100" type="button" (click)="login()">
+          <button mat-raised-button color="accent" [disabled]="loginForm.invalid || isClicked" class="w-100" type="button" (click)="login()">
             <span>Login</span>
           </button>
           <p class="signup-link">
@@ -66,27 +77,37 @@
     >
       <div class="login-container">
         <form class="login-form example-form" [formGroup]="signUpForm">
-          <h2>Sign Up</h2>
-          <div class="">
+          <div class="d-flex m-1 mb-2">
+            <div class="book-logo">
+              <img src="../../../assets/images/books.png" alt="book icon" class="grid-image" />
+            </div>
+            <div class="login-text pt-4 w-75 px-2">
+              <h1 class="library-text px-1 pt-2"><span style="font-size: 32px;">L</span>IBRARY</h1>
+              <h5 class="management"><span style="font-size: 24px;">R</span>EAD, <span style="font-size: 24px;">L</span>EARN, <span style="font-size: 24px;">G</span>ROW</h5>
+            </div>
+          </div>
+
+          <div class="d-flex">
+            <mat-label class="w-25 font mt-2">Full Name</mat-label>
             <mat-form-field class="example-full-width">
-              <mat-label>Full Name</mat-label>
-              <input type="text" matInput formControlName="fullName" placeholder="Ex. Danny patil" />
+              <input type="text" matInput class="text-warning" formControlName="fullName" placeholder="Ex. Danny patil" />
             </mat-form-field>
           </div>
-          <div class="">
+          <div class="d-flex">
+            <mat-label class="w-25 font mt-2">Email</mat-label>
             <mat-form-field class="example-full-width">
-              <mat-label>Email</mat-label>
-              <input type="email" matInput formControlName="email" placeholder="Ex. danny@example.com" />
+              <input type="email" matInput class="text-warning" formControlName="email" placeholder="Ex. danny@example.com" />
             </mat-form-field>
           </div>
-          <div class="">
+          <div class="d-flex">
+            <mat-label class="w-25 font mt-2">Password</mat-label>
             <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Password</mat-label>
               <input
                 [type]="isPasswordVisible ? 'text' : 'password'"
                 matInput
                 formControlName="password"
                 #password
+                class="text-warning"
                 placeholder="Enter your password"
               />
               <button
@@ -102,26 +123,18 @@
             </mat-form-field>
           </div>
           <div class="d-block">
-            <mat-form-field class="example-full-width" appearance="fill">
-              <mat-label>Confirm Password</mat-label>
-              <input
-                [type]="isPasswordVisible ? 'text' : 'password'"
-                matInput
-                #confirmPassword
-                formControlName="confirmPassword"
-                placeholder="Enter your password"
-              />
-              <button
-                mat-icon-button
-                matSuffix
-                (click)="togglePasswordVisibility()"
-                type="button"
-              >
-                <mat-icon>{{
-                  isPasswordVisible ? "visibility_off" : "visibility"
-                }}</mat-icon>
-              </button>
-            </mat-form-field>
+            <div class="d-flex">
+              <mat-label class="w-25 font mt-2">Confirm Password</mat-label>
+              <mat-form-field class="example-full-width" appearance="fill">
+                <input [type]="isPasswordVisible ? 'text' : 'password'" matInput class="text-warning" #confirmPassword
+                  formControlName="confirmPassword" placeholder="Enter your password" />
+                <button mat-icon-button matSuffix (click)="togglePasswordVisibility()" type="button">
+                  <mat-icon>{{
+                    isPasswordVisible ? "visibility_off" : "visibility"
+                    }}</mat-icon>
+                </button>
+              </mat-form-field>
+            </div>
             <div class="custom-error mb-2 fw-semibold" *ngIf="password.value != confirmPassword.value">
               <mat-error>Password does not match.</mat-error>
             </div>
@@ -146,11 +159,11 @@
       style="height: 650px"
     >
       <div class="login-container">
-        <form class="login-form example-form">
-          <h2>Please Enter OTP</h2>
-          <h5>
+        <form class="login-form example-form text-white">
+          <h2 class="text-warning">Please Enter OTP</h2>
+          <h3>
             We have sent you one time password to your email: abc@gmail.com
-          </h5>
+          </h3>
           <h2>{{ minutes }}:{{ seconds < 10 ? "0" + seconds : seconds }}</h2>
           <div class="d-flex justify-content-around align-items-center">
             <ng-otp-input
@@ -159,9 +172,9 @@
             ></ng-otp-input>
           </div>
 
-          <h5 class="mt-3">
+          <h5 class="mt-3 text-light">
             Did'nt recieve the OTP?
-            <a href="#" (click)="resendOtp()"> RESEND</a>
+            <a href="#" class="text-warning" (click)="resendOtp()"> RESEND</a>
           </h5>
           <button
             mat-raised-button
