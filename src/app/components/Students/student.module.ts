@@ -8,6 +8,7 @@ import { MaterialModule } from 'src/app/material/material.module';
 import { SharedModule } from '../Shared/shared.module';
 import { CreateStudentComponent } from './create-student/create-student.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     SharedModule,
     FormsModule,
     ReactiveFormsModule,
+    ToastrModule,
   ],
 })
 export class StudentModule {}

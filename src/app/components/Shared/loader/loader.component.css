@@ -18,6 +18,19 @@
   border-top-color: #ffffff;
   border-bottom-color: #ffffff;
   border-radius: 50%;
+}
+.spinner1 {
+  animation: spin 1s linear infinite;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.spinner2 {
+  width: 60px;
+  height: 60px;
+  margin: auto;
+  border-top-color: #ffcc00;
+  border-bottom-color: #ffcc00;
   animation: spin 1s linear infinite;
 }
 
