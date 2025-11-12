@@ -56,11 +56,10 @@ export class BookIssueHistoryComponent implements OnInit {
           return x;
         });
 
-        this.issueBookRecords = this.issueBookRecords.map((x)=>{
-          let book = allBooksData.filter((y)=>{return y.bookId == x.bookId});
-          x.bookName = book[0]?.title;
-          return x;
-        })
+        this.issueBookRecords.forEach((x: any) => {
+          const book = allBooksData.find((y: any) => y.bookId === x.bookId);
+          x.bookName = book?.title || '';
+        });
 
         this.issuedBooksDataSource = this.issueBookRecords;
         this.isLoading = false;

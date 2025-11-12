@@ -12,9 +12,10 @@
 }
 .dashboard-content {
   background-color: rgb(236, 243, 245);
-  height: 100vh;
-  width: 80%;
-  margin-left: 20%;
+  min-height: 100vh;
+  height: auto;
+  width: 95%;
+  margin-left: 5%;
   margin-top: 60px;
 }
 .grid-section {
@@ -28,10 +29,10 @@
   margin: 1%;
   border-radius: 10px;
 }
-h4 {
+h2 {
   font-family: "Playfair Display", serif;
   font-weight: 500;
-  font-size: 1.3rem;
+  /* font-size: 1.3rem; */
 }
 .grid-image {
   width: 100%;

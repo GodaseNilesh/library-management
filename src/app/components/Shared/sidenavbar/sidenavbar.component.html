@@ -1,10 +1,10 @@
-<mat-sidenav-container class="example-container">
-    <mat-sidenav #sidenav mode="side" opened class="example-sidenav">
+<mat-sidenav-container class="example-container" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false">
+    <mat-sidenav #sidenav mode="side" [opened]="true" class="example-sidenav">
       <mat-nav-list class="nav-list">
         <mat-list-item class="nav-list">
           <div class="d-flex" routerLink="/dashboard" routerLinkActive="active">
             <mat-icon class="mx-2">dashboard</mat-icon>
-            <span > Dashboard </span>
+            <span *ngIf="isExpanded"> Dashboard </span>
           </div>
         </mat-list-item>
   
@@ -13,7 +13,7 @@
             <mat-panel-title>
               <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/student-list') }">
                 <mat-icon class="m-0">format_list_bulleted</mat-icon>
-                <span class="mx-2">Students</span>
+                <span class="mx-2" *ngIf="isExpanded">Students</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -38,7 +38,7 @@
             <mat-panel-title>
               <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/teacher-list') }">
                 <mat-icon class="m-0">view_list</mat-icon>
-                <span class="mx-2">Teachers</span>
+                <span class="mx-2" *ngIf="isExpanded">Teachers</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -63,7 +63,7 @@
             <mat-panel-title>
               <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/book-list') }">
                 <mat-icon class="m-0">library_books</mat-icon>
-                <span class="mx-2">Books</span>
+                <span class="mx-2" *ngIf="isExpanded">Books</span>
               </div>
             </mat-panel-title>
           </mat-expansion-panel-header>
@@ -92,7 +92,7 @@
         <mat-list-item class="nav-list">
           <div class="d-flex" routerLink="/issue-book-history" routerLinkActive="active">
             <mat-icon class="m-2">assignment</mat-icon>
-            <span class="mt-2"> Issued Books </span>
+            <span class="mt-2" *ngIf="isExpanded"> Issued Books </span>
           </div>
         </mat-list-item>
       </mat-nav-list>

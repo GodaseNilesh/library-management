@@ -73,6 +73,8 @@ export class AuthInterceptor implements HttpInterceptor {
   }
 
   private handleErrorResponse(error: HttpErrorResponse): void {
-    this.toastr.error('Something went wrong!');
+    error.error
+      ? this.toastr.error(error.error)
+      : this.toastr.error('Something went wrong!');
   }
 }
