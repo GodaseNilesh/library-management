@@ -13,6 +13,7 @@ export class SidenavbarComponent {
   }
 
   private _formBuilder = inject(FormBuilder);
+  isExpanded = false;
 
   options = this._formBuilder.group({
     bottom: 0,

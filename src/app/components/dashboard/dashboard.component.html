@@ -2,7 +2,8 @@
 <div [formGroup]="options" class="w-auto">
   <div class="dashboard-content">
     <div class="header-section w-100 pt-3 px-3">
-      <h4>Welcome {{loginService.userName}}</h4>
+      <h2 class="mb-0 mt-1">Hello, {{loginService.userName}}</h2>
+      <h4 class="font">Explore and enjoy your digital library!</h4>
     </div>
     <div class="grid-section d-flex justify-content-evenly m-0">
       <div class="grid-options d-flex bg-white" routerLink="/student-list">
@@ -75,9 +76,9 @@
       </div>
     </div>
     <div class="d-flex w-100 pb-2">
-      <div class="list-section w-75">
+      <div class="list-section w-50">
         <div class="mx-1 px-2 pt-3 w-100">
-          <mat-card appearance="outlined">
+          <mat-card appearance="outlined" class="rounded-3">
             <mat-card-content>
               <div class="d-flex justify-content-between">
                 <div class="header-section pt-0 px-0">
@@ -97,21 +98,45 @@
           </mat-card>
         </div>
       </div>
-      <div class="list-section" style="width: 24%">
-        <div class="mx-1 px-1 pt-3 w-100">
-          <mat-card appearance="outlined">
+      <div class="list-section w-50">
+        <div class="mx-1 px-1 pt-3">
+          <mat-card appearance="outlined" class="rounded-3">
             <mat-card-content>
               <div class="d-flex justify-content-between">
                 <div class="header-section pt-0 px-0">
-                  <h4 class="fs-6 fw-bold">Author Names</h4>
+                  <h4 class="fs-6 fw-bold">Student Names</h4>
                 </div>
                 <div class="header-section pt-0 px-0">
                   <mat-icon>more_vert</mat-icon>
                 </div>
               </div>
               <app-table
-                [data]="authorsDataSource"
-                [columns]="AuthorDataColumns"
+                [data]="studentDataSource"
+                [columns]="studentDataColumns"
+              ></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+    <div class="d-flex w-100 pb-2">
+      <div class="list-section w-100">
+        <div class="mx-1 px-2 pt-3 w-100">
+          <mat-card appearance="outlined" class="rounded-3">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold mx-2">Issued Books</h4>
+                  </div>
+                </div>
+                <div class="header-section pt-0 px-0">
+                  <mat-icon>more_vert</mat-icon>
+                </div>
+              </div>
+              <app-table
+                [data]="issuedBookDataSource"
+                [columns]="issuedBooksDataColumns"
               ></app-table>
             </mat-card-content>
           </mat-card>
