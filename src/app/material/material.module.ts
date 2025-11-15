@@ -17,7 +17,8 @@ import { MatNativeDateModule } from '@angular/material/core';
 import { MatDialogModule } from '@angular/material/dialog';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
-
+import {MatTabsModule} from '@angular/material/tabs';
+import {MatChipsModule} from '@angular/material/chips';
 
 const components: any = [
   MatCardModule,
@@ -36,11 +37,13 @@ const components: any = [
   MatNativeDateModule,
   MatProgressSpinnerModule,
   MatDialogModule,
-  MatAutocompleteModule
+  MatAutocompleteModule,
+  MatTabsModule,
+  MatChipsModule
 ];
 @NgModule({
   declarations: [],
-  imports: [CommonModule, components],
-  exports: [components],
+  imports: [CommonModule, ...components],
+  exports: [...components],
 })
 export class MaterialModule {}

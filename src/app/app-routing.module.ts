@@ -34,6 +34,10 @@ const routes: Routes = [
   {
     path:'issue-book-history',
     loadChildren:()=>import('src/app/components/issued books/issued-books.module').then(m=>m.IssuedBooksModule)
+  },
+  {
+    path:'users-list',
+    loadChildren:()=>import('src/app/components/users/user.module').then(m=>m.UserModule)
   }
 ];
 

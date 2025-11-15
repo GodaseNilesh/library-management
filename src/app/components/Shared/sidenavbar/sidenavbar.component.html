@@ -95,6 +95,13 @@
             <span class="mt-2" *ngIf="isExpanded"> Issued Books </span>
           </div>
         </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex" routerLink="/users-list" routerLinkActive="active">
+            <mat-icon class="m-2">supervised_user_circle</mat-icon>
+            <span class="mt-2" *ngIf="isExpanded"> Users </span>
+          </div>
+        </mat-list-item>
       </mat-nav-list>
 
     </mat-sidenav>

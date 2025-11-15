@@ -1,0 +1,77 @@
+.font {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+}
+
+.example-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 60px;
+}
+
+.dashboard-content {
+    background-color: rgb(236, 243, 245);
+    min-height: 100vh;
+    height: auto;
+    width: 95%;
+    margin-left: 5%;
+    margin-top: 60px;
+}
+
+.grid-section {
+    width: 100% !important;
+    display: block;
+    margin: auto;
+}
+
+.grid-options {
+    height: 110px;
+    width: 24%;
+    margin: 1%;
+    border-radius: 10px;
+}
+
+h2 {
+    font-family: "Playfair Display", serif;
+    font-weight: 500;
+    /* font-size: 1.3rem; */
+}
+
+.grid-image {
+    width: 100%;
+    height: 90%;
+    object-fit: contain;
+}
+.list-section{
+    width: 51%;
+    height: auto;
+}
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined)
+  .mat-mdc-form-field-infix {
+  padding-top: 10px;
+  padding-bottom: 8px;
+}
+::ng-deep .mat-mdc-form-field-subscript-wrapper {
+  height: 0px !important;
+}
+::ng-deep
+  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
+    .mdc-text-field--textarea
+  )
+  .mat-mdc-form-field-infix {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+::ng-deep .mat-mdc-form-field-infix {
+  min-height: 35px;
+}
+.custom-error{
+  margin-left: 96px;
+  font-size: 13px;
+}
+.cursor-not-allowed {
+  cursor: not-allowed !important;
+}
