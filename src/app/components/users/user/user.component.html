@@ -1,0 +1,185 @@
+<app-sidenavbar></app-sidenavbar>
+<div class="dashboard-content">
+    <div class="header-section w-100 pt-3 px-3">
+        <h4 class="font">Update User Roles & Permissions!</h4>
+    </div>
+    <div class="grid-section d-flex justify-content-start m-0">
+        <div class="grid-options d-flex bg-white">
+            <div class="w-50">
+                <div class="m-3 p-2 mb-0 mt-4 pb-0">
+                    <span class="font fs-5 fw-normal">Users</span>
+                </div>
+                <div class="m-3 p-2 pt-0 mt-0">
+                    <span class="font fs-5 fw-normal">18</span>
+                </div>  
+            </div>
+            <div class="w-50 m-2 pt-1">
+                <img src="https://icon-library.com/images/user-icon-png-transparent/user-icon-png-transparent-23.jpg" alt="student icon" class="grid-image" />
+            </div>
+        </div>
+        <div class="grid-options d-flex bg-white">
+            <div class="w-50">
+                <div class="m-3 p-2 mb-0 mt-4 pb-0">
+                    <span class="font fs-5 fw-normal">Roles</span>
+                </div>
+                <div class="m-3 p-2 pt-0 mt-0">
+                    <span class="font fs-5 fw-normal">2</span>
+                </div>
+            </div>
+            <div class="w-50 m-2 pt-1">
+                <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/identify-roles-icon-svg-download-png-5450881.png?f=webp" alt="Teacher icon" class="grid-image" />
+            </div>
+        </div>
+    </div>
+    <div class="d-flex w-100 pb-2">
+        <div class="list-section">
+            <div class="mx-1 px-2 pt-3 w-100">
+                <mat-card appearance="outlined" class="rounded-3">
+                    <mat-card-content>
+                        <div class="">
+                            <mat-tab-group (selectedTabChange)="onTabChanged($event)">
+                                <mat-tab label="Users">
+                                    <app-table [data]="usersDataSource" (onEdit)="onEditClicked($event)" [columns]="usersDataColumns"></app-table>
+                                </mat-tab>
+                                <mat-tab label="Roles">
+                                    <app-table [data]="rolesDataSource" (onEdit)="onEditClicked($event)" [columns]="rolesDataColumns"></app-table>
+                                </mat-tab>
+                            </mat-tab-group>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="list-section" style="width: 48%;" *ngIf="isUserEditable">
+            <div class="mx-1 px-2 pt-3 w-100">
+                <mat-card appearance="outlined" class="rounded-3">
+                    <mat-card-content>
+                        <div class="">
+                            <h2 class="font text-align-left mb-0">Update User Role:</h2>
+                            <span class="mt-0 d-block">*Here you can update role only.</span>
+                            <form class="login-form example-form w-100 mt-4" [formGroup]="userForm">
+
+                                <div class="d-flex justify-content-between font mx-1 w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 15%">User Id:<span class="text-danger fs-5">*</span>
+                                        </label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="text" matInput formControlName="userId" class="cursor-not-allowed"/>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between font mx-1 w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 15%">User Name: <span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="text" matInput placeholder="Ex.John Doe" class="cursor-not-allowed" formControlName="userName" />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                        
+                                <div class="d-flex justify-content-between mx-1 font w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 15%">Email/Gmail:<span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="email" matInput placeholder="Ex. john@gmail.com" class="cursor-not-allowed" formControlName="email" />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mx-1 font w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label style="width: 15%" class="mx-1">User Type:<span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field style="width: 70%" class="example-full-width">
+                                            <mat-select formControlName="userType">
+                                                <mat-option value="admin">Admin</mat-option>
+                                                <mat-option value="user">User</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                        
+                                <div class="m-2 mx-3">
+                                    <button mat-raised-button color="primary" class="px-4" type="button" (click)="updateRole()"
+                                     [disabled]="userForm.invalid">
+                                        Update Role
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+        <div class="list-section" style="width: 48%;" *ngIf="isRoleEditable">
+            <div class="mx-1 px-2 pt-3 w-100">
+                <mat-card appearance="outlined" class="rounded-3">
+                    <mat-card-content>
+                        <div class="">
+                            <h2 class="font text-align-left mb-0">Update User Role:</h2>
+                            <span class="mt-0 d-block">*Here you can add users for role only.</span>
+                            <form class="login-form example-form w-100 mt-4" [formGroup]="roleForm">
+
+                                <div class="d-flex justify-content-between font mx-1 w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 18%">Role Id:<span class="text-danger fs-5">*</span>
+                                        </label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="text" matInput formControlName="roleId" class="cursor-not-allowed"/>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between font mx-1 w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 18%">Role Name: <span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="text" matInput class="cursor-not-allowed" formControlName="roleName" />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                        
+                                <div class="d-flex justify-content-between mx-1 font w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label class="mx-1" style="width: 18%">usersAssigned:<span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <input type="text" matInput class="cursor-not-allowed" formControlName="usersAssigned" />
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+
+                                <div class="d-flex justify-content-between mx-1 font w-100">
+                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
+                                        <label style="width: 18%" class="mx-1">Add users:<span class="text-danger fs-5">*</span></label>
+                                        <mat-form-field class="example-full-width" style="width: 70%">
+                                            <mat-chip-grid #chipGrid>
+                                                <mat-chip-row *ngFor="let user of selectedUsers" [removable]="true" (removed)="removeUser(user)">
+                                                    {{user}}
+                                                    <mat-icon matChipRemove>cancel</mat-icon>
+                                                </mat-chip-row>
+                                                <input placeholder="Select users" [matAutocomplete]="auto" [formControl]="userCtrl" [matChipInputFor]="chipGrid"
+                                                    (matChipInputTokenEnd)="addUser($event)" />
+                                            </mat-chip-grid>
+                                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectUser($event)">
+                                                <mat-option *ngFor="let user of filteredUsers" [value]="user">
+                                                    {{user}}
+                                                </mat-option>
+                                            </mat-autocomplete>
+                                        </mat-form-field>
+                                    </div>
+                                </div>
+                        
+                                <div class="m-2 mx-3">
+                                    <button mat-raised-button color="primary" class="px-4" type="button" (click)="updateRole()"
+                                     [disabled]="userForm.invalid">
+                                        Update Role
+                                    </button>
+                                </div>
+                            </form>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+            </div>
+        </div>
+    </div>
+</div>
