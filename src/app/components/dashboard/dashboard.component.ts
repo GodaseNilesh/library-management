@@ -16,6 +16,7 @@ export class DashboardComponent implements OnInit {
   studentCount: number = 0;
   teacherCount: number = 0;
   booksCount: number = 0;
+  issuedBooksCount: number = 0
   availableBooksCount: number = 0;
 
   allBooksData: any = [];
@@ -61,7 +62,7 @@ export class DashboardComponent implements OnInit {
     { columnDef: 'dueDate', header: 'Return Date' },
     { columnDef: 'status', header: 'Status' },
     { columnDef: 'userType', header: 'User Type' },
-    { columnDef: 'overDue', header: 'Over Due' },
+    { columnDef: 'overdueDays', header: 'Over Due(Days)' },
     { columnDef: 'fine', header: 'Fine' },
   ];
 
@@ -84,6 +85,7 @@ export class DashboardComponent implements OnInit {
         this.studentCount = studentRes.length;
         this.teacherCount = teacherRes.length;
         this.booksCount = booksRes.length;
+        this.issuedBooksCount = issuedBookResponse.length;
         this.allBooksData = booksRes.map((x: any, index: number) => ({
           ...x,
           id: index + 1,
@@ -97,7 +99,10 @@ export class DashboardComponent implements OnInit {
         this.studentDisplayedColumns = this.studentDataColumns.map(
           (c) => c.columnDef
         );
-        this.studentDataSource = studentRes;
+        this.studentDataSource = studentRes.map((student:any)=>{
+          student.phone = student.phoneNumber
+          return student;
+        })
 
         this.issuedBooksDisplayedColumns = this.issuedBooksDataColumns.map(
           (c) => c.columnDef

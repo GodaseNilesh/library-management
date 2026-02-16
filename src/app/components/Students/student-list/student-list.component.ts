@@ -42,6 +42,8 @@ export class StudentListComponent implements OnInit {
         this.StudentData = this.StudentData.map((x: any) => {
           x.studentName = x.firstName + ' ' + x.lastName;
           x.action = 'edit,delete,details';
+          x.class = x.className;
+          x.phone = x.phoneNumber;
           return x;
         });
         console.log(this.StudentData);

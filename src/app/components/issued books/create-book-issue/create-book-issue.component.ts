@@ -23,7 +23,7 @@ export class CreateBookIssueComponent {
   issuedBookForm: FormGroup;
   searchBookCtrl = new FormControl('');
   AllBooksData: any[] = [];
-  allUsers: Observable<any[]> | undefined;
+  allUsers: any;
   today = new Date();
   isLoading: boolean = false;
   quantityAvailable: number = 1;
@@ -44,7 +44,7 @@ export class CreateBookIssueComponent {
       bookId: new FormControl('', [Validators.required]),
       userType: new FormControl('', [Validators.required]),
       userName: new FormControl('', [Validators.required]),
-      issuedDate: new FormControl(new Date(), [Validators.required]),
+      issueDate: new FormControl(new Date(), [Validators.required]),
       dueDate: new FormControl(new Date(), [Validators.required]),
       issuedQuantity: new FormControl(1, [Validators.required,this.quantityValidator.bind(this)]),
       issuedStatus: new FormControl('pending', [Validators.required]),
@@ -62,19 +62,19 @@ export class CreateBookIssueComponent {
       if (id) {
         this.issuedBookId = id;
         this.issuedBookService.getIssuedBookById(id).subscribe((book: any) => {
+          let title = this.AllBooksData.filter((x) => {
+            return x.bookId == book.bookId;
+          })[0].title ?? '';
+          this.onBookSelected(title);
           this.issuedBookForm.patchValue({
             bookId: book.bookId,
             userType: book.userType,
             userName: book.userName,
-            issueDate: book.issuedDate,
-            dueDate: book.dueDate,
+            issueDate: new Date(book.issueDate),
+            dueDate: new Date(book.dueDate),
             issuedQuantity: book.quantity,
             issuedStatus: book.status,
           });
-          let title = this.AllBooksData.filter((x) => {
-            return x.bookId == book.bookId;
-          })[0].title;
-          this.onBookSelected(title);
           this.searchBookCtrl.setValue(title);
         });
       }
@@ -127,12 +127,12 @@ export class CreateBookIssueComponent {
     this.issuedBookForm.patchValue({
       bookName: selectedBook[0].title,
       bookId: selectedBook[0].bookId,
-      issuedQuantity: selectedBook[0].availableQuantity,
+      // issuedQuantity: selectedBook[0].availableQuantity,
     });
   }
 
   quantityValidator(control: AbstractControl): ValidationErrors | null {
-    if (control.value > this.quantityAvailable) {
+    if (Number(control.value) > Number(this.quantityAvailable)) {
       return { quantityExceeded: true };
     }
     return null;
@@ -154,9 +154,9 @@ export class CreateBookIssueComponent {
       userType: formValue.userType,
       userName: formValue.userName,
       issueDate:
-        typeof formValue.issuedDate == 'string'
-          ? formValue.issuedDate
-          : this.formatDateToLocalString(formValue.issuedDate),
+        typeof formValue.issueDate == 'string'
+          ? formValue.issueDate
+          : this.formatDateToLocalString(formValue.issueDate),
       dueDate:
         typeof formValue.dueDate == 'string'
           ? formValue.dueDate
