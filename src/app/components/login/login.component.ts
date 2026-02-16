@@ -46,7 +46,7 @@ export class LoginComponent implements OnInit {
     this.loginForm = this.fb.group({
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
-      userName: new FormControl('', [Validators.required]),
+      userName: new FormControl('', []),
     });
 
     this.signUpForm = this.fb.group({
@@ -92,6 +92,7 @@ export class LoginComponent implements OnInit {
       userName: this.signUpForm.value.fullName,
       emailId: this.signUpForm.value.email,
       password: this.signUpForm.value.password,
+      userRole: 'user'
     };
     this.isClicked = true;
     this.loginService.userSignup(reqBody).subscribe(

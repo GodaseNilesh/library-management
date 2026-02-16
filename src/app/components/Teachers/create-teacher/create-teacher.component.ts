@@ -68,7 +68,7 @@ export class CreateTeacherComponent {
 
   saveTeacher() {
     let requestBody = {
-      teacherId: 0,
+      teacherId: '',
       firstName: this.teacherForm.value.firstName,
       lastName: this.teacherForm.value.lastName,
       email: this.teacherForm.value.email,
@@ -86,7 +86,7 @@ export class CreateTeacherComponent {
         }
       );
     } else {
-      requestBody.teacherId = Number(this.teacherId);
+      requestBody.teacherId = this.teacherId;
       this.teacherService.updateTeacherById(requestBody).subscribe(
         (res) => {
           console.log(res);

@@ -180,7 +180,7 @@
                     />
                     <mat-autocomplete #userName="matAutocomplete">
                       <mat-option class="border-bottom" *ngFor="
-                                            let user of allUsers | async;
+                                            let user of allUsers;
                                             let i = index
                                           " [value]="user.fullName">
                         <div class="d-flex flex-column">
@@ -214,8 +214,7 @@
                     <input
                       matInput
                       [matDatepicker]="issuedDatePicker"
-                      formControlName="issuedDate"
-                      [min]="today"
+                      formControlName="issueDate"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix
@@ -247,7 +246,6 @@
                       matInput
                       [matDatepicker]="dueDatePicker"
                       formControlName="dueDate"
-                      [min]="today"
                     />
                     <mat-datepicker-toggle
                       matIconSuffix

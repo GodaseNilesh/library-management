@@ -62,9 +62,9 @@ export class CreateStudentComponent implements OnInit {
               firstName: res.firstName,
               lastName: res.lastName,
               email: res.email,
-              className: res.class,
+              className: res.className,
               department: res.department,
-              phoneNo: res.phone,
+              phoneNo: res.phoneNumber,
             });
           },
           (error) => {
@@ -86,7 +86,7 @@ export class CreateStudentComponent implements OnInit {
         firstName: this.studentForm.value.firstName,
         lastName: this.studentForm.value.lastName,
         email: this.studentForm.value.email,
-        class: this.studentForm.value.className,
+        className: this.studentForm.value.className,
         department: this.studentForm.value.department,
         phone: this.studentForm.value.phoneNo,
       };
@@ -96,7 +96,6 @@ export class CreateStudentComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-          this.toastr.error('Something went wrong!');
         }
       );
       this.isLoading = false;
@@ -106,9 +105,9 @@ export class CreateStudentComponent implements OnInit {
         firstName: this.studentForm.value.firstName,
         lastName: this.studentForm.value.lastName,
         email: this.studentForm.value.email,
-        class: this.studentForm.value.className,
+        className: this.studentForm.value.className,
         department: this.studentForm.value.department,
-        phone: this.studentForm.value.phoneNo,
+        phoneNumber: this.studentForm.value.phoneNo,
       };
 
       this.student.updateStudentById(reqBody).subscribe(
