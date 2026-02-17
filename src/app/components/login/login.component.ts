@@ -24,7 +24,7 @@ export class LoginComponent implements OnInit {
   readonly dialog = inject(MatDialog);
 
   otpConfig = {
-    length: 4,
+    length: 6,
     inputClass: 'custom-otp-input',
     allowNumbersOnly: true,
   };
@@ -70,9 +70,26 @@ export class LoginComponent implements OnInit {
     this.loginService.userLogin(reqBody).subscribe(
       (next: any) => {
         this.isLoading = false;
-        console.log(next);
-        sessionStorage.setItem('userId', next.userId);
-        sessionStorage.setItem('user Name', next.userName);
+        this.isForgotPasswordPage = true;
+        this.isLoginPage = false;
+      },
+      (error) => {
+        this.isClicked = false;
+        this.isLoading = false;
+        console.log(error);
+      },
+    );
+  }
+
+  validateOTP() {
+    const reqBody = {
+      email: this.loginForm.value.email,
+      otp: this.otp.toString(),
+    };
+    this.loginService.verifyOtp(reqBody).subscribe(
+      (next: any) => {
+        sessionStorage.setItem('userId', next.user.userId);
+        sessionStorage.setItem('user Name', next.user.userName);
         sessionStorage.setItem('token', next.token);
         sessionStorage.setItem('expiresAt', next.expiresAt);
         this.loginService.startTokenExpirationCheck();
@@ -141,7 +158,6 @@ export class LoginComponent implements OnInit {
 
   onOtpChange(event: any) {
     this.otp = event;
-    console.log('otp:', this.otp);
   }
 
   togglePasswordVisibility() {

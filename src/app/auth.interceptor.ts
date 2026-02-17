@@ -52,9 +52,9 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleSuccessResponse(response: HttpResponse<any>): void {
     let message = '';
-    if (response.status == 200 && response.url?.includes('/Auth/login')) {
+    if (response.status == 200 && response.url?.includes('/Auth/verify-otp')) {
       this.toastr.info(
-        `Welcome back, ${response.body.userName}!`,
+        `Welcome back, ${response.body.user.userName}!`,
         'Login Successful',
         {
           positionClass: 'toast-top-right',
@@ -64,11 +64,11 @@ export class AuthInterceptor implements HttpInterceptor {
       );
     }
     if (this.methodType == 'PUT') {
-      this.toastr.success('Data updated successfully!');
+      this.toastr.success(response.body.message ?? 'Data updated successfully!');
     } else if (this.methodType == 'DELETE') {
-      this.toastr.success('Data deleted successfully!');
-    } else if (this.methodType == 'POST' && !response.url?.includes('/Auth/login')) {
-      this.toastr.success('Data added successfully!');
+      this.toastr.success(response.body.message ?? 'Data deleted successfully!');
+    } else if (this.methodType == 'POST') {
+      this.toastr.success(response.body.message ?? 'Data added successfully!');
     }
   }
 

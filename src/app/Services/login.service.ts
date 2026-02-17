@@ -31,6 +31,12 @@ export class LoginService {
     let url = environment.apiUrl + '/Auth/login';
     return this.application.postData(url, data);
   }
+
+  verifyOtp(data: any) {
+    let url = environment.apiUrl + '/Auth/verify-otp';
+    return this.application.postData(url, data);
+  }
+
   isUserLoggedIn(): boolean {
     let userId = sessionStorage.getItem('userId');
     return userId ? true : false;
@@ -44,9 +50,6 @@ export class LoginService {
     }
     const expirationDate = new Date(expiryTime);
     const currentTime = new Date();
-    console.log(currentTime);
-    console.log(expiryTime);
-
     return currentTime > expirationDate;
   }
   startTokenExpirationCheck() {
@@ -69,11 +72,11 @@ export class LoginService {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'confirm') {
         setTimeout(() => {
+          if (this.tokenExpirationCheckInterval) {
+            clearInterval(this.tokenExpirationCheckInterval);
+          }
           this.userLogout();
         }, 1000);
-        if (this.tokenExpirationCheckInterval) {
-          clearInterval(this.tokenExpirationCheckInterval);
-        }
       }
     });
   }
