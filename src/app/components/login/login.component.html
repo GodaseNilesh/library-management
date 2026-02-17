@@ -25,14 +25,14 @@
           </div> -->
           <div class="d-flex">
             <mat-label class="w-25 font mt-2">Email</mat-label>
-            <mat-form-field class="example-full-width">
+            <mat-form-field class="example-full-width w-75">
               <input type="email" matInput class="text-warning" formControlName="email" placeholder="Ex. pat@example.com" />
             </mat-form-field>
           </div>
 
           <div class="d-flex ">
             <mat-label class="w-25 font mt-2">Password</mat-label>
-            <mat-form-field class="example-full-width" appearance="fill">
+            <mat-form-field class="example-full-width w-75" appearance="fill">
               <input
                 [type]="isPasswordVisible ? 'text' : 'password'"
                 matInput
@@ -162,7 +162,7 @@
         <form class="login-form example-form text-white">
           <h2 class="text-warning">Please Enter OTP</h2>
           <h3>
-            We have sent you one time password to your email: abc@gmail.com
+            We have sent you one time password to your email: <b>{{loginForm.value.email}}</b>
           </h3>
           <h2>{{ minutes }}:{{ seconds < 10 ? "0" + seconds : seconds }}</h2>
           <div class="d-flex justify-content-around align-items-center">
@@ -181,13 +181,14 @@
             color="primary"
             class="w-100"
             type="button"
+            (click)="validateOTP()"
             [disabled]="otp.length < 4"
           >
             <span>Validate OTP</span>
           </button>
           <p class="signup-link">
-            Already have an account?
-            <a href="#" (click)="openLoginPage()">Login</a>
+            Don't have an account?
+            <a href="#" (click)="openSignupPage()">Sign Up</a>
           </p>
         </form>
       </div>
