@@ -7,6 +7,7 @@ import {
 } from '@angular/forms';
 import { MatAutocompleteSelectedEvent } from '@angular/material/autocomplete';
 import { MatTabChangeEvent } from '@angular/material/tabs';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-user',
@@ -14,68 +15,16 @@ import { MatTabChangeEvent } from '@angular/material/tabs';
   styleUrls: ['./user.component.css'],
 })
 export class UserComponent {
-  users = [
-    {
-      userId: 1,
-      username: 'john_doe',
-      email: 'john.doe@example.com',
-      userType: 'admin',
-      action: 'edit',
-    },
-    {
-      userId: 2,
-      username: 'emma_smith',
-      email: 'emma.smith@example.com',
-      userType: 'user',
-      action: 'edit',
-    },
-    {
-      userId: 3,
-      username: 'rahul_verma',
-      email: 'rahul.verma@example.com',
-      userType: 'user',
-      action: 'edit',
-    },
-    {
-      userId: 4,
-      username: 'sophia_jones',
-      email: 'sophia.jones@example.com',
-      userType: 'admin',
-      action: 'edit',
-    },
-    {
-      userId: 5,
-      username: 'arjun_kumar',
-      email: 'arjun.kumar@example.com',
-      userType: 'user',
-      action: 'edit',
-    },
-  ];
-
-  usersDataSource: any[] = this.users;
+  allUsers:any = [];
+  usersDataSource: any[] = this.allUsers;
   usersDataColumns = [
-    { columnDef: 'userId', header: 'User ID' },
-    { columnDef: 'username', header: 'User Name' },
+    { columnDef: 'fullName', header: 'User Name' },
     { columnDef: 'email', header: 'Email' },
-    { columnDef: 'userType', header: 'User Role' },
+    { columnDef: 'userRole', header: 'User Role' },
     { columnDef: 'action', header: 'Action' },
   ];
 
-  roles = [
-    {
-      roleId: 1,
-      roleName: 'admin',
-      usersAssigned: 2,
-      action: 'edit',
-    },
-    {
-      roleId: 2,
-      roleName: 'user',
-      usersAssigned: 25,
-      action: 'edit',
-    },
-  ];
-
+  roles: any = [];
   rolesDataSource: any[] = this.roles;
   rolesDataColumns: any[] = [
     { columnDef: 'roleId', header: 'Role ID' },
@@ -89,13 +38,17 @@ export class UserComponent {
 
   isUserEditable: boolean = false;
   isRoleEditable: boolean = false;
+  isLoading: boolean = false;
 
-  usersList = this.users.map((user)=> user.username);
+  usersList: any = [];
   selectedUsers: string[] = [];
-  filteredUsers = this.usersList.slice(); // copy list
+  filteredUsers = this.usersList.slice();
   userCtrl = new FormControl();
 
-  constructor(private fb: FormBuilder) {
+  constructor(
+    private fb: FormBuilder,
+    private userService: UserService,
+  ) {
     this.userForm = this.fb.group({
       userId: new FormControl({ value: '', disabled: true }, [
         Validators.required,
@@ -106,7 +59,7 @@ export class UserComponent {
       email: new FormControl({ value: '', disabled: true }, [
         Validators.required,
       ]),
-      userType: new FormControl('', [Validators.required]),
+      userRole: new FormControl('', [Validators.required]),
     });
 
     this.roleForm = this.fb.group({
@@ -124,11 +77,48 @@ export class UserComponent {
   }
 
   ngOnInit(): void {
-    this.userCtrl.valueChanges.subscribe(value => {
-      this.filteredUsers = this.usersList.filter(user =>
-        user.toLowerCase().includes(value?.toLowerCase())
+    this.getAllUsers();
+    this.userCtrl.valueChanges.subscribe((value) => {
+      this.filteredUsers = this.usersList.filter((user: any) =>
+        user.toLowerCase().includes(value?.toLowerCase()),
       );
     });
+  }
+
+  getAllUsers() {
+    this.isLoading = true;
+    this.userService.getAllUsers().subscribe(
+      (users: any) => {
+        this.allUsers = users.map((user: any) => {
+          user.action = 'edit,delete,details';
+          return user;
+        });
+        this.usersList = this.allUsers.map((user: any) => user.fullName);
+        this.usersDataSource = this.allUsers;
+        this.filteredUsers = this.usersList;
+        this.setRolesAndAssignedUsers();
+      },
+      (err) => {
+        this.isLoading = false;
+        console.error(err);
+      },
+    );
+  }
+
+  setRolesAndAssignedUsers() {
+    const roleCounts: any = {};
+    this.allUsers.forEach((user: any) => {
+      roleCounts[user.userRole] = (roleCounts[user.userRole] || 0) + 1;
+    });
+
+    this.roles = Object.keys(roleCounts).map((role, index) => ({
+      roleId: index + 1,
+      roleName: role,
+      usersAssigned: roleCounts[role],
+      action: 'edit',
+    }));
+    this.rolesDataSource = this.roles;
+    this.isLoading = false;
   }
 
   onTabChanged(event: MatTabChangeEvent) {
@@ -137,6 +127,8 @@ export class UserComponent {
     } else {
       this.isUserEditable = false;
     }
+    this.roleForm.reset();
+    this.userForm.reset();
   }
 
   onEditClicked(event: any) {
@@ -144,9 +136,9 @@ export class UserComponent {
       this.isUserEditable = true;
       this.userForm.patchValue({
         userId: event.userId,
-        userName: event.username,
+        userName: event.fullName,
         email: event.email,
-        userType: event.userType,
+        userRole: event.userRole,
       });
     } else {
       this.isRoleEditable = true;
@@ -154,15 +146,55 @@ export class UserComponent {
         roleId: event.roleId,
         roleName: event.roleName,
         usersAssigned: event.usersAssigned,
-        users: this.usersList
-      })
+        users: this.usersList,
+      });
+      this.selectedUsers = this.allUsers
+        .filter((user:any) => user.userRole === event.roleName)
+        .map((user:any) => user.fullName);
     }
   }
 
   updateRole() {
-    console.log(this.userForm.value);
+    this.isLoading = true;
+    const userId = this.userForm.getRawValue()?.userId;
+    if (userId) {
+      const userFormData = this.userForm.getRawValue();
+      const payload = {
+        fullName: userFormData.userName,
+        email: userFormData.email,
+        userRole: userFormData.userRole,
+        userId: userFormData.userId,
+      };
+      this.userService.updateUserById(payload).subscribe(
+        (res) => {
+          this.getAllUsers();
+        },
+        (error) => {
+          console.error(error);
+          this.isLoading = false;
+        },
+      );
+    }else{
+      const roleFormData = this.roleForm.getRawValue();
+      const selectedUserIds = this.selectedUsers.map(
+        (name) => this.allUsers.find((u: any) => u.fullName === name)?.userId,
+      );
+      const payload = {
+        roleId: roleFormData.roleName,
+        userIds: selectedUserIds,
+      };
+      this.userService.assignManyUsersToRole(payload).subscribe(
+        (res) => {
+          console.log(res);
+          this.getAllUsers();
+        },
+        (err) => {
+          console.error(err);
+        },
+      );
+    }
   }
-  
+
   selectUser(event: MatAutocompleteSelectedEvent) {
     const value = event.option.value;
 
@@ -181,7 +213,11 @@ export class UserComponent {
 
   addUser(event: any) {
     const value = (event.value || '').trim();
-    if (value && this.usersList.includes(value) && !this.selectedUsers.includes(value)) {
+    if (
+      value &&
+      this.usersList.includes(value) &&
+      !this.selectedUsers.includes(value)
+    ) {
       this.selectedUsers.push(value);
     }
     event.input.value = '';
