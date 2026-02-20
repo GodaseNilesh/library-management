@@ -1,4 +1,5 @@
 <app-sidenavbar></app-sidenavbar>
+<app-loader *ngIf="isLoading"></app-loader>
 <div class="dashboard-content">
     <div class="header-section w-100 pt-3 px-3">
         <h4 class="font">Update User Roles & Permissions!</h4>
@@ -10,7 +11,7 @@
                     <span class="font fs-5 fw-normal">Users</span>
                 </div>
                 <div class="m-3 p-2 pt-0 mt-0">
-                    <span class="font fs-5 fw-normal">18</span>
+                    <span class="font fs-5 fw-normal">{{allUsers.length}}</span>
                 </div>
             </div>
             <div class="w-50 m-2 pt-1">
@@ -23,7 +24,7 @@
                     <span class="font fs-5 fw-normal">Roles</span>
                 </div>
                 <div class="m-3 p-2 pt-0 mt-0">
-                    <span class="font fs-5 fw-normal">2</span>
+                    <span class="font fs-5 fw-normal">{{roles.length}}</span>
                 </div>
             </div>
             <div class="w-50 m-2 pt-1">
@@ -91,7 +92,7 @@
                                     <div class="mb-4 d-flex justify-content-start align-items-center w-100">
                                         <label style="width: 15%" class="mx-1">User Role:<span class="text-danger fs-5">*</span></label>
                                         <mat-form-field style="width: 70%" class="example-full-width">
-                                            <mat-select formControlName="userType">
+                                            <mat-select formControlName="userRole">
                                                 <mat-option value="admin">Admin</mat-option>
                                                 <mat-option value="user">User</mat-option>
                                             </mat-select>
@@ -171,7 +172,7 @@
 
                                 <div class="m-2 mx-3">
                                     <button mat-raised-button color="primary" class="px-4" type="button" (click)="updateRole()"
-                                     [disabled]="userForm.invalid">
+                                     [disabled]="roleForm.invalid">
                                         Update Role
                                     </button>
                                 </div>
