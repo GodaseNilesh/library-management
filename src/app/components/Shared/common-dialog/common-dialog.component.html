@@ -3,18 +3,21 @@
     <mat-icon class="text-danger" *ngIf="data.status == 'Error!' || data.status == 'Session Timeout'">warning</mat-icon>
     <mat-icon class="text-success" *ngIf="data.status == 'Success'">check_circle_outline</mat-icon>
     <mat-icon class="text-info" *ngIf="data.status == 'Confirm!'">error_outline</mat-icon>
-    <span mat-dialog-title class="text-center title">{{ data.status }}</span>
+    <span mat-dialog-title class="text-center title font">{{ data.status }}</span>
     <mat-dialog-content>
-      <p class="message">{{ data.message }}</p>
+      <p class="message text-center font">{{ data.message }}</p>
     </mat-dialog-content>
     <mat-dialog-actions>
-      <div class="m-auto">
-        <button mat-button (click)="onOkClick()" class="rounded">Ok</button>
+      <div class="m-auto d-flex gap-2">
+        <button mat-button mat-raised-button (click)="onConfirmClick('approve')" class="approve-btn font" *ngIf="data?.action?.approve">Approve</button>
+        <button mat-button mat-raised-button (click)="onConfirmClick('reject')" class="reject-btn font" *ngIf="data?.action?.reject">Reject</button>
+        <button mat-button mat-raised-button (click)="onConfirmClick('delete')" class="font" *ngIf="data?.action?.delete">Delete</button>
         <button
           mat-button
-          (click)="onNoClick()"
+          mat-raised-button
+          (click)="onCancelClick()"
           *ngIf="data?.action?.cancel"
-          class="btn btn-danger rounded"
+          class="btn"
         >
           Cancel
         </button>

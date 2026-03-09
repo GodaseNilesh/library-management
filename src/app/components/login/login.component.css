@@ -16,7 +16,7 @@
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
   padding: 2rem 2.5rem;
   width: 100%;
-  max-width: 450px;
+  max-width: 460px;
   transition: transform 0.2s ease-in-out;
 }
 .login-container:hover {
@@ -120,9 +120,9 @@ i,
   background-color: whitesmoke;
 }
 .font {
-  color: rgb(250, 177, 41);
+  color: whitesmoke;
   font-family: "Roboto Slab", serif;
-  font-weight: 700;
+  font-weight: 600;
 }
 .login-container ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field, .mat-mdc-form-field-flex {
   background-color: transparent;

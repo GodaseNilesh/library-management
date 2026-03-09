@@ -105,7 +105,7 @@ export class BookIssueHistoryComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
+      if (result === 'delete') {
         this.isLoading = true;
         this.issuedBookService.deleteIssuedBookById(event.issueId).subscribe(
           (res: any) => {

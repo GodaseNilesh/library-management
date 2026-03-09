@@ -96,7 +96,7 @@ export class StudentListComponent implements OnInit {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
+      if (result === 'delete') {
         this.isLoading = true;
         this.studentService.deleteStudentById(event.studentId).subscribe(
           (res) => {

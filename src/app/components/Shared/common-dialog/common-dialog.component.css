@@ -1,13 +1,14 @@
 .font {
-  font-family: "Playfair Display", serif;
+  font-family: 'serif';
   font-weight: 500;
 }
 .dialog-modal {
-  height: 250px;
+  min-height: 250px;
   width: 400px;
   display: flex;
   justify-content: center;
   align-items: center;
+  padding: 20px;
 }
 .mdc-dialog__title::before {
   height: 0px;
@@ -23,4 +24,13 @@ mat-icon {
   font-size: 18px;
   font-weight: 500;
   color: rgb(53, 52, 52);
+}
+.approve-btn {
+  background-color: green !important;
+  color: white !important;
+}
+
+.reject-btn {
+  background-color: red !important;
+  color: white;
 }
