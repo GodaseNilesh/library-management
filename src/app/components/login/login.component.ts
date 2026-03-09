@@ -50,7 +50,9 @@ export class LoginComponent implements OnInit {
     });
 
     this.signUpForm = this.fb.group({
-      fullName: new FormControl('', [Validators.required]),
+      firstName: new FormControl('', [Validators.required]),
+      lastName: new FormControl('', [Validators.required]),
+      userRole: new FormControl('student', [Validators.required]),
       email: new FormControl('', [Validators.required]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
@@ -105,11 +107,13 @@ export class LoginComponent implements OnInit {
   }
   signUp() {
     this.isLoading = true;
+    const formData = this.signUpForm.value;
     let reqBody = {
-      userName: this.signUpForm.value.fullName,
-      emailId: this.signUpForm.value.email,
-      password: this.signUpForm.value.password,
-      userRole: 'user'
+      firstName: formData.firstName,
+      lastName: formData.lastName,
+      emailId: formData.email,
+      password: formData.password,
+      userRole: formData.userRole
     };
     this.isClicked = true;
     this.loginService.userSignup(reqBody).subscribe(

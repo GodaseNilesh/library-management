@@ -6,7 +6,7 @@
           [matColumnDef]="column.columnDef">
           <th mat-header-cell *matHeaderCellDef style="background-color: rgb(242, 240, 240); text-align: center;">{{ column.header }}</th>
           <td mat-cell *matCellDef="let element" style="text-align: center;">
-            
+
             <ng-container *ngIf="column.columnDef === 'action'; else checkAvailableStatus">
               <ng-container *ngFor="let act of element.action?.split(',')">
                 <button *ngIf="act === 'edit'" mat-icon-button color="primary" (click)="onEditClicked(element)">
@@ -18,12 +18,18 @@
                 <button *ngIf="act === 'details'" mat-icon-button color="accent" (click)="onDetailsClicked(element)">
                   <mat-icon>keyboard_arrow_right</mat-icon>
                 </button>
-                <button *ngIf="!['edit', 'delete', 'details'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
+                <button class="m-2 approve-btn" *ngIf="act === 'approve'" mat-raised-button (click)="onApproveClicked(element)">
+                  Approve <mat-icon>check_circle_outline</mat-icon>
+                </button>
+                <button class="m-2" *ngIf="act === 'reject'" mat-raised-button color="warn" (click)="onRejectClicked(element)">
+                  Reject<mat-icon>cancel</mat-icon>
+                </button>
+                <button *ngIf="!['edit', 'delete', 'details', 'approve', 'reject'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
                   <span class="text-light">{{ act }}</span>
                 </button>
               </ng-container>
             </ng-container>
-            
+
             <ng-template #checkAvailableStatus>
               <ng-container *ngIf="column.columnDef === 'availableStatus'">
                 <span class="fw-semibold" [ngClass]="{
@@ -37,13 +43,13 @@
                 <ng-container *ngTemplateOutlet="defaultCell"></ng-container>
               </ng-container>
             </ng-template>
-            
+
             <ng-template #defaultCell>
               {{ element[column.columnDef] }}
             </ng-template>
           </td>
         </ng-container>
-  
+
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="height: 40px;"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns" style="height: 40px;"></tr>
       </table>
@@ -58,4 +64,3 @@
       </div>
     </section>
   </div>
-  

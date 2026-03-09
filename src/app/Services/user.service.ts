@@ -22,4 +22,9 @@ export class UserService {
     let url = environment.apiUrl + `/User/usersToRole`;
     return this.application.putData(url, data);
   }
+
+  getPendingRegistrationRequests() {
+    let url = environment.apiUrl + '/admin/pending-requests';
+    return this.application.getData(url);
+  }
 }

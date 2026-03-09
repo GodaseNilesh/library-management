@@ -82,7 +82,7 @@ export class BookListComponent {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
+      if (result === 'delete') {
         this.bookService.deleteBookById(event.bookId).subscribe(
           (res) => {
             this.loadData();

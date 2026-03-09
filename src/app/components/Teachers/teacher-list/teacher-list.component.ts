@@ -92,7 +92,7 @@ export class TeacherListComponent {
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'confirm') {
+      if (result === 'delete') {
         this.isLoading = true;
         this.teacherService.deleteTeacherById(event.teacherId).subscribe(
           (res) => {

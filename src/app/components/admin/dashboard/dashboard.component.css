@@ -1,6 +1,5 @@
 .font {
-  font-family: "Playfair Display", serif;
-  font-weight: 500;
+font-family: "Playfair Display", serif;  font-weight: 500;
 }
 
 .example-header {
@@ -30,8 +29,7 @@
   border-radius: 10px;
 }
 h2 {
-  font-family: "Playfair Display", serif;
-  font-weight: 500;
+font-family: "Playfair Display", serif;  font-weight: 500;
   /* font-size: 1.3rem; */
 }
 .grid-image {

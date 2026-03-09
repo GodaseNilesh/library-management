@@ -6,6 +6,7 @@ import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { LoginService } from 'src/app/Services/login.service';
 import { StudentService } from 'src/app/Services/student.service';
 import { TeacherService } from 'src/app/Services/teacher.service';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,6 +19,7 @@ export class DashboardComponent implements OnInit {
   booksCount: number = 0;
   issuedBooksCount: number = 0
   availableBooksCount: number = 0;
+  pendingRequestsCount: number = 0;
 
   allBooksData: any = [];
   allAuthorsData: any[] = [];
@@ -71,7 +73,8 @@ export class DashboardComponent implements OnInit {
     private studentService: StudentService,
     private teacherService: TeacherService,
     private bookService: BookService,
-    private issuedBookService: IssuedBookService
+    private issuedBookService: IssuedBookService,
+    private userService: UserService
   ) {}
 
   ngOnInit(): void {
@@ -79,13 +82,15 @@ export class DashboardComponent implements OnInit {
       this.studentService.getAllStudents(),
       this.teacherService.getAllTeachers(),
       this.bookService.getAllBooks(),
-      this.issuedBookService.getAllIssuedBooks()
+      this.issuedBookService.getAllIssuedBooks(),
+      this.userService.getPendingRegistrationRequests()
     ).subscribe(
-      ([studentRes, teacherRes, booksRes, issuedBookResponse]: any) => {
+      ([studentRes, teacherRes, booksRes, issuedBookResponse, requests]: any) => {
         this.studentCount = studentRes.length;
         this.teacherCount = teacherRes.length;
         this.booksCount = booksRes.length;
         this.issuedBooksCount = issuedBookResponse.length;
+        this.pendingRequestsCount = requests.length;
         this.allBooksData = booksRes.map((x: any, index: number) => ({
           ...x,
           id: index + 1,

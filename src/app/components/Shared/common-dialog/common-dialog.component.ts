@@ -10,11 +10,11 @@ export class CommonDialogComponent {
 
   readonly dialogRef = inject(MatDialogRef<CommonDialogComponent>);
   readonly data = inject(MAT_DIALOG_DATA);
-  
-  onNoClick(): void {
+
+  onCancelClick(): void {
     this.dialogRef.close('cancel');
   }
-  onOkClick() {
-    this.dialogRef.close('confirm');
+  onConfirmClick(status: string) {
+    this.dialogRef.close(status);
   }
 }

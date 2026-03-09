@@ -185,7 +185,6 @@ export class UserComponent {
       };
       this.userService.assignManyUsersToRole(payload).subscribe(
         (res) => {
-          console.log(res);
           this.getAllUsers();
         },
         (err) => {

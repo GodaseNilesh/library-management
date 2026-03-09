@@ -22,6 +22,8 @@ export class TableComponent {
   @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDetails: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDelete: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onApprove: EventEmitter<any> = new EventEmitter<any>();
+  @Output() onReject: EventEmitter<any> = new EventEmitter<any>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -55,5 +57,13 @@ export class TableComponent {
 
   onDetailsClicked(element: any) {
     this.onDetails.emit(element);
+  }
+
+  onApproveClicked(element: any) {
+    this.onApprove.emit(element);
+  }
+
+  onRejectClicked(element: any) {
+    this.onReject.emit(element);
   }
 }

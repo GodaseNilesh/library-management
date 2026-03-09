@@ -1,9 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { LoginComponent } from './components/login/login.component';
-import { DashboardComponent } from './components/dashboard/dashboard.component';
+import { DashboardComponent } from './components/admin/dashboard/dashboard.component';
 import { authGuardGuard } from './auth-guards/auth-guard.guard';
 import { loginGuard } from './auth-guards/login.guard';
+import { PendingRequestsComponent } from './components/admin/pending-requests/pending-requests.component';
 
 const routes: Routes = [
   {
@@ -20,6 +21,11 @@ const routes: Routes = [
     canActivate: [authGuardGuard],
     path:'dashboard',
     component:DashboardComponent
+  },
+   {
+    canActivate: [authGuardGuard],
+    path:'pending-requests',
+    component:PendingRequestsComponent
   },
   {
     path:'student-list',
@@ -39,7 +45,7 @@ const routes: Routes = [
   },
   {
     path:'users-list',
-    loadChildren:()=>import('src/app/components/users/user.module').then(m=>m.UserModule)
+    loadChildren:()=>import('src/app/components/admin/users/user.module').then(m=>m.UserModule)
   }
 ];
 
