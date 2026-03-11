@@ -28,4 +28,9 @@ export class StudentService {
     let url = environment.apiUrl + '/Student' + `/${id}`;
     return this.application.deleteData(url);
   }
+
+  exportAllStudentsData() {
+    let url = environment.apiUrl + '/Student/exportStudentsData';
+    return this.application.getData(url, { responseType: 'blob' as 'blob' });
+  }
 }

@@ -48,7 +48,7 @@ export class LoginService {
     if (!token || !expiryTime) {
       return true;
     }
-    const expirationDate = new Date(expiryTime);
+    const expirationDate = new Date(Number(expiryTime));
     const currentTime = new Date();
     return currentTime > expirationDate;
   }
@@ -66,6 +66,10 @@ export class LoginService {
       data: {
         status: 'Session Timeout',
         message: 'Session has expired. Please log in again.',
+        action: {
+          cancel: true,
+          confirm: true,
+        },
       },
     });
 
