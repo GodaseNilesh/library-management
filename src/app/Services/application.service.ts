@@ -26,9 +26,9 @@ export class ApplicationService {
     const headers = this.buildHeaders(skipInterceptor);
     return this.http.post(url, params, { headers: headers });
   }
-  getData(url: string) {
+  getData(url: string, options?: any) {
     const headers = this.buildHeaders();
-    return this.http.get(url, { headers: headers });
+    return this.http.get(url, { headers: headers, ...options });
   }
   putData(url: string, params: any) {
     const headers = this.buildHeaders();

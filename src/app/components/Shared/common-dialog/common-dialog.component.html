@@ -12,6 +12,7 @@
         <button mat-button mat-raised-button (click)="onConfirmClick('approve')" class="approve-btn font" *ngIf="data?.action?.approve">Approve</button>
         <button mat-button mat-raised-button (click)="onConfirmClick('reject')" class="reject-btn font" *ngIf="data?.action?.reject">Reject</button>
         <button mat-button mat-raised-button (click)="onConfirmClick('delete')" class="font" *ngIf="data?.action?.delete">Delete</button>
+        <button mat-button mat-raised-button (click)="onConfirmClick('confirm')" class="font" *ngIf="data?.action?.confirm">Confirm</button>
         <button
           mat-button
           mat-raised-button

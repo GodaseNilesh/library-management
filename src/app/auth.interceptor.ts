@@ -11,10 +11,11 @@ import { catchError, Observable, tap, throwError } from 'rxjs';
 import { CommonDialogComponent } from './components/Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
+import { LoginService } from './Services/login.service';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
-  constructor(private dialog: MatDialog, private toastr:ToastrService) {}
+  constructor(private dialog: MatDialog, private toastr:ToastrService, private loginService: LoginService) {}
 
   methodType: string = '';
 
@@ -74,7 +75,13 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleErrorResponse(error: HttpErrorResponse): void {
     error.error && typeof error.error === 'object'
-      ? this.toastr.error(error.error.error)
+      ? error.error instanceof Blob
+        ? this.toastr.error('Something went wrong!')
+        : this.toastr.error(error.error.error)
       : this.toastr.error('Something went wrong!');
+
+    if (error.error?.error?.includes('expired token')) {
+      this.loginService.handleSessionExpired();
+    }
   }
 }

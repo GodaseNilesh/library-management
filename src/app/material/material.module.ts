@@ -19,6 +19,7 @@ import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
 import {MatTabsModule} from '@angular/material/tabs';
 import {MatChipsModule} from '@angular/material/chips';
+import {MatMenuModule} from '@angular/material/menu';
 
 const components: any = [
   MatCardModule,
@@ -39,7 +40,8 @@ const components: any = [
   MatDialogModule,
   MatAutocompleteModule,
   MatTabsModule,
-  MatChipsModule
+  MatChipsModule,
+  MatMenuModule
 ];
 @NgModule({
   declarations: [],

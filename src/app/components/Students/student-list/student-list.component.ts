@@ -17,6 +17,8 @@ export class StudentListComponent implements OnInit {
   ) {}
   StudentData: any = [];
   isLoading: boolean = false;
+  showExportOptions: boolean = false;
+  showImportOptions: boolean = false;
 
   StudentDataColumns = [
     { columnDef: 'studentId', header: 'Student ID' },
@@ -110,5 +112,28 @@ export class StudentListComponent implements OnInit {
         this.isLoading = false;
       }
     });
+  }
+
+  onImportExportOptionChange(type: string, value: string) {
+    if (type === 'import') {
+      if (value === 'excel') {
+      }
+    } else if (type === 'export') {
+      if (value === 'excel') {
+       this.studentService.exportAllStudentsData().subscribe((res: any) => {
+        const blob = new Blob([res], {
+          type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+        });
+         const url = window.URL.createObjectURL(blob);
+         const a = document.createElement('a');
+         a.href = url;
+         const now = new Date();
+         const fileName = `students_${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}_${now.getHours()}-${now.getMinutes()}-${now.getSeconds()}.xlsx`;
+         a.download = fileName;
+         a.click();
+         window.URL.revokeObjectURL(url);
+       });
+      }
+    }
   }
 }
