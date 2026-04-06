@@ -80,7 +80,7 @@ export class AuthInterceptor implements HttpInterceptor {
         : this.toastr.error(error.error.error)
       : this.toastr.error('Something went wrong!');
 
-    if (error.error?.error?.includes('expired token')) {
+    if (error.error?.error?.includes('expired token') || error.status === 401) {
       this.loginService.handleSessionExpired();
     }
   }

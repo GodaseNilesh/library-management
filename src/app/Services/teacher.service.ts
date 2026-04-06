@@ -29,4 +29,9 @@ export class TeacherService {
     let url = environment.apiUrl + `/Teacher/${id}`;
     return this.application.deleteData(url);
   }
+
+  exportAllTeachersData() {
+    let url = environment.apiUrl + '/Teacher/exportTeachersData';
+    return this.application.getData(url, { responseType: 'blob' as 'blob' });
+  }
 }

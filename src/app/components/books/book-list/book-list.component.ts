@@ -13,7 +13,7 @@ export class BookListComponent {
   constructor(
     private router: Router,
     private bookService: BookService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
   ) {}
   booksData: any[] = [];
   bookDataColumns = [
@@ -32,6 +32,7 @@ export class BookListComponent {
 
   booksDisplayedColumns = this.bookDataColumns.map((c) => c.columnDef);
   booksDataSource = this.booksData;
+  showExportOptions: boolean = false;
 
   ngOnInit(): void {
     this.loadData();
@@ -57,9 +58,9 @@ export class BookListComponent {
       this.booksDataSource = [...this.booksData];
     } else {
       const filtered = this.booksData.filter((book) =>
-        Object.values(book).some((val:any) =>
-          val.toString().toLowerCase().includes(value)
-        )
+        Object.values(book).some((val: any) =>
+          val.toString().toLowerCase().includes(value),
+        ),
       );
       this.booksDataSource = [...filtered];
     }
@@ -89,9 +90,32 @@ export class BookListComponent {
           },
           (err) => {
             console.log(err);
-          }
+          },
         );
       }
     });
+  }
+
+  onImportExportOptionChange(type: string, value: string) {
+    if (type === 'import') {
+      if (value === 'excel') {
+      }
+    } else if (type === 'export') {
+      if (value === 'excel') {
+        this.bookService.exportAllBooksData().subscribe((res: any) => {
+          const blob = new Blob([res], {
+            type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+          });
+          const url = window.URL.createObjectURL(blob);
+          const a = document.createElement('a');
+          a.href = url;
+          const now = new Date();
+          const fileName = `books_${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}.xlsx`;
+          a.download = fileName;
+          a.click();
+          window.URL.revokeObjectURL(url);
+        });
+      }
+    }
   }
 }

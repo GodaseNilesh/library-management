@@ -95,6 +95,7 @@ export class CreateBookIssueComponent {
         this.teacherService.getAllTeachers().subscribe((allTeachers: any) => {
           this.allUsers = allTeachers.map((x: any) => {
             x.fullName = x.firstName + ' ' + x.lastName;
+            x.userId = x.teacherId;
             return x;
           });
         });
@@ -102,6 +103,7 @@ export class CreateBookIssueComponent {
         this.studentService.getAllStudents().subscribe((allStudents: any) => {
           this.allUsers = allStudents.map((x: any) => {
             x.fullName = x.firstName + ' ' + x.lastName;
+            x.userId = x.studentId;
             return x;
           });
         });
@@ -152,7 +154,7 @@ export class CreateBookIssueComponent {
       // bookName: formValue.bookName,
       bookId: formValue.bookId,
       userType: formValue.userType,
-      userName: formValue.userName,
+      userId: this.allUsers.find((x: any) => (x.fullName = formValue.userName)).userId,
       issueDate:
         typeof formValue.issueDate == 'string'
           ? formValue.issueDate

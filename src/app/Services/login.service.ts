@@ -16,7 +16,7 @@ export class LoginService {
     private application: ApplicationService,
     private router: Router,
     private dialog: MatDialog,
-    private authService: AuthService
+    private authService: AuthService,
   ) {}
 
   userSignup(data: any) {
@@ -90,9 +90,16 @@ export class LoginService {
       clearInterval(this.tokenExpirationCheckInterval);
     }
   }
+
   userLogout() {
-    sessionStorage.clear();
-    this.authService.isUserLoggedIn = false;
-    this.router.navigate(['']);
+    const userId = sessionStorage.getItem('userId');
+    const payload = { id: userId };
+    let url = environment.apiUrl + '/Auth/logout';
+    this.application.postData(url, payload).subscribe((res) => {
+      clearInterval(this.tokenExpirationCheckInterval);
+      sessionStorage.clear();
+      this.authService.isUserLoggedIn = false;
+      this.router.navigate(['']);
+    });
   }
 }
