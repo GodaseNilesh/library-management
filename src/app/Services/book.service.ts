@@ -28,4 +28,9 @@ export class BookService {
     let url = environment.apiUrl + `/Book/${id}`;
     return this.application.deleteData(url);
   }
+
+  exportAllBooksData() {
+    let url = environment.apiUrl + '/Book/exportBooks';
+    return this.application.getData(url, { responseType: 'blob' as 'blob' });
+  }
 }

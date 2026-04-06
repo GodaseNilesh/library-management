@@ -116,6 +116,18 @@ export class DashboardComponent implements OnInit {
           ...x,
           id: index + 1,
         }));
+
+        issuedBookResponse.forEach((x: any, index: number) => {
+          if (x.userType === 'Student') {
+            const user = studentRes.find((y: any) => y.studentId === x.userId);
+            x.userName = user?.firstName + user?.lastName || '';
+          } else {
+            const user = teacherRes.find((y: any) => y.teacherId === x.userId);
+            x.userName = user?.firstName + user?.lastName || '';
+          }
+          x.id= index + 1
+        });
+
         this.issuedBookDataSource = issuedBookResponse;
       }
     );

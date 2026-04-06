@@ -4,6 +4,10 @@ import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BookService } from 'src/app/Services/book.service';
+import { forkJoin } from 'rxjs';
+import { UserService } from 'src/app/Services/user.service';
+import { StudentService } from 'src/app/Services/student.service';
+import { TeacherService } from 'src/app/Services/teacher.service';
 
 @Component({
   selector: 'app-book-issue-history',
@@ -17,7 +21,9 @@ export class BookIssueHistoryComponent implements OnInit {
     private router: Router,
     private issuedBookService: IssuedBookService,
     private bookService: BookService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private studentService: StudentService,
+    private teacherService: TeacherService
   ) {}
   // For issued book list
   issueBookRecords: any[] = [];
@@ -45,12 +51,14 @@ export class BookIssueHistoryComponent implements OnInit {
   loadData() {
     this.isLoading = true;
     let allBooksData: any[] = [];
-    this.bookService.getAllBooks().subscribe((allBooks: any) => {
-      allBooksData = allBooks;
-    });
-    this.issuedBookService.getAllIssuedBooks().subscribe(
-      (res: any) => {
-        this.issueBookRecords = res;
+    forkJoin(
+      this.bookService.getAllBooks(),
+      this.issuedBookService.getAllIssuedBooks(),
+      this.studentService.getAllStudents(),
+      this.teacherService.getAllTeachers()
+    ).subscribe(([books, issuedBooks, students, teachers]: any) => {
+        allBooksData = books;
+        this.issueBookRecords = issuedBooks;
         this.issueBookRecords = this.issueBookRecords.map((x: any) => {
           x.action = 'edit,delete';
           return x;
@@ -59,6 +67,16 @@ export class BookIssueHistoryComponent implements OnInit {
         this.issueBookRecords.forEach((x: any) => {
           const book = allBooksData.find((y: any) => y.bookId === x.bookId);
           x.bookName = book?.title || '';
+        });
+
+        this.issueBookRecords.forEach((x: any) => {
+          if (x.userType === 'Student') {
+            const user = students.find((y: any) => y.studentId === x.userId);
+            x.userName = user?.firstName + user?.lastName || '';
+          } else {
+            const user = teachers.find((y: any) => y.teacherId === x.userId);
+            x.userName = user?.firstName + user?.lastName || '';
+          }
         });
 
         this.issuedBooksDataSource = this.issueBookRecords;
