@@ -1,109 +1,74 @@
-<mat-sidenav-container class="example-container" (mouseenter)="isExpanded = true" (mouseleave)="isExpanded = false">
-    <mat-sidenav #sidenav mode="side" [opened]="true" class="example-sidenav">
+<mat-sidenav-container class="example-container">
+    <mat-sidenav #sidenav mode="side" opened class="example-sidenav">
       <mat-nav-list class="nav-list">
+        <span class="parent-nav-item">GENERAL</span>
         <mat-list-item class="nav-list">
-          <div class="d-flex" routerLink="/dashboard" routerLinkActive="active">
+          <div class="d-flex nav-items" routerLink="/dashboard" routerLinkActive="active">
             <mat-icon class="mx-2">dashboard</mat-icon>
-            <span *ngIf="isExpanded"> Dashboard </span>
-          </div>
-        </mat-list-item>
-  
-        <mat-expansion-panel class="nav-list">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/student-list') }">
-                <mat-icon class="m-0">format_list_bulleted</mat-icon>
-                <span class="mx-2" *ngIf="isExpanded">Students</span>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-nav-list >
-            <mat-list-item class="nav-list" >
-              <div class="d-flex" routerLink="/student-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-                <mat-icon class="mx-2">list</mat-icon>
-                <span > Student List </span>
-              </div>
-            </mat-list-item>
-            <mat-list-item class="nav-list">
-              <div class="d-flex" routerLink="/student-list/create-student" routerLinkActive="active">
-              <mat-icon class="mx-2">person_add</mat-icon>
-              <span >Add Student</span>
-              </div>
-            </mat-list-item>
-          </mat-nav-list>
-        </mat-expansion-panel>
-  
-        <mat-expansion-panel class="nav-list">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/teacher-list') }">
-                <mat-icon class="m-0">view_list</mat-icon>
-                <span class="mx-2" *ngIf="isExpanded">Teachers</span>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <mat-list-item >
-              <div class="d-flex" routerLink="/teacher-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <mat-icon class="mx-2">list</mat-icon>
-              <span>Teacher List</span>
-              </div>
-            </mat-list-item>
-            <mat-list-item >
-              <div class="d-flex" routerLink="/teacher-list/create-teacher" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <mat-icon class="mx-2">person_add</mat-icon>
-              <span>Add Teacher</span>
-              </div>
-            </mat-list-item>
-          </mat-nav-list>
-        </mat-expansion-panel>
-  
-        <mat-expansion-panel class="nav-list">
-          <mat-expansion-panel-header>
-            <mat-panel-title>
-              <div class="d-flex" [ngClass]="{ 'active': router.url.startsWith('/book-list') }">
-                <mat-icon class="m-0">library_books</mat-icon>
-                <span class="mx-2" *ngIf="isExpanded">Books</span>
-              </div>
-            </mat-panel-title>
-          </mat-expansion-panel-header>
-          <mat-nav-list>
-            <mat-list-item>
-              <div class="d-flex" routerLink="/book-list" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: true }">
-              <mat-icon class="mx-2">menu_book</mat-icon>
-              <span>Book List</span>
-              </div>
-            </mat-list-item>
-            <mat-list-item>
-              <div class="d-flex" routerLink="/book-list/add-book" routerLinkActive="active" [routerLinkActiveOptions]="{ exact: false }">
-              <mat-icon class="mx-2">library_add</mat-icon>
-              <span>Add Book</span>
-              </div>
-            </mat-list-item>
-            <mat-list-item routerLink="/categories" routerLinkActive="active">
-              <div class="d-flex">
-              <mat-icon class="mx-2">category</mat-icon>
-              <span>Categories</span>
-              </div>
-            </mat-list-item>
-          </mat-nav-list>
-        </mat-expansion-panel>
-  
-        <mat-list-item class="nav-list">
-          <div class="d-flex" routerLink="/issue-book-history" routerLinkActive="active">
-            <mat-icon class="m-2">assignment</mat-icon>
-            <span class="mt-2" *ngIf="isExpanded"> Issued Books </span>
+            <span> Dashboard </span>
           </div>
         </mat-list-item>
 
         <mat-list-item class="nav-list">
-          <div class="d-flex" routerLink="/users-list" routerLinkActive="active">
+          <div class="d-flex nav-items" routerLink="/student-list" routerLinkActive="active">
+            <mat-icon class="mx-2">list</mat-icon>
+            <span> Student List </span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items" routerLink="/teacher-list" routerLinkActive="active">
+            <mat-icon class="mx-2">view_list</mat-icon>
+            <span> Teacher List </span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items" routerLink="/book-list" routerLinkActive="active">
+            <mat-icon class="mx-2">menu_book</mat-icon>
+            <span> Book List </span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items align-items-center" routerLink="/issue-book-history" routerLinkActive="active">
+            <mat-icon class="m-2">assignment</mat-icon>
+            <span> Issued Books </span>
+          </div>
+        </mat-list-item>
+
+        <br>
+        <span class="parent-nav-item">REPORTS</span>
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items align-items-center">
+            <mat-icon class="m-2">description</mat-icon>
+            <span> Reports </span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items align-items-center">
+            <mat-icon class="m-2">assignment_late</mat-icon>
+            <span> Fines </span>
+          </div>
+        </mat-list-item>
+
+        <br>
+        <span class="parent-nav-item">SYSTEM</span>
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items align-items-center">
+            <mat-icon class="m-2">settings</mat-icon>
+            <span> Settings </span>
+          </div>
+        </mat-list-item>
+
+        <mat-list-item class="nav-list">
+          <div class="d-flex nav-items align-items-center" routerLink="/users-list" routerLinkActive="active">
             <mat-icon class="m-2">supervised_user_circle</mat-icon>
-            <span class="mt-2" *ngIf="isExpanded"> Users </span>
+            <span> Users </span>
           </div>
         </mat-list-item>
       </mat-nav-list>
 
     </mat-sidenav>
   </mat-sidenav-container>
-  

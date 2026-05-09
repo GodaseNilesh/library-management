@@ -9,11 +9,10 @@ import { Router } from '@angular/router';
 })
 export class SidenavbarComponent {
 
-  constructor(public router: Router) {    
+  constructor(public router: Router) {
   }
 
   private _formBuilder = inject(FormBuilder);
-  isExpanded = false;
 
   options = this._formBuilder.group({
     bottom: 0,
