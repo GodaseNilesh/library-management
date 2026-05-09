@@ -2,96 +2,253 @@
 <div [formGroup]="options" class="w-auto">
   <div class="dashboard-content">
     <div class="header-section w-100 pt-3 px-3">
-      <h2 class="mb-0 mt-1">Hello, {{loginService.userName}}</h2>
-      <h4 class="font">Explore and enjoy your digital library!</h4>
+      <h2 class="mb-0 mt-1 fw-bolder">Welcome back, Admin!</h2>
+      <h4 class="font">Here's what's happening in your library today.</h4>
     </div>
     <div class="grid-section d-flex justify-content-evenly m-0">
       <div class="grid-options d-flex bg-white" routerLink="/student-list">
-        <div class="w-50">
-          <div class="m-3 p-2 mb-0 mt-4 pb-0">
-            <span class="font fs-7 fw-normal">Students</span>
+        <div class="w-25 m-2 box-svgs">
+          <svg class="student-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path
+              d="M320 80C377.4 80 424 126.6 424 184C424 241.4 377.4 288 320 288C262.6 288 216 241.4 216 184C216 126.6 262.6 80 320 80zM96 152C135.8 152 168 184.2 168 224C168 263.8 135.8 296 96 296C56.2 296 24 263.8 24 224C24 184.2 56.2 152 96 152zM0 480C0 409.3 57.3 352 128 352C140.8 352 153.2 353.9 164.9 357.4C132 394.2 112 442.8 112 496L112 512C112 523.4 114.4 534.2 118.7 544L32 544C14.3 544 0 529.7 0 512L0 480zM521.3 544C525.6 534.2 528 523.4 528 512L528 496C528 442.8 508 394.2 475.1 357.4C486.8 353.9 499.2 352 512 352C582.7 352 640 409.3 640 480L640 512C640 529.7 625.7 544 608 544L521.3 544zM472 224C472 184.2 504.2 152 544 152C583.8 152 616 184.2 616 224C616 263.8 583.8 296 544 296C504.2 296 472 263.8 472 224zM160 496C160 407.6 231.6 336 320 336C408.4 336 480 407.6 480 496L480 512C480 529.7 465.7 544 448 544L192 544C174.3 544 160 529.7 160 512L160 496z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-3 p-2 mb-0 pb-0">
+            <span class="font fs-7 fw-bolder">Total Students</span>
           </div>
           <div class="m-3 p-2 pt-0 mt-0">
-            <span class="font fs-5 fw-normal">{{studentCount}}</span>
+            <span class="font fs-7 fw-normal">{{studentCount}}</span>
           </div>
-        </div>
-        <div class="w-50 m-2 pt-1">
-          <img
-            src="../../../assets/images/student.jpg"
-            alt="student icon"
-            class="grid-image"
-          />
         </div>
       </div>
       <div class="grid-options d-flex bg-white" routerLink="/teacher-list">
-        <div class="w-50">
-          <div class="m-3 p-2 mb-0 mt-4 pb-0">
-            <span class="font fs-7 fw-normal">Teachers</span>
+        <div class="w-25 m-2 box-svgs">
+          <svg class="teacher-icon" xmlns="http://www.w3.org/2000/svg"
+            viewBox="0 0 640 640">
+            <path
+              d="M192 448C245 448 288 491 288 544C288 561.7 273.7 576 256 576L32 576C14.3 576 0 561.7 0 544C0 491 43 448 96 448L192 448zM544 96C579.3 96 608 124.7 608 160L608 448C608 481.1 582.8 508.4 550.5 511.7L544 512L332.9 512C327.8 487.8 316.6 465.9 300.8 448L352 448L352 416C352 398.3 366.3 384 384 384L480 384C497.7 384 512 398.3 512 416L512 448L544 448L544 160L192 160L192 217.3C177.2 211.3 161 208 144 208C138.6 208 133.2 208.3 128 209L128 160C128 124.7 156.7 96 192 96L544 96zM144 416C99.8 416 64 380.2 64 336C64 291.8 99.8 256 144 256C188.2 256 224 291.8 224 336C224 380.2 188.2 416 144 416z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-2 p-2 mb-0 pb-0 mt-3">
+            <span class="font fs-7 fw-bolder">Total Teachers</span>
           </div>
           <div class="m-3 p-2 pt-0 mt-0">
-            <span class="font fs-5 fw-normal">{{teacherCount}}</span>
+            <span class="font fs-7 fw-normal">{{teacherCount}}</span>
           </div>
-        </div>
-        <div class="w-50 m-2 pt-1">
-          <img
-            src="../../../assets/images/teacher.jpg"
-            alt="Teacher icon"
-            class="grid-image"
-          />
         </div>
       </div>
       <div class="grid-options d-flex bg-white" routerLink="/book-list">
-        <div class="w-50">
-          <div class="m-3 p-2 mb-0 mt-4 pb-0">
-            <span class="font fs-7 fw-normal">Books</span>
+        <div class="w-25 m-2 box-svgs">
+          <svg class="book-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path
+              d="M418.6 175.5L433.7 424.5L422.7 424.2C386.5 423.4 351.1 433 320 452.2C289 433 253.6 424.2 217.3 424.2C171.7 424.2 135.2 434.9 93.8 451.9L125.2 193.6C153.7 181.8 186.7 175.5 217.4 175.5C258.6 175.5 291.2 188.7 320.1 218C347.8 189.7 379.1 176.3 418.6 175.5zM601.2 512C575.7 512 553.7 506.8 530.7 496.4C496.4 480.8 460.7 471.4 422.8 471.4C383.8 471.4 347.9 484.3 320.1 512C292.4 484.3 256.4 471.4 217.4 471.4C179.5 471.4 143.8 480.7 109.5 496.4C87.3 506.3 64.8 512 40.3 512L39 512L81.6 162.9C120.9 140.7 168.6 128 213.9 128C251 128 289.1 135.7 320.1 157.1C351.1 135.7 389.3 128 426.3 128C471.6 128 519.3 140.6 558.6 162.9L601.2 512zM557.8 467.3L523.8 187C493.1 173 456.6 165.6 422.8 165.6C384.4 165.6 348.4 177.7 320.1 204.3C291.8 177.7 255.9 165.6 217.4 165.6C183.6 165.6 147.1 173 116.4 187L82.4 467.2C129.6 447.7 165.3 433.7 217.4 433.7C255 433.7 288.2 443.3 320.1 463.3C351.9 443.3 385.2 433.7 422.8 433.7C475 433.7 510.6 447.7 557.8 467.2z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-3 p-2 mb-0 pb-0">
+            <span class="font fs-7 fw-bolder">Total Books</span>
           </div>
           <div class="m-3 p-2 pt-0 mt-0">
-            <span class="font fs-5 fw-normal">{{booksCount}}</span>
+            <span class="font fs-7 fw-normal">{{booksCount}}</span>
           </div>
-        </div>
-        <div class="w-50 m-2 pt-1">
-          <img
-            src="../../../assets/images/books.png"
-            alt="book icon"
-            class="grid-image"
-          />
         </div>
       </div>
       <div class="grid-options d-flex bg-white" routerLink="/issue-book-history">
+        <div class="w-25 m-2 box-svgs">
+          <svg class="issue-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path
+              d="M192 576L512 576C529.7 576 544 561.7 544 544C544 526.3 529.7 512 512 512L512 445.3C530.6 438.7 544 420.9 544 400L544 112C544 85.5 522.5 64 496 64L448 64L448 233.4C448 245.9 437.9 256 425.4 256C419.4 256 413.6 253.6 409.4 249.4L368 208L326.6 249.4C322.4 253.6 316.6 256 310.6 256C298.1 256 288 245.9 288 233.4L288 64L192 64C139 64 96 107 96 160L96 480C96 533 139 576 192 576zM160 480C160 462.3 174.3 448 192 448L448 448L448 512L192 512C174.3 512 160 497.7 160 480z" />
+          </svg>
+        </div>
         <div class="w-50">
-          <div class="m-1 p-2 mb-0 mt-4 pb-0">
-            <span class="font fs-7 fw-normal">Issued Books</span>
+          <div class="m-1 p-2 px-1 pt-3 mb-0 pb-0">
+            <span class="font fs-7 fw-bolder">Issued Books</span>
           </div>
           <div class="m-3 p-2 pt-0 mt-0">
-            <span class="font fs-5 fw-normal">{{issuedBooksCount}}</span>
+            <span class="font fs-7 fw-normal">{{issuedBooksCount}}</span>
           </div>
-        </div>
-        <div class="w-50 m-2 pt-1">
-          <img
-            src="../../../assets/images/available_books.png"
-            alt="book icon"
-            class="grid-image"
-          />
         </div>
       </div>
       <div class="grid-options d-flex bg-white" routerLink="/pending-requests">
-        <div class="w-50">
-          <div class="m-1 p-2 mb-0 mt-4 pb-0">
-            <span class="font fs-7 fw-normal">Pending Requests</span>
+        <div class="w-25 m-2 box-svgs">
+          <svg class="overdue-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path
+              d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384zM320 192C301.8 192 287.3 207.5 288.6 225.7L296 329.7C296.9 342.3 307.4 352 319.9 352C332.5 352 342.9 342.3 343.8 329.7L351.2 225.7C352.5 207.5 338.1 192 319.8 192z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-2 p-2 mb-0 pb-0">
+            <span class="font fs-7 fw-bolder">Overdue Books</span>
           </div>
           <div class="m-3 p-2 pt-0 mt-0">
-            <span class="font fs-5 fw-normal">{{pendingRequestsCount}}</span>
+            <span class="font fs-7 fw-normal">7</span>
           </div>
-        </div>
-        <div class="w-50 m-2 pt-1">
-          <img
-            src="../../../assets/images/pending_review.png"
-            alt="book icon"
-            class="grid-image"
-          />
         </div>
       </div>
     </div>
+
+    <!-- quick actions -->
+    <div class="d-flex w-100 pb-2">
+      <div class="quick-actions">
+        <div class="mx-1 px-2 pt-2 w-100">
+          <mat-card appearance="outlined" class="rounded-3">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold mx-2">Quick Actions</h4>
+                  </div>
+                </div>
+              </div>
+              <div class="quick-action-cards">
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(134, 37, 247)"
+                            d="M285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3C48 447.8 127.8 368 226.3 368L285.7 368zM528 144C541.3 144 552 154.7 552 168L552 216L600 216C613.3 216 624 226.7 624 240C624 253.3 613.3 264 600 264L552 264L552 312C552 325.3 541.3 336 528 336C514.7 336 504 325.3 504 312L504 264L456 264C442.7 264 432 253.3 432 240C432 226.7 442.7 216 456 216L504 216L504 168C504 154.7 514.7 144 528 144zM256 312C189.7 312 136 258.3 136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">Add Student</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(4, 121, 9)"
+                            d="M96 192C96 130.1 146.1 80 208 80C269.9 80 320 130.1 320 192C320 253.9 269.9 304 208 304C146.1 304 96 253.9 96 192zM32 528C32 430.8 110.8 352 208 352C305.2 352 384 430.8 384 528L384 534C384 557.2 365.2 576 342 576L74 576C50.8 576 32 557.2 32 534L32 528zM464 128C517 128 560 171 560 224C560 277 517 320 464 320C411 320 368 277 368 224C368 171 411 128 464 128zM464 368C543.5 368 608 432.5 608 512L608 534.4C608 557.4 589.4 576 566.4 576L421.6 576C428.2 563.5 432 549.2 432 534L432 528C432 476.5 414.6 429.1 385.5 391.3C408.1 376.6 435.1 368 464 368z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">Add Teacher</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(21, 75, 249)"
+                            d="M192 576L512 576C529.7 576 544 561.7 544 544C544 526.3 529.7 512 512 512L512 445.3C530.6 438.7 544 420.9 544 400L544 112C544 85.5 522.5 64 496 64L192 64C139 64 96 107 96 160L96 480C96 533 139 576 192 576zM160 480C160 462.3 174.3 448 192 448L448 448L448 512L192 512C174.3 512 160 497.7 160 480zM288 184C288 175.2 295.2 168 304 168L336 168C344.8 168 352 175.2 352 184L352 224L392 224C400.8 224 408 231.2 408 240L408 272C408 280.8 400.8 288 392 288L352 288L352 328C352 336.8 344.8 344 336 344L304 344C295.2 344 288 336.8 288 328L288 288L248 288C239.2 288 232 280.8 232 272L232 240C232 231.2 239.2 224 248 224L288 224L288 184z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">Add Book</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(239, 150, 11)"
+                            d="M480 272C480 317.9 465.1 360.3 440 394.7L566.6 521.4C579.1 533.9 579.1 554.2 566.6 566.7C554.1 579.2 533.8 579.2 521.3 566.7L394.7 440C360.3 465.1 317.9 480 272 480C157.1 480 64 386.9 64 272C64 157.1 157.1 64 272 64C386.9 64 480 157.1 480 272zM272 416C351.5 416 416 351.5 416 272C416 192.5 351.5 128 272 128C192.5 128 128 192.5 128 272C128 351.5 192.5 416 272 416z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">Issue Book</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(246, 68, 7)"
+                            d="M150.6 105.4C138.1 92.9 117.8 92.9 105.3 105.4L41.3 169.4C32.1 178.6 29.4 192.3 34.4 204.3C39.4 216.3 51.1 224 64 224L96 224L96 448C96 501 139 544 192 544L320 544C337.7 544 352 529.7 352 512C352 494.3 337.7 480 320 480L192 480C174.3 480 160 465.7 160 448L160 224L192 224C204.9 224 216.6 216.2 221.6 204.2C226.6 192.2 223.8 178.5 214.7 169.3L150.7 105.3zM489.4 534.6C501.9 547.1 522.2 547.1 534.7 534.6L598.7 470.6C607.9 461.4 610.6 447.7 605.6 435.7C600.6 423.7 588.9 416 576 416L544 416L544 192C544 139 501 96 448 96L320 96C302.3 96 288 110.3 288 128C288 145.7 302.3 160 320 160L448 160C465.7 160 480 174.3 480 192L480 416L448 416C435.1 416 423.4 423.8 418.4 435.8C413.4 447.8 416.2 461.5 425.3 470.7L489.3 534.7z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">Return Book</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+                <mat-card appearance="outlined">
+                  <mat-card-content>
+                    <div class="d-flex align-items-center">
+                      <div class="quick-actions-svgs">
+                        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                          <path fill="rgb(1, 162, 112)"
+                            d="M96 96C113.7 96 128 110.3 128 128L128 464C128 472.8 135.2 480 144 480L544 480C561.7 480 576 494.3 576 512C576 529.7 561.7 544 544 544L144 544C99.8 544 64 508.2 64 464L64 128C64 110.3 78.3 96 96 96zM208 288C225.7 288 240 302.3 240 320L240 384C240 401.7 225.7 416 208 416C190.3 416 176 401.7 176 384L176 320C176 302.3 190.3 288 208 288zM352 224L352 384C352 401.7 337.7 416 320 416C302.3 416 288 401.7 288 384L288 224C288 206.3 302.3 192 320 192C337.7 192 352 206.3 352 224zM432 256C449.7 256 464 270.3 464 288L464 384C464 401.7 449.7 416 432 416C414.3 416 400 401.7 400 384L400 288C400 270.3 414.3 256 432 256zM576 160L576 384C576 401.7 561.7 416 544 416C526.3 416 512 401.7 512 384L512 160C512 142.3 526.3 128 544 128C561.7 128 576 142.3 576 160z" />
+                        </svg>
+                      </div>
+                      <div class="mx-2">
+                        <h3 class="m-auto">View Reports</h3>
+                      </div>
+                    </div>
+                  </mat-card-content>
+                </mat-card>
+              </div>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
+    <div class="d-flex w-100 pb-2">
+      <div class="list-section" style="width: 60%;">
+        <div class="mx-1 px-2 pt-3 w-100">
+          <mat-card appearance="outlined" class="rounded-3">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold mx-2">Recent Issued Books</h4>
+                  </div>
+                </div>
+                <div class="header-section pt-0 px-0">
+                  <span class="view-all-link"><a href="/issue-book-history">View All</a></span>
+                </div>
+              </div>
+              <app-table
+                [data]="issuedBookDataSource"
+                [columns]="issuedBooksDataColumns"
+                [showPagination]="false"
+              ></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+      <div class="list-section" style="width: 40%;">
+        <div class="px-2 pt-3 w-100">
+          <mat-card appearance="outlined" class="rounded-3">
+            <mat-card-content>
+              <div class="d-flex justify-content-between">
+                <div class="header-section pt-0 px-0">
+                  <div class="d-flex justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold mx-2">Popular Books</h4>
+                  </div>
+                </div>
+                <div class="header-section pt-0 px-0">
+                  <span class="view-all-link"><a href="/book-list">View All</a></span>
+                </div>
+              </div>
+              <app-table
+                [data]="bookDataSource"
+                [columns]="BookDataColumns"
+                [showPagination]="false"
+              ></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+      </div>
+    </div>
+
     <div class="d-flex w-100 pb-2">
       <div class="list-section w-50">
         <div class="mx-1 px-2 pt-3 w-100">
@@ -99,18 +256,60 @@
             <mat-card-content>
               <div class="d-flex justify-content-between">
                 <div class="header-section pt-0 px-0">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <h4 class="fs-6 fw-bold mx-2">Books</h4>
+                  <div class="justify-content-center align-items-center">
+                    <h4 class="fs-6 fw-bold m-0">Recent Activities</h4>
+                    <h5>Latest updates from your library</h5>
                   </div>
                 </div>
                 <div class="header-section pt-0 px-0">
-                  <mat-icon>more_vert</mat-icon>
+                  <span class="view-all-link"><a href="/book-list">View All</a></span>
                 </div>
               </div>
-              <app-table
-                [data]="bookDataSource"
-                [columns]="BookDataColumns"
-              ></app-table>
+              <div>
+                <div class="activity-card">
+                  <div class="activity-list">
+                    <div class="activity-item" *ngFor="let activity of recentActivities">
+                      <div class="activity-svgs">
+                        <svg class="issue-activity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                          *ngIf="activity.action === 'Book Issued'">
+                          <path
+                            d="M192 576L512 576C529.7 576 544 561.7 544 544C544 526.3 529.7 512 512 512L512 445.3C530.6 438.7 544 420.9 544 400L544 112C544 85.5 522.5 64 496 64L448 64L448 233.4C448 245.9 437.9 256 425.4 256C419.4 256 413.6 253.6 409.4 249.4L368 208L326.6 249.4C322.4 253.6 316.6 256 310.6 256C298.1 256 288 245.9 288 233.4L288 64L192 64C139 64 96 107 96 160L96 480C96 533 139 576 192 576zM160 480C160 462.3 174.3 448 192 448L448 448L448 512L192 512C174.3 512 160 497.7 160 480z" />
+                        </svg>
+                        <svg class="return-activity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                          *ngIf="activity.action === 'Book Returned'">
+                          <path
+                            d="M150.6 105.4C138.1 92.9 117.8 92.9 105.3 105.4L41.3 169.4C32.1 178.6 29.4 192.3 34.4 204.3C39.4 216.3 51.1 224 64 224L96 224L96 448C96 501 139 544 192 544L320 544C337.7 544 352 529.7 352 512C352 494.3 337.7 480 320 480L192 480C174.3 480 160 465.7 160 448L160 224L192 224C204.9 224 216.6 216.2 221.6 204.2C226.6 192.2 223.8 178.5 214.7 169.3L150.7 105.3zM489.4 534.6C501.9 547.1 522.2 547.1 534.7 534.6L598.7 470.6C607.9 461.4 610.6 447.7 605.6 435.7C600.6 423.7 588.9 416 576 416L544 416L544 192C544 139 501 96 448 96L320 96C302.3 96 288 110.3 288 128C288 145.7 302.3 160 320 160L448 160C465.7 160 480 174.3 480 192L480 416L448 416C435.1 416 423.4 423.8 418.4 435.8C413.4 447.8 416.2 461.5 425.3 470.7L489.3 534.7z" />
+                        </svg>
+                        <svg class="add-activity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                          *ngIf="activity.action === 'New Book Added'">
+                          <path
+                            d="M192 576L512 576C529.7 576 544 561.7 544 544C544 526.3 529.7 512 512 512L512 445.3C530.6 438.7 544 420.9 544 400L544 112C544 85.5 522.5 64 496 64L192 64C139 64 96 107 96 160L96 480C96 533 139 576 192 576zM160 480C160 462.3 174.3 448 192 448L448 448L448 512L192 512C174.3 512 160 497.7 160 480zM288 184C288 175.2 295.2 168 304 168L336 168C344.8 168 352 175.2 352 184L352 224L392 224C400.8 224 408 231.2 408 240L408 272C408 280.8 400.8 288 392 288L352 288L352 328C352 336.8 344.8 344 336 344L304 344C295.2 344 288 336.8 288 328L288 288L248 288C239.2 288 232 280.8 232 272L232 240C232 231.2 239.2 224 248 224L288 224L288 184z" />
+                        </svg>
+                        <svg class="register-activity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                          *ngIf="activity.action === 'Register New Student'">
+                          <path
+                            d="M285.7 368C384.2 368 464 447.8 464 546.3C464 562.7 450.7 576 434.3 576L77.7 576C61.3 576 48 562.7 48 546.3C48 447.8 127.8 368 226.3 368L285.7 368zM528 144C541.3 144 552 154.7 552 168L552 216L600 216C613.3 216 624 226.7 624 240C624 253.3 613.3 264 600 264L552 264L552 312C552 325.3 541.3 336 528 336C514.7 336 504 325.3 504 312L504 264L456 264C442.7 264 432 253.3 432 240C432 226.7 442.7 216 456 216L504 216L504 168C504 154.7 514.7 144 528 144zM256 312C189.7 312 136 258.3 136 192C136 125.7 189.7 72 256 72C322.3 72 376 125.7 376 192C376 258.3 322.3 312 256 312z" />
+                        </svg>
+                        <svg class="update-activity" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640"
+                        *ngIf="activity.action === 'Update Stock'">
+                          <path
+                            d="M296.5 69.2C311.4 62.3 328.6 62.3 343.5 69.2L562.1 170.2C570.6 174.1 576 182.6 576 192C576 201.4 570.6 209.9 562.1 213.8L343.5 314.8C328.6 321.7 311.4 321.7 296.5 314.8L77.9 213.8C69.4 209.8 64 201.3 64 192C64 182.7 69.4 174.1 77.9 170.2L296.5 69.2zM112.1 282.4L276.4 358.3C304.1 371.1 336 371.1 363.7 358.3L528 282.4L562.1 298.2C570.6 302.1 576 310.6 576 320C576 329.4 570.6 337.9 562.1 341.8L343.5 442.8C328.6 449.7 311.4 449.7 296.5 442.8L77.9 341.8C69.4 337.8 64 329.3 64 320C64 310.7 69.4 302.1 77.9 298.2L112 282.4zM77.9 426.2L112 410.4L276.3 486.3C304 499.1 335.9 499.1 363.6 486.3L527.9 410.4L562 426.2C570.5 430.1 575.9 438.6 575.9 448C575.9 457.4 570.5 465.9 562 469.8L343.4 570.8C328.5 577.7 311.3 577.7 296.4 570.8L77.9 469.8C69.4 465.8 64 457.3 64 448C64 438.7 69.4 430.1 77.9 426.2z" />
+                        </svg>
+                      </div>
+                      <div class="activity-content">
+                        <div>
+                          <h4>{{activity.action}}</h4>
+                          <span class="activity-time">{{activity.description}}</span>
+                        </div>
+                        <div>
+                          <p>{{activity.created_at}}</p>
+                          <span class="activity-time">By: {{activity.performed_by}}</span>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </mat-card-content>
           </mat-card>
         </div>
@@ -124,36 +323,13 @@
                   <h4 class="fs-6 fw-bold">Student Names</h4>
                 </div>
                 <div class="header-section pt-0 px-0">
-                  <mat-icon>more_vert</mat-icon>
+                  <span class="view-all-link"><a href="/book-list">View All</a></span>
                 </div>
               </div>
               <app-table
                 [data]="studentDataSource"
                 [columns]="studentDataColumns"
-              ></app-table>
-            </mat-card-content>
-          </mat-card>
-        </div>
-      </div>
-    </div>
-    <div class="d-flex w-100 pb-2">
-      <div class="list-section w-100">
-        <div class="mx-1 px-2 pt-3 w-100">
-          <mat-card appearance="outlined" class="rounded-3">
-            <mat-card-content>
-              <div class="d-flex justify-content-between">
-                <div class="header-section pt-0 px-0">
-                  <div class="d-flex justify-content-center align-items-center">
-                    <h4 class="fs-6 fw-bold mx-2">Issued Books</h4>
-                  </div>
-                </div>
-                <div class="header-section pt-0 px-0">
-                  <mat-icon>more_vert</mat-icon>
-                </div>
-              </div>
-              <app-table
-                [data]="issuedBookDataSource"
-                [columns]="issuedBooksDataColumns"
+                [showPagination]="false"
               ></app-table>
             </mat-card-content>
           </mat-card>

@@ -1,7 +1,3 @@
-.font {
-font-family: "Playfair Display", serif;  font-weight: 500;
-}
-
 .example-header {
   position: fixed;
   top: 0;
@@ -9,31 +5,195 @@ font-family: "Playfair Display", serif;  font-weight: 500;
   right: 0;
   height: 60px;
 }
+
 .dashboard-content {
-  background-color: rgb(236, 243, 245);
-  min-height: 100vh;
+  background-color: rgb(245, 245, 245);
   height: auto;
-  width: 95%;
-  margin-left: 5%;
+  width: calc(100% - 15%);
+  margin-left: 15%;
   margin-top: 60px;
 }
+
 .grid-section {
   width: 100% !important;
   display: block;
   margin: auto;
 }
+
 .grid-options {
-  height: 110px;
+  height: 90px;
   width: 24%;
   margin: 1%;
   border-radius: 10px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.07);
+
+  :hover{
+    cursor: pointer;
+  }
 }
-h2 {
-font-family: "Playfair Display", serif;  font-weight: 500;
-  /* font-size: 1.3rem; */
-}
+
 .grid-image {
   width: 100%;
   height: 90%;
   object-fit: contain;
+}
+
+/* Individual icon colors */
+.student-icon {
+  color: #7e08d4;
+}
+
+.teacher-icon {
+  color: #038201;
+}
+
+.book-icon {
+  color: #3942dc;
+}
+
+.issue-icon {
+  color: #e9b102;
+}
+
+.overdue-icon {
+  color: #ef0823;
+}
+
+.box-svgs svg {
+  margin: 5px;
+  width: 55px;
+  height: 55px;
+  padding: 10px;
+  border-radius: 15px;
+  fill: currentColor;
+  background-color: color-mix(in srgb,
+      currentColor 15%,
+      white);
+}
+
+/* /////////////////////////// quick actions ///////////////////////////// */
+.quick-actions {
+  width: 99%;
+
+  mat-card {
+    box-shadow: 0 2px 8px rgba(74, 74, 74, 0.07);
+  }
+}
+
+.quick-action-cards {
+  display: flex;
+
+  mat-card {
+    border-radius: 10px;
+    width: 15%;
+    margin: auto;
+
+    :hover{
+      cursor: pointer;
+      background: #eef4fa;
+    }
+
+    h3 {
+      font-weight: 550;
+      font-size: 14px;
+    }
+  }
+
+  mat-card-content {
+    padding: 5px;
+  }
+}
+
+.quick-actions-svgs {
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 7px;
+  border-radius: 10px;
+  fill: currentColor;
+  background-color: color-mix(in srgb,
+      currentColor 15%,
+      white);
+}
+
+/* /////////////////////////////////////////////////////////////////////////////////////////// */
+.view-all-link a {
+  text-decoration: none;
+  font-weight: 550;
+}
+
+.activity-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 7px;
+  border-radius: 10px;
+  transition: 0.3s;
+}
+
+.activity-item:hover {
+  background: #eef4fa;
+}
+
+.activity-svgs svg{
+  margin: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 10px;
+  fill: currentColor;
+  background-color: color-mix(in srgb,
+      currentColor 15%,
+      white);
+}
+
+.activity-content {
+  flex: 1;
+  display: flex;
+  justify-content: space-between;
+}
+
+.activity-content h4 {
+  font-size: 13px;
+  font-weight: 600;
+  margin-bottom: 0px;
+}
+
+.activity-content p {
+  color: #6b7280;
+  font-size: 12px;
+  margin: 0;
+}
+
+.activity-time {
+  font-size: 12px;
+  color: #9ca3af;
+  font-weight: 500;
+}
+
+/* Icon Colors */
+.issue-activity {
+  background: #fad76c;
+  color: #e9b102;
+}
+
+.return-activity {
+  background: rgba(16, 185, 129, 0.12);
+  color: #10b981;
+}
+
+.add-activity {
+  background: rgba(139, 92, 246, 0.12);
+  color: #8b5cf6;
+}
+
+.register-activity {
+  background: rgba(245, 158, 11, 0.12);
+  color: #f59e0b;
+}
+
+.update-activity {
+  background-color: #038201;
+  color: rgb(20, 141, 3);
 }

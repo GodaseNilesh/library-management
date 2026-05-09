@@ -12,3 +12,21 @@ table {
   background-color: green !important;
   color: white;
 }
+
+.status-badge {
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-size: 13px;
+}
+
+/* Green */
+.status-success {
+  color: #198754;
+  background-color: rgba(25, 135, 84, 0.12);
+}
+
+/* Red */
+.status-danger {
+  color: #dc3545;
+  background-color: rgba(220, 53, 69, 0.12);
+}

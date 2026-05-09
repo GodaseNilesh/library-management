@@ -18,6 +18,8 @@ export class TableComponent {
   @Input() data: any[] = [];
   @Input() pageSize: number = 5;
   @Input() columns: { columnDef: string; header: string }[] = [];
+  @Input() showPagination: boolean = true;
+  @Input() tableName: String = '';
 
   @Output() onEdit: EventEmitter<any> = new EventEmitter<any>();
   @Output() onDetails: EventEmitter<any> = new EventEmitter<any>();

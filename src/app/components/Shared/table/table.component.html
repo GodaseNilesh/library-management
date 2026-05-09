@@ -39,7 +39,15 @@
                   {{ element[column.columnDef] }}
                 </span>
               </ng-container>
-              <ng-container *ngIf="column.columnDef !== 'availableStatus'">
+              <ng-container *ngIf="column.columnDef === 'status'">
+                <span class="fw-semibold status-badge" [ngClass]="{
+                  'status-success': element[column.columnDef] === 'issued',
+                  'status-danger': element[column.columnDef] !== 'issued'
+                }">
+                  {{ element[column.columnDef] }}
+                </span>
+              </ng-container>
+              <ng-container *ngIf="column.columnDef !== 'availableStatus' && column.columnDef !== 'status'">
                 <ng-container *ngTemplateOutlet="defaultCell"></ng-container>
               </ng-container>
             </ng-template>
@@ -53,7 +61,7 @@
         <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true" style="height: 40px;"></tr>
         <tr mat-row *matRowDef="let row; columns: displayedColumns" style="height: 40px;"></tr>
       </table>
-      <div class="paginator">
+      <div class="paginator" *ngIf="showPagination">
         <mat-paginator
           [length]="dataSource.data.length"
           [pageSize]="pageSize"

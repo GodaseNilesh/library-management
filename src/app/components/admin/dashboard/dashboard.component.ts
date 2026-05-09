@@ -17,7 +17,7 @@ export class DashboardComponent implements OnInit {
   studentCount: number = 0;
   teacherCount: number = 0;
   booksCount: number = 0;
-  issuedBooksCount: number = 0
+  issuedBooksCount: number = 0;
   availableBooksCount: number = 0;
   pendingRequestsCount: number = 0;
 
@@ -43,29 +43,60 @@ export class DashboardComponent implements OnInit {
   issuedBooksDisplayedColumns: any[] = [];
 
   BookDataColumns = [
-    { columnDef: 'id', header: 'ID' },
     { columnDef: 'title', header: 'Title' },
-    { columnDef: 'subject', header: 'Subject' },
     { columnDef: 'availableQuantity', header: 'Available Qty.' },
   ];
 
   studentDataColumns = [
-    { columnDef: 'studentId', header: 'User ID' },
     { columnDef: 'firstName', header: 'Student Name' },
     { columnDef: 'email', header: 'Student Email' },
     { columnDef: 'phone', header: 'Student Phone' },
   ];
 
   issuedBooksDataColumns = [
-    { columnDef: 'id', header: 'ID' },
-    { columnDef: 'userName', header: 'User Name' },
     { columnDef: 'bookId', header: 'Book Id' },
+    { columnDef: 'userName', header: 'User Name' },
     { columnDef: 'issueDate', header: 'Issued Date' },
     { columnDef: 'dueDate', header: 'Return Date' },
     { columnDef: 'status', header: 'Status' },
-    { columnDef: 'userType', header: 'User Type' },
-    { columnDef: 'overdueDays', header: 'Over Due(Days)' },
-    { columnDef: 'fine', header: 'Fine' },
+  ];
+
+  recentActivities:any[] = [
+    {
+      action: 'Book Issued',
+      description: 'Issued "Java Basics" to John Doe',
+      performed_by: 'Admin',
+      role: 'admin',
+      created_at: '2026-05-09 10:15 AM',
+    },
+    {
+      action: 'Book Returned',
+      description: 'Returned "Python Basics" by Nilesh',
+      performed_by: 'Librarian',
+      role: 'teacher',
+      created_at: '2026-05-09 09:40 AM',
+    },
+    {
+      action: 'New Book Added',
+      description: 'Added new book "Machine Learning"',
+      performed_by: 'Admin',
+      role: 'admin',
+      created_at: '2026-05-08 06:20 PM',
+    },
+    {
+      action: 'Register New Student',
+      description: 'Registered new student "Test User"',
+      performed_by: 'Admin',
+      role: 'admin',
+      created_at: '2026-05-08 03:10 PM',
+    },
+    {
+      action: 'Update Stock',
+      description: 'Updated stock for "Javascript Advanced"',
+      performed_by: 'Teacher',
+      role: 'teacher',
+      created_at: '2026-05-08 11:30 AM',
+    },
   ];
 
   constructor(
@@ -74,7 +105,7 @@ export class DashboardComponent implements OnInit {
     private teacherService: TeacherService,
     private bookService: BookService,
     private issuedBookService: IssuedBookService,
-    private userService: UserService
+    private userService: UserService,
   ) {}
 
   ngOnInit(): void {
@@ -83,9 +114,15 @@ export class DashboardComponent implements OnInit {
       this.teacherService.getAllTeachers(),
       this.bookService.getAllBooks(),
       this.issuedBookService.getAllIssuedBooks(),
-      this.userService.getPendingRegistrationRequests()
+      this.userService.getPendingRegistrationRequests(),
     ).subscribe(
-      ([studentRes, teacherRes, booksRes, issuedBookResponse, requests]: any) => {
+      ([
+        studentRes,
+        teacherRes,
+        booksRes,
+        issuedBookResponse,
+        requests,
+      ]: any) => {
         this.studentCount = studentRes.length;
         this.teacherCount = teacherRes.length;
         this.booksCount = booksRes.length;
@@ -97,39 +134,41 @@ export class DashboardComponent implements OnInit {
         }));
 
         this.booksDisplayedColumns = this.BookDataColumns.map(
-          (c) => c.columnDef
+          (c) => c.columnDef,
         );
-        this.bookDataSource = this.allBooksData;
+        this.bookDataSource = this.allBooksData.splice(0, 4);
 
         this.studentDisplayedColumns = this.studentDataColumns.map(
-          (c) => c.columnDef
+          (c) => c.columnDef,
         );
-        this.studentDataSource = studentRes.map((student:any)=>{
-          student.phone = student.phoneNumber
+        this.studentDataSource = studentRes.map((student: any) => {
+          student.phone = student.phoneNumber;
           return student;
-        })
+        }).splice(0,5);
 
         this.issuedBooksDisplayedColumns = this.issuedBooksDataColumns.map(
-          (c) => c.columnDef
+          (c) => c.columnDef,
         );
-        issuedBookResponse = issuedBookResponse.map((x: any, index: number) => ({
-          ...x,
-          id: index + 1,
-        }));
+        issuedBookResponse = issuedBookResponse.map(
+          (x: any, index: number) => ({
+            ...x,
+            id: index + 1,
+          }),
+        );
 
         issuedBookResponse.forEach((x: any, index: number) => {
           if (x.userType === 'Student') {
             const user = studentRes.find((y: any) => y.studentId === x.userId);
-            x.userName = user?.firstName + user?.lastName || '';
+            x.userName = user?.firstName + ' ' + user?.lastName || '';
           } else {
             const user = teacherRes.find((y: any) => y.teacherId === x.userId);
-            x.userName = user?.firstName + user?.lastName || '';
+            x.userName = user?.firstName + ' ' + user?.lastName || '';
           }
-          x.id= index + 1
+          x.id = index + 1;
         });
 
         this.issuedBookDataSource = issuedBookResponse;
-      }
+      },
     );
   }
 }
