@@ -5,361 +5,533 @@
   <div class="dashboard-content">
     <div class="d-flex justify-content-start">
       <div class="header-section mx-1">
-        <h4 class="font fs-6 fw-bolder">
-          <mat-icon class="fs-6 mt-2 custom-tooltip" routerLink="/student-list">
+        <h4 class="fs-7 fw-bolder" matTooltip="Back" matTooltipClass="custom-tooltip">
+          <mat-icon class="fs-6 mt-1 custom-tooltip" routerLink="/student-list">
             arrow_back_ios
           </mat-icon>
         </h4>
       </div>
       <div class="header-section">
-        <h4 class="font p-1 fs-6 fw-bolder">
+        <h4 class="fs-6 fw-bolder m-0">
           {{ this.studentId != "" ? "Update" : "Add" }} Student
         </h4>
+        <div class="breadcrumb-container">
+          <span class="breadcrumb-item" routerLink="/dashboard">
+            Dashboard
+          </span>
+          <span class="separator">
+            /
+          </span>
+          <span class="breadcrumb-item" routerLink="/student-list">
+            Student List
+          </span>
+          <span class="separator">
+            /
+          </span>
+          <span class="breadcrumb-active">
+            {{ this.studentId != "" ? "Update" : "Add" }} Student
+          </span>
+        </div>
       </div>
     </div>
-    <div class="w-100">
-      <mat-card appearance="outlined">
-        <mat-card-content>
-          <div class="login-container">
-            <form
-              class="login-form example-form w-100"
-              [formGroup]="studentForm"
-            >
-              <h2 class="font text-align-left mb-4">Student Info:</h2>
-              <div class="d-flex justify-content-between font mx-1 w-100">
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >First Name:<span class="text-danger fs-5">*</span>
-                  </label>
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. John"
-                      formControlName="firstName"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('firstName')?.touched &&
-                        studentForm?.get('firstName')?.hasError('required')
-                      "
-                    >
-                      First Name is required.
-                    </mat-error>
+    <form class="login-form example-form w-100" [formGroup]="studentForm">
+    <div class="d-flex gap-2 add-student-container">
+      <div class="w-75">
+        <mat-card appearance="outlined">
+          <mat-card-content>
+            <div class="">
+                <div class="info-svgs d-flex align-items-center mb-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                    <path fill="rgb(89, 0, 255)"
+                      d="M96 96C60.7 96 32 124.7 32 160L32 480C32 515.3 60.7 544 96 544L544 544C579.3 544 608 515.3 608 480L608 160C608 124.7 579.3 96 544 96L96 96zM176 352L240 352C284.2 352 320 387.8 320 432C320 440.8 312.8 448 304 448L112 448C103.2 448 96 440.8 96 432C96 387.8 131.8 352 176 352zM152 256C152 225.1 177.1 200 208 200C238.9 200 264 225.1 264 256C264 286.9 238.9 312 208 312C177.1 312 152 286.9 152 256zM392 208L504 208C517.3 208 528 218.7 528 232C528 245.3 517.3 256 504 256L392 256C378.7 256 368 245.3 368 232C368 218.7 378.7 208 392 208zM392 304L504 304C517.3 304 528 314.7 528 328C528 341.3 517.3 352 504 352L392 352C378.7 352 368 341.3 368 328C368 314.7 378.7 304 392 304z" />
+                  </svg>
+                  <h2 class="text-align-left mb-0 fs-6 fw-bolder">Personal Information</h2>
+                </div>
+                <div class="d-flex justify-content-between mx-1 w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label class="mx-1" style="width: 100%">First Name:<span class="text-danger fs-6">*</span>
+                    </label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="text" matInput placeholder="Ex. John" formControlName="firstName" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('firstName')?.touched && studentForm?.get('firstName')?.hasError('required')">
+                        First Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label class="mx-1" style="width: 100%">Last Name: <span class="text-danger fs-6">*</span></label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="text" matInput placeholder="Ex. Doe" formControlName="lastName" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error *ngIf="
+                                                    studentForm?.get('lastName')?.touched &&
+                                                    studentForm?.get('lastName')?.hasError('required')
+                                                  ">
+                        Last Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label class="mx-1" style="width: 100%">Email/Gmail:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="email" matInput placeholder="Ex. john@gmail.com" formControlName="email" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error *ngIf="
+                                                    studentForm?.get('email')?.touched &&
+                                                    studentForm.get('email')?.hasError('required')
+                                                  ">
+                        Email should be required.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                                    studentForm?.get('email')?.dirty &&
+                                                    studentForm.get('email')?.hasError('lowerCaseOnly')
+                                                  ">
+                        Email should contain only lowercase letters.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                                    studentForm?.get('email')?.dirty &&
+                                                    studentForm.get('email')?.hasError('noSpaces')
+                                                  ">
+                        Email should not contain spaces.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                                    studentForm?.get('email')?.dirty &&
+                                                    studentForm.get('email')?.hasError('singleAt') &&
+                                                    !studentForm.get('email')?.hasError('lowerCaseOnly')
+                                                  ">
+                        Email must contain one "@" symbol.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                                    studentForm?.get('email')?.dirty &&
+                                                    studentForm.get('email')?.hasError('gmailOnly')
+                                                  ">
+                        Email must end with @gmail.com.
+                      </mat-error>
+                    </div>
                   </div>
                 </div>
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >Last Name: <span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. Doe"
-                      formControlName="lastName"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('lastName')?.touched &&
-                        studentForm?.get('lastName')?.hasError('required')
-                      "
-                    >
-                      Last Name is required.
-                    </mat-error>
+
+                <div class="d-flex justify-content-between mx-1 font w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Gender:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field style="width: 70%" class="example-full-width">
+                      <mat-select formControlName="gender">
+                        <mat-option value="male">Male</mat-option>
+                        <mat-option value="female">Female</mat-option>
+                        <mat-option value="other">Other</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error *ngIf="
+                                        studentForm?.get('gender')?.touched &&
+                                        studentForm?.get('gender')?.hasError('required')
+                                      ">
+                        Gender is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Date Of Birth:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input matInput [matDatepicker]="dobDatePicker" formControlName="dob" />
+                      <mat-datepicker-toggle matIconSuffix [for]="dobDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #dobDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error *ngIf="
+                                        studentForm?.get('dob')?.touched &&
+                                        studentForm?.get('dob')?.hasError('required')
+                                      ">
+                        Date of Birth is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Phone No.:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field style="width: 70%" class="example-full-width">
+                      <input type="text" matInput placeholder="Ex. 1234567890" formControlName="phoneNo" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error *ngIf="
+                                        studentForm?.get('phoneNo')?.touched &&
+                                        studentForm?.get('phoneNo')?.hasError('required')
+                                      ">
+                        Phone No. is required.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                        studentForm?.get('phoneNo')?.touched &&
+                                        studentForm?.get('phoneNo')?.hasError('minlength')
+                                      ">
+                        Phone No. should be 10 digits.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                        studentForm?.get('phoneNo')?.touched &&
+                                        studentForm?.get('phoneNo')?.hasError('maxlength')
+                                      ">
+                        Phone No. should be 10 digits.
+                      </mat-error>
+                      <mat-error *ngIf="
+                                        studentForm?.get('phoneNo')?.touched &&
+                                        studentForm?.get('phoneNo')?.hasError('pattern')
+                                      ">
+                        Phone No. should be only digits.
+                      </mat-error>
+                    </div>
                   </div>
                 </div>
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >Email/Gmail:<span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="email"
-                      matInput
-                      placeholder="Ex. john@gmail.com"
-                      formControlName="email"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('email')?.touched &&
-                        studentForm.get('email')?.hasError('required')
-                      "
-                    >
-                      Email should be required.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('lowerCaseOnly')
-                      "
-                    >
-                      Email should contain only lowercase letters.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('noSpaces')
-                      "
-                    >
-                      Email should not contain spaces.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('singleAt') &&
-                        !studentForm.get('email')?.hasError('lowerCaseOnly')
-                      "
-                    >
-                      Email must contain one "@" symbol.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('email')?.dirty &&
-                        studentForm.get('email')?.hasError('gmailOnly')
-                      "
-                    >
-                      Email must end with @gmail.com.
-                    </mat-error>
+
+                <mat-divider></mat-divider>
+                <div class="info-svgs d-flex align-items-center mb-2 mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                    <path fill="rgb(89, 0, 255)"
+                      d="M80 259.8L289.2 345.9C299 349.9 309.4 352 320 352C330.6 352 341 349.9 350.8 345.9L593.2 246.1C602.2 242.4 608 233.7 608 224C608 214.3 602.2 205.6 593.2 201.9L350.8 102.1C341 98.1 330.6 96 320 96C309.4 96 299 98.1 289.2 102.1L46.8 201.9C37.8 205.6 32 214.3 32 224L32 520C32 533.3 42.7 544 56 544C69.3 544 80 533.3 80 520L80 259.8zM128 331.5L128 448C128 501 214 544 320 544C426 544 512 501 512 448L512 331.4L369.1 390.3C353.5 396.7 336.9 400 320 400C303.1 400 286.5 396.7 270.9 390.3L128 331.4z" />
+                  </svg>
+                  <h2 class="text-align-left mb-0 fs-6 fw-bolder">Academic Information</h2>
+                </div>
+
+                <div class="d-flex justify-content-between mx-1 w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Department:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field style="width: 70%" class="example-full-width">
+                      <mat-select formControlName="department">
+                        <mat-option value="science">Science</mat-option>
+                        <mat-option value="computer-applications">
+                          Computer Applications
+                        </mat-option>
+                        <mat-option value="commerce">Commerce</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('department')?.touched && studentForm?.get('department')?.hasError('required')">
+                        Department Name is required.
+                      </mat-error>
+                    </div>
                   </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Class / Course:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field>
+                      <mat-select formControlName="className">
+                        <mat-option value="bsc">BSc</mat-option>
+                        <mat-option value="msc">MSc</mat-option>
+                        <mat-option value="bca">BCA</mat-option>
+                        <mat-option value="mca">MCA</mat-option>
+                        <mat-option value="bcom">BCom</mat-option>
+                        <mat-option value="mcom">MCom</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('className')?.touched && studentForm?.get('className')?.hasError('required')">
+                        Class / Course Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Admission Date:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input matInput [matDatepicker]="admissionDatePicker" formControlName="admissionDate" />
+                      <mat-datepicker-toggle matIconSuffix [for]="admissionDatePicker"></mat-datepicker-toggle>
+                      <mat-datepicker #admissionDatePicker></mat-datepicker>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('admissionDate')?.touched && studentForm?.get('admissionDate')?.hasError('required')">
+                        Adminssion Date is required.
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between mx-1 w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">Year / Semester:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field style="width: 70%" class="example-full-width">
+                      <mat-select formControlName="yearSemester">
+                        <!-- Year -->
+                        <mat-option value="1st-year">1st Year</mat-option>
+                        <mat-option value="2nd-year">2nd Year</mat-option>
+                        <mat-option value="3rd-year">3rd Year</mat-option>
+
+                        <!-- Semester -->
+                        <mat-option value="semester-1">Semester 1</mat-option>
+                        <mat-option value="semester-2">Semester 2</mat-option>
+                        <mat-option value="semester-3">Semester 3</mat-option>
+                        <mat-option value="semester-4">Semester 4</mat-option>
+                        <mat-option value="semester-5">Semester 5</mat-option>
+                        <mat-option value="semester-6">Semester 6</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('yearSemester')?.touched && studentForm?.get('yearSemester')?.hasError('required')">
+                        Year / Semester Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label class="mx-1" style="width: 100%">Student ID:<span class="text-danger fs-6">*</span>
+                    </label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="text" matInput placeholder="Ex. S-748596" formControlName="studentId" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('studentId')?.touched && studentForm?.get('studentId')?.hasError('required')">
+                        Student Id is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label class="mx-1" style="width: 100%">Roll No:</label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="text" matInput placeholder="Ex. 13" formControlName="rollNo" />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <mat-divider></mat-divider>
+                <div class="info-svgs d-flex align-items-center mb-2 mt-2">
+                  <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                    <path fill="rgb(89, 0, 255)"
+                      d="M128 252.6C128 148.4 214 64 320 64C426 64 512 148.4 512 252.6C512 371.9 391.8 514.9 341.6 569.4C329.8 582.2 310.1 582.2 298.3 569.4C248.1 514.9 127.9 371.9 127.9 252.6zM320 320C355.3 320 384 291.3 384 256C384 220.7 355.3 192 320 192C284.7 192 256 220.7 256 256C256 291.3 284.7 320 320 320z" />
+                  </svg>
+                  <h2 class="text-align-left mb-0 fs-6 fw-bolder">Address Information</h2>
+                </div>
+
+                <div class="d-flex justify-content-start mx-1 w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 49%">
+                    <label class="mx-1" style="width: 100%">Address Line 1:<span class="text-danger fs-6">*</span>
+                    </label>
+                    <mat-form-field class="example-full-width" style="width: 90%">
+                      <input type="text" matInput placeholder="Enter address line 1" formControlName="addressLine1" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('addressLine1')?.touched && studentForm?.get('addressLine1')?.hasError('required')">
+                        Address Line 1 is required.
+                      </mat-error>
+                    </div>
+                  </div>
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 49%">
+                    <label class="mx-1" style="width: 100%">Address Line 2:</label>
+                    <mat-form-field class="example-full-width" style="width: 90%">
+                      <input type="text" matInput placeholder="Enter address Line 2" formControlName="addressLine2" />
+                    </mat-form-field>
+                  </div>
+                </div>
+
+                <div class="d-flex justify-content-between mx-1 w-100">
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">State:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field style="width: 70%" class="example-full-width">
+                      <mat-select formControlName="state">
+                        <mat-option value="maharashtra">Maharashtra</mat-option>
+                        <mat-option value="gujarat">Gujarat</mat-option>
+                        <mat-option value="punjab">Punjab</mat-option>
+                        <mat-option value="haryana">Haryana</mat-option>
+                        <mat-option value="delhi">Delhi</mat-option>
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('State')?.touched && studentForm?.get('State')?.hasError('required')">
+                        State Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
+                    <label style="width: 100%" class="mx-1">City:<span class="text-danger fs-6">*</span></label>
+                    <mat-form-field>
+                      <mat-select formControlName="city">
+
+                        <!-- Maharashtra -->
+                        <ng-container *ngIf="studentForm.get('state')?.value === 'maharashtra'">
+                          <mat-option value="pune">Pune</mat-option>
+                          <mat-option value="mumbai">Mumbai</mat-option>
+                          <mat-option value="nagpur">Nagpur</mat-option>
+                          <mat-option value="nashik">Nashik</mat-option>
+                        </ng-container>
+
+                        <!-- Gujarat -->
+                        <ng-container *ngIf="studentForm.get('state')?.value === 'gujarat'">
+                          <mat-option value="ahmedabad">Ahmedabad</mat-option>
+                          <mat-option value="surat">Surat</mat-option>
+                          <mat-option value="vadodara">Vadodara</mat-option>
+                          <mat-option value="rajkot">Rajkot</mat-option>
+                        </ng-container>
+
+                        <!-- Punjab -->
+                        <ng-container *ngIf="studentForm.get('state')?.value === 'punjab'">
+                          <mat-option value="amritsar">Amritsar</mat-option>
+                          <mat-option value="ludhiana">Ludhiana</mat-option>
+                          <mat-option value="jalandhar">Jalandhar</mat-option>
+                        </ng-container>
+
+                        <!-- Haryana -->
+                        <ng-container *ngIf="studentForm.get('state')?.value === 'haryana'">
+                          <mat-option value="gurgaon">Gurgaon</mat-option>
+                          <mat-option value="faridabad">Faridabad</mat-option>
+                          <mat-option value="panipat">Panipat</mat-option>
+                        </ng-container>
+
+                        <!-- Delhi -->
+                        <ng-container *ngIf="studentForm.get('state')?.value === 'delhi'">
+                          <mat-option value="new-delhi">New Delhi</mat-option>
+                          <mat-option value="dwarka">Dwarka</mat-option>
+                          <mat-option value="rohini">Rohini</mat-option>
+                        </ng-container>
+
+                      </mat-select>
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('city')?.touched && studentForm?.get('city')?.hasError('required')">
+                        City Name is required.
+                      </mat-error>
+                    </div>
+                  </div>
+
+                  <div class="mb-4 d-block justify-content-center align-items-center" style="width: 48%">
+                    <label class="mx-1" style="width: 100%">Postal Code:<span class="text-danger fs-6">*</span>
+                    </label>
+                    <mat-form-field class="example-full-width" style="width: 70%">
+                      <input type="text" matInput placeholder="123456" formControlName="postalCode" />
+                    </mat-form-field>
+                    <div style="display: block" class="custom-error">
+                      <mat-error
+                        *ngIf="studentForm?.get('postalCode')?.touched && studentForm?.get('postalCode')?.hasError('required')">
+                        Postal Code is required.
+                      </mat-error>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="m-2 mx-3 d-flex justify-content-between action-btns">
+                  <button mat-raised-button class="d-flex" type="button" (click)="studentForm.reset()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+                      <path fill="rgb(0, 0, 0)"
+                        d="M320 128C263.2 128 212.1 152.7 176.9 192L224 192C241.7 192 256 206.3 256 224C256 241.7 241.7 256 224 256L96 256C78.3 256 64 241.7 64 224L64 96C64 78.3 78.3 64 96 64C113.7 64 128 78.3 128 96L128 150.7C174.9 97.6 243.5 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576C233 576 156.1 532.6 109.9 466.3C99.8 451.8 103.3 431.9 117.8 421.7C132.3 411.5 152.2 415.1 162.4 429.6C197.2 479.4 254.8 511.9 320 511.9C426 511.9 512 425.9 512 319.9C512 213.9 426 128 320 128z" />
+                    </svg>
+                    <span> Reset</span>
+                  </button>
+
+                  <div class="d-flex gap-3">
+                    <button mat-raised-button class="px-3" type="button" routerLink="/student-list">
+                      <span>Cancel</span>
+                    </button>
+
+                    <button mat-raised-button color="primary" class="px-3 add-student-btn" type="button"
+                      (click)="saveStudent()" [disabled]="studentForm.invalid">
+                      <span>{{ this.studentId != "" ? "Update" : "Save" }} Student</span>
+                    </button>
+                  </div>
+                </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
+      <div class="w-25">
+        <mat-card class="example-card" appearance="outlined">
+          <mat-card-content>
+            <div class="info-svgs d-flex align-items-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="rgb(3, 93, 162)"
+                  d="M406.5 399.6C387.4 352.9 341.5 320 288 320l-64 0c-53.5 0-99.4 32.9-118.5 79.6-35.6-37.3-57.5-87.9-57.5-143.6 0-114.9 93.1-208 208-208s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6zm-40.1 32.7C334.4 452.4 296.6 464 256 464s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3l64 0c38.8 0 71.2 27.6 78.5 64.3zM256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-272a40 40 0 1 1 0-80 40 40 0 1 1 0 80zm-88-40a88 88 0 1 0 176 0 88 88 0 1 0 -176 0z" />
+              </svg>
+              <h2 class="text-align-left mb-0 fs-6 fw-bolder">Student Photo</h2>
+            </div>
+            <div class="d-flex justify-content-between mx-1 w-100">
+              <div class="profile-wrapper">
+                <div class="photo-wrapper">
+                  <img [src]="selectedImage || '../../../assets/images/default_profile_photo.png'" alt="Profile photo">
+                </div>
+                <div class="profile-content-wrapper">
+                  <input type="file" #fileInput hidden accept="image/*" (change)="onFileSelected($event)" />
+                  <button mat-raised-button class="upload-btn" type="button" (click)="fileInput.click()">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 448 512" width="18" height="18">
+                      <path fill="rgb(3, 93, 162)"
+                        d="M246.6 9.4c-12.5-12.5-32.8-12.5-45.3 0l-128 128c-12.5 12.5-12.5 32.8 0 45.3s32.8 12.5 45.3 0L192 109.3 192 320c0 17.7 14.3 32 32 32s32-14.3 32-32l0-210.7 73.4 73.4c12.5 12.5 32.8 12.5 45.3 0s12.5-32.8 0-45.3l-128-128zM64 352c0-17.7-14.3-32-32-32S0 334.3 0 352l0 64c0 53 43 96 96 96l256 0c53 0 96-43 96-96l0-64c0-17.7-14.3-32-32-32s-32 14.3-32 32l0 64c0 17.7-14.3 32-32 32L96 448c-17.7 0-32-14.3-32-32l0-64z" />
+                    </svg>
+                    <span>Upload Photo</span>
+                  </button>
+                </div>
+                <div class="d-flex justify-content-center" style="font-size: 10px; margin: auto;">
+                  <span>JPG, PNG. Max size: 2MB</span>
                 </div>
               </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
 
-              <div class="d-flex justify-content-between mx-1 font w-100">
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label style="width: 25%" class="mx-1"
-                    >Class Name:<span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field style="width: 70%" class="example-full-width">
-                    <mat-select formControlName="className">
-                      <mat-option value="class-1">class-1</mat-option>
-                      <mat-option value="class-2">class-2</mat-option>
-                      <mat-option value="class-3">class-3</mat-option>
-                      <mat-option value="class-4">class-4</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('className')?.touched &&
-                        studentForm?.get('className')?.hasError('required')
-                      "
-                    >
-                      Class Name is required.
-                    </mat-error>
-                  </div>
-                </div>
+        <mat-card class="example-card mt-2" appearance="outlined">
+          <mat-card-content>
+            <div class="info-svgs d-flex align-items-center mb-2">
+              <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+                <path fill="rgb(3, 93, 162)"
+                  d="M406.5 399.6C387.4 352.9 341.5 320 288 320l-64 0c-53.5 0-99.4 32.9-118.5 79.6-35.6-37.3-57.5-87.9-57.5-143.6 0-114.9 93.1-208 208-208s208 93.1 208 208c0 55.7-21.9 106.2-57.5 143.6zm-40.1 32.7C334.4 452.4 296.6 464 256 464s-78.4-11.6-110.5-31.7c7.3-36.7 39.7-64.3 78.5-64.3l64 0c38.8 0 71.2 27.6 78.5 64.3zM256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zm0-272a40 40 0 1 1 0-80 40 40 0 1 1 0 80zm-88-40a88 88 0 1 0 176 0 88 88 0 1 0 -176 0z" />
+              </svg>
+              <h2 class="text-align-left mb-0 fs-6 fw-bolder">Additional Information</h2>
+            </div>
 
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label style="width: 25%" class="mx-1"
-                    >Department:<span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field style="width: 70%" class="example-full-width">
-                    <mat-select formControlName="department">
-                      <mat-option value="department-1">Department-1</mat-option>
-                      <mat-option value="department-2">Department-2</mat-option>
-                      <mat-option value="department-3">Department-3</mat-option>
-                      <mat-option value="department-4">Department-4</mat-option>
-                    </mat-select>
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('department')?.touched &&
-                        studentForm?.get('department')?.hasError('required')
-                      "
-                    >
-                      Department is required.
-                    </mat-error>
-                  </div>
-                </div>
-
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label style="width: 25%" class="mx-1"
-                    >Phone No.:<span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field style="width: 70%" class="example-full-width">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. 1234567890"
-                      formControlName="phoneNo"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('required')
-                      "
-                    >
-                      Phone No. is required.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('minlength')
-                      "
-                    >
-                      Phone No. should be 10 digits.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('maxlength')
-                      "
-                    >
-                      Phone No. should be 10 digits.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('phoneNo')?.touched &&
-                        studentForm?.get('phoneNo')?.hasError('pattern')
-                      "
-                    >
-                      Phone No. should be only digits.
-                    </mat-error>
-                  </div>
-                </div>
+            <div class="w-100">
+              <div class="mb-4 d-block justify-content-center align-items-center">
+                <label style="width: 100%" class="mx-1">Blood Group:</label>
+                <mat-form-field class="example-full-width">
+                  <mat-select formControlName="bloodGroup" placeholder="Select Blood Group">
+                    <mat-option value="A">A</mat-option>
+                    <mat-option value="A+">A+</mat-option>
+                    <mat-option value="A-">A-</mat-option>
+                    <mat-option value="B">B</mat-option>
+                    <mat-option value="B+">B+</mat-option>
+                    <mat-option value="B-">B-</mat-option>
+                    <mat-option value="AB">AB</mat-option>
+                    <mat-option value="AB+">AB+</mat-option>
+                    <mat-option value="AB-">AB-</mat-option>
+                    <mat-option value="O">O</mat-option>
+                    <mat-option value="O+">O+</mat-option>
+                    <mat-option value="O-">O-</mat-option>
+                  </mat-select>
+                </mat-form-field>
               </div>
 
-              <!-- <div class="d-flex justify-content-between font mx-1 w-100">
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >Username:<span class="text-danger fs-5">*</span>
-                  </label>
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. John"
-                      formControlName="username"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('username')?.touched &&
-                        studentForm?.get('username')?.hasError('required')
-                      "
-                    >
-                      Username is required.
-                    </mat-error>
-                  </div>
-                </div>
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >Password: <span class="text-danger fs-5">*</span></label
-                  >
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. Doe"
-                      formControlName="password"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('password')?.touched &&
-                        studentForm?.get('password')?.hasError('required')
-                      "
-                    >
-                      Password is required.
-                    </mat-error>
-                  </div>
-                </div>
-                <div
-                  class="mb-4 d-block justify-content-center align-items-center"
-                  style="width: 32%"
-                >
-                  <label class="mx-1" style="width: 25%"
-                    >Confirm Password:<span class="text-danger fs-5"
-                      >*</span
-                    ></label
-                  >
-                  <mat-form-field class="example-full-width" style="width: 70%">
-                    <input
-                      type="text"
-                      matInput
-                      placeholder="Ex. john@gmail.com"
-                      formControlName="confirmPassword"
-                    />
-                  </mat-form-field>
-                  <div style="display: block" class="custom-error">
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('confirmPassword')?.touched &&
-                        studentForm.get('confirmPassword')?.hasError('required')
-                      "
-                    >
-                      Confirm Password is required.
-                    </mat-error>
-                    <mat-error
-                      *ngIf="
-                        studentForm?.get('confirmPassword')?.dirty &&
-                        studentForm?.get('password')?.value !== studentForm?.get('confirmPassword')?.value
-                      "
-                    >
-                      Confirm Password does not match.
-                    </mat-error>
-                  </div>
-                </div>
-              </div> -->
-
-              <div class="m-2 mx-3">
-                <button
-                  mat-raised-button
-                  color="primary"
-                  class="px-4"
-                  type="button"
-                  (click)="saveStudent()"
-                  [disabled]="
-                    studentForm.invalid ||
-                    studentForm?.get('password')?.value !==
-                      studentForm?.get('confirmPassword')?.value
-                  "
-                >
-                  <span
-                    >{{ this.studentId != "" ? "Update" : "Add" }} Student</span
-                  >
-                </button>
+              <div class="mb-4 d-block justify-content-center align-items-center">
+                <label class="mx-1" style="width: 100%">Library Membership No.:</label>
+                <mat-form-field class="example-full-width">
+                  <input type="text" matInput placeholder="Enter membership number" formControlName="libraryMembershipNo" />
+                </mat-form-field>
               </div>
-            </form>
-          </div>
-        </mat-card-content>
-      </mat-card>
+
+              <div class="mb-4 d-block justify-content-center align-items-center">
+                <label style="width: 100%" class="mx-1">Status:<span class="text-danger fs-6">*</span></label>
+                <mat-form-field class="example-full-width">
+                  <mat-select formControlName="status">
+                    <mat-option value="pending">Pending</mat-option>
+                    <mat-option value="accepted">Accepted</mat-option>
+                    <mat-option value="rejected">Rejected</mat-option>
+                    <mat-option value="blocked">Blocked</mat-option>
+                    <mat-option value="active">Active</mat-option>
+                    <mat-option value="inactive">Inactive</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            </div>
+          </mat-card-content>
+        </mat-card>
+      </div>
     </div>
+  </form>
   </div>
 </div>

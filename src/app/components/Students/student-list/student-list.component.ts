@@ -21,8 +21,8 @@ export class StudentListComponent implements OnInit {
   showImportOptions: boolean = false;
 
   StudentDataColumns = [
-    { columnDef: 'studentId', header: 'Student ID' },
     { columnDef: 'studentName', header: 'Student Name' },
+    { columnDef: 'studentId', header: 'Student ID' },
     { columnDef: 'email', header: 'Email' },
     { columnDef: 'class', header: 'Class' },
     { columnDef: 'department', header: 'Department' },
