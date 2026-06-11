@@ -22,13 +22,14 @@ export class CreateStudentComponent implements OnInit {
   studentForm!: FormGroup;
   studentId: string = '';
   isLoading: boolean = false;
+  selectedImage: string | ArrayBuffer | null = null;
 
   constructor(
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private router: Router,
     private student: StudentService,
-    private toastr:ToastrService
+    private toastr: ToastrService,
   ) {
     this.studentForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
@@ -36,16 +37,26 @@ export class CreateStudentComponent implements OnInit {
       email: new FormControl('', [Validators.required, this.customValidator]),
       className: new FormControl('', [Validators.required]),
       department: new FormControl('', [Validators.required]),
+      gender: new FormControl('', [Validators.required]),
+      dob: new FormControl('', [Validators.required]),
       phoneNo: new FormControl('', [
         Validators.required,
         Validators.minLength(10),
         Validators.maxLength(10),
-        // Validators.pattern('^[0-9]{10}$'),
         Validators.pattern(/^\d*$/),
       ]),
-      // username: new FormControl('', [Validators.required]),
-      // password: new FormControl('', [Validators.required]),
-      // confirmPassword: new FormControl('', [Validators.required]),
+      admissionDate: new FormControl('', [Validators.required]),
+      yearSemester: new FormControl('', [Validators.required]),
+      studentId: new FormControl('', [Validators.required]),
+      rollNo: new FormControl(''),
+      addressLine1: new FormControl('', [Validators.required]),
+      addressLine2: new FormControl(''),
+      state: new FormControl('', [Validators.required]),
+      city: new FormControl('', [Validators.required]),
+      postalCode: new FormControl('', [Validators.required]),
+      status: new FormControl('active', [Validators.required]),
+      libraryMembershipNo: new FormControl(''),
+      bloodGroup: new FormControl(''),
     });
   }
 
@@ -64,13 +75,26 @@ export class CreateStudentComponent implements OnInit {
               email: res.email,
               className: res.className,
               department: res.department,
+              gender: res.gender,
+              dob: res.dob,
               phoneNo: res.phoneNumber,
+              admissionDate: res.admissionDate,
+              yearSemester: res.yearSemester,
+              rollNo: res.rollNo,
+              addressLine1: res.addressLine1,
+              addressLine2: res.addressLine2,
+              state: res.state,
+              city: res.city,
+              postalCode: res.postalCode,
+              status: res.status,
+              libraryMembershipNo: res.libraryMembershipNo,
+              bloodGroup: res.bloodGroup,
             });
           },
           (error) => {
             console.log(error);
             this.toastr.error('Something went wrong!');
-          }
+          },
         );
         this.isLoading = false;
       }
@@ -88,7 +112,20 @@ export class CreateStudentComponent implements OnInit {
         email: this.studentForm.value.email,
         className: this.studentForm.value.className,
         department: this.studentForm.value.department,
+        gender: this.studentForm.value.gender,
+        dob: this.studentForm.value.dob,
         phone: this.studentForm.value.phoneNo,
+        admissionDate: this.studentForm.value.admissionDate,
+        yearSemester: this.studentForm.value.yearSemester,
+        rollNo: this.studentForm.value.rollNo,
+        addressLine1: this.studentForm.value.addressLine1,
+        addressLine2: this.studentForm.value.addressLine2,
+        state: this.studentForm.value.state,
+        city: this.studentForm.value.city,
+        postalCode: this.studentForm.value.postalCode,
+        status: this.studentForm.value.status,
+        libraryMembershipNo: this.studentForm.value.libraryMembershipNo,
+        bloodGroup: this.studentForm.value.bloodGroup,
       };
       this.student.saveStudent(reqBody).subscribe(
         (next) => {
@@ -96,7 +133,7 @@ export class CreateStudentComponent implements OnInit {
         },
         (error) => {
           console.log(error);
-        }
+        },
       );
       this.isLoading = false;
     } else {
@@ -107,7 +144,20 @@ export class CreateStudentComponent implements OnInit {
         email: this.studentForm.value.email,
         className: this.studentForm.value.className,
         department: this.studentForm.value.department,
-        phoneNumber: this.studentForm.value.phoneNo,
+        gender: this.studentForm.value.gender,
+        dob: this.studentForm.value.dob,
+        phone: this.studentForm.value.phoneNo,
+        admissionDate: this.studentForm.value.admissionDate,
+        yearSemester: this.studentForm.value.yearSemester,
+        rollNo: this.studentForm.value.rollNo,
+        addressLine1: this.studentForm.value.addressLine1,
+        addressLine2: this.studentForm.value.addressLine2,
+        state: this.studentForm.value.state,
+        city: this.studentForm.value.city,
+        postalCode: this.studentForm.value.postalCode,
+        status: this.studentForm.value.status,
+        libraryMembershipNo: this.studentForm.value.libraryMembershipNo,
+        bloodGroup: this.studentForm.value.bloodGroup,
       };
 
       this.student.updateStudentById(reqBody).subscribe(
@@ -117,7 +167,7 @@ export class CreateStudentComponent implements OnInit {
         (err) => {
           console.log(err);
           this.toastr.error('Something went wrong!');
-        }
+        },
       );
       this.isLoading = false;
     }
@@ -151,5 +201,16 @@ export class CreateStudentComponent implements OnInit {
     }
 
     return Object.keys(errors).length ? errors : null;
+  }
+
+  onFileSelected(event: any): void {
+    const file = event.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onload = () => {
+      this.selectedImage = reader.result;
+      };
+      reader.readAsDataURL(file);
+    }
   }
 }

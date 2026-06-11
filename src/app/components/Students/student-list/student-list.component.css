@@ -1,14 +1,20 @@
-.font {
-  font-family: "Playfair Display", serif;
-  font-weight: 500;
-}
 .dashboard-content {
-  background-color: rgb(236, 243, 245);
-  min-height: 700px;
-  width: 95%;
+  background-color: rgb(245, 245, 245);
+  height: 100vh;
+  width: calc(100% - 15%);
+  margin-left: 15%;
   padding: 1%;
-  margin-left: 5%;
   margin-top: 60px;
+
+  mat-card {
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.07);
+  }
+}
+
+::ng-deep .mat-mdc-text-field-wrapper{
+  padding: 0 10px !important;
+  border: 1px solid rgb(236, 233, 233);
+  border-radius: 10px;
 }
 
 .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
@@ -29,4 +35,23 @@
 .exportBtn{
   padding: 10px;
   margin: 0 0 10px 0;
+}
+
+.exportBtn:hover{
+  background: linear-gradient(135deg, #5a76ef 0%, #ab56f6 50%, #ae65f8 100%);
+  color: white;
+}
+
+.search-icon{
+  position: relative;
+  top: 25%;
+  right: 6%;
+  color: gray;
+  cursor: pointer;
+}
+
+.add-student-btn{
+  letter-spacing: normal;
+  background: linear-gradient(135deg, #5a76ef 0%, #ab56f6 50%, #ae65f8 100%);
+  color: white !important;
 }

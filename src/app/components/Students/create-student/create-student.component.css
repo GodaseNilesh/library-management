@@ -1,35 +1,38 @@
-.font {
-  font-family: "Playfair Display", serif;
-  font-weight: 500;
-}
 .dashboard-content {
-  background-color: rgb(236, 243, 245);
-  height: 100%;
-  min-height: 700px;
-  width: 95%;
+  background-color: rgb(245, 245, 245);
+  height: auto;
+  width: calc(100% - 15%);
+  margin-left: 15%;
   padding: 1%;
-  margin-left: 5%;
   margin-top: 60px;
+
+  mat-card {
+    border-radius: 10px;
+  }
 }
-.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined)
-  .mat-mdc-form-field-infix {
+
+.mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined) .mat-mdc-form-field-infix {
   padding-top: 10px;
   padding-bottom: 8px;
 }
+
 ::ng-deep .mat-mdc-form-field-subscript-wrapper {
   height: 0px !important;
 }
-::ng-deep
-  .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(
-    .mdc-text-field--textarea
-  )
-  .mat-mdc-form-field-infix {
+
+::ng-deep .mdc-text-field--no-label:not(.mdc-text-field--outlined):not(.mdc-text-field--textarea) .mat-mdc-form-field-infix {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+
 ::ng-deep .mat-mdc-form-field-infix {
   min-height: 35px;
 }
+
+::ng-deep .mat-mdc-form-field-flex {
+  height: 35px;
+}
+
 .my-tooltip {
   background-color: #333;
   color: #fff;
@@ -39,14 +42,102 @@
   margin: 4px;
 }
 
-.login-container {
+.add-student-container {
   background-color: white;
   border-radius: 10px;
   width: 100% !important;
   display: block;
   height: 100% !important;
+
+  label,
+  mat-form-field {
+    font-size: 13px;
+  }
+
+  label {
+    font-weight: 550;
+  }
 }
-.custom-error{
-  margin-left: 96px;
-  font-size: 13px;
+
+.custom-error {
+  font-size: 11px;
+}
+
+.info-svgs svg {
+  margin: 5px;
+  width: 35px;
+  height: 35px;
+  padding: 6px;
+  border-radius: 10px;
+  background-color: rgba(221, 217, 227, 0.588);
+}
+
+.action-btns {
+
+  button {
+    padding: 0 12px;
+  }
+
+  svg {
+    margin: 5px;
+    width: 30px;
+    height: 30px;
+    padding: 6px;
+  }
+}
+
+.add-student-btn {
+  letter-spacing: normal;
+  background: linear-gradient(135deg, #5a76ef 0%, #ab56f6 50%, #ae65f8 100%);
+  color: white !important;
+}
+
+.add-student-btn:disabled {
+  background: gray;
+}
+
+/* /////////////////////////// profile section /////////////////////////// */
+.profile-wrapper {
+  width: 75%;
+  height: 205px;
+  margin: auto;
+  margin-top: 10px;
+  border-radius: 5px;
+  background-color: aliceblue;
+}
+
+.photo-wrapper {
+  width: 50%;
+  height: 50%;
+  margin: auto;
+  margin-top: 10%;
+}
+
+.photo-wrapper img {
+  border-radius: 50%;
+  border: 1px solid rgb(172, 214, 251);
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.upload-btn {
+  background-color: whitesmoke;
+  color: #5a76ef !important;
+  font-size: 14px;
+  letter-spacing: inherit;
+  font-weight: 600;
+}
+
+.profile-content-wrapper {
+  margin: auto;
+  display: flex;
+  justify-content: center;
+  margin-top: 7%;
+}
+
+.profile-content-wrapper svg {
+  width: 15px;
+  height: 15px;
+  margin-right: 10px;
 }

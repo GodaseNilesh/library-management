@@ -21,3 +21,43 @@ h5,
 h6 {
   font-family: "Precision Sans", "Century Gothic", CenturyGothic, sans-serif !important;
 }
+
+.custom-tooltip .mdc-tooltip__surface {
+  position: relative;
+  bottom: 20px;
+}
+
+.mdc-data-table__cell, .mdc-data-table__header-cell {
+    padding: 0px 0px 0 10px;
+}
+
+/* ///////////////// breadcrumn start//////////////////////// */
+
+.breadcrumb-container {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-size: 13px;
+  font-weight: 500;
+  margin-bottom: 20px;
+}
+
+.breadcrumb-item {
+  color: #6b7280;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.breadcrumb-item:hover {
+  color: #111827;
+}
+
+.separator {
+  color: #9ca3af;
+}
+
+.breadcrumb-active {
+  color: #2563eb;
+  font-weight: 600;
+}
+/* ///////////////// breadcrumn start//////////////////////// */
