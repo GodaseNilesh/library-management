@@ -60,4 +60,19 @@ h6 {
   color: #2563eb;
   font-weight: 600;
 }
-/* ///////////////// breadcrumn start//////////////////////// */
+
+/* styles.scss */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus {
+  -webkit-box-shadow: 0 0 0 1000px #F3EDED inset !important;
+  -webkit-text-fill-color: #222 !important;
+}
+
+::ng-deep .mat-mdc-text-field-wrapper{
+  background-color: #F3EDED !important;
+}
+
+::ng-deep .ngx-toastr{
+  border-radius: 5px !important;
+}

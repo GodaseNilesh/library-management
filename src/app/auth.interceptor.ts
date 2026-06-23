@@ -53,7 +53,7 @@ export class AuthInterceptor implements HttpInterceptor {
 
   private handleSuccessResponse(response: HttpResponse<any>): void {
     let message = '';
-    if (response.status == 200 && response.url?.includes('/Auth/verify-otp')) {
+    if (response.status == 200 && (response.url?.includes('/Auth/verify-otp') || response.url?.includes('/Auth/login'))) {
       this.toastr.info(
         `Welcome back, ${response.body.user.userName}!`,
         'Login Successful',
@@ -64,11 +64,12 @@ export class AuthInterceptor implements HttpInterceptor {
         }
       );
     }
+    const endPoints = ['check-email', 'login'];
     if (this.methodType == 'PUT') {
       this.toastr.success(response.body.message ?? 'Data updated successfully!');
     } else if (this.methodType == 'DELETE') {
       this.toastr.success(response.body.message ?? 'Data deleted successfully!');
-    } else if (this.methodType == 'POST') {
+    } else if (this.methodType == 'POST' && !endPoints.some(ep => response.url?.includes(ep))) {
       this.toastr.success(response.body.message ?? 'Data added successfully!');
     }
   }
