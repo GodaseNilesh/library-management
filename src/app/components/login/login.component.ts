@@ -9,6 +9,7 @@ import { CommonDialogComponent } from '../Shared/common-dialog/common-dialog.com
 import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from 'src/app/Services/login.service';
 import { Router } from '@angular/router';
+import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs';
 
 @Component({
   selector: 'app-login',
@@ -34,6 +35,7 @@ export class LoginComponent implements OnInit {
   timer: any;
   timeUp: boolean = false;
   otp: string = '';
+  emailStatus: string = 'idle';
 
   loginForm!: FormGroup;
   signUpForm!: FormGroup;
@@ -41,10 +43,10 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private loginService: LoginService,
-    private router: Router
+    private router: Router,
   ) {
     this.loginForm = this.fb.group({
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
       userName: new FormControl('', []),
     });
@@ -53,26 +55,48 @@ export class LoginComponent implements OnInit {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       userRole: new FormControl('student', [Validators.required]),
-      email: new FormControl('', [Validators.required]),
+      email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
     });
   }
 
-  ngOnInit(): void {}
+  ngOnInit(): void {
+    this.signUpForm
+      .get('email')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap((email) => {
+          if (!email?.trim()) {
+            this.emailStatus = 'idle';
+          }
+        }),
+        filter((email) => !!email?.trim()),
+        tap((x) => {
+          this.emailStatus = 'checking';
+        }),
+        switchMap((email) => {
+          return this.loginService.checkEmail(email);
+        }),
+      )
+      .subscribe((res: any) => {
+        this.emailStatus = !res.exists ? 'available' : 'exists';
+      });
+  }
 
   login() {
     this.isLoading = true;
     let reqBody = {
-      userName: this.loginForm.value.userName,
-      emailId: this.loginForm.value.email,
+      email: this.loginForm.value.email,
       password: this.loginForm.value.password,
     };
     this.isClicked = true;
     this.loginService.userLogin(reqBody).subscribe(
       (next: any) => {
         this.isLoading = false;
-        this.isForgotPasswordPage = true;
+        // this.isForgotPasswordPage = true;
+        this.storeUserDetails(next);
         this.isLoginPage = false;
       },
       (error) => {
@@ -90,21 +114,26 @@ export class LoginComponent implements OnInit {
     };
     this.loginService.verifyOtp(reqBody).subscribe(
       (next: any) => {
-        sessionStorage.setItem('userId', next.user.userId);
-        sessionStorage.setItem('user Name', next.user.userName);
-        sessionStorage.setItem('token', next.token);
-        sessionStorage.setItem('expiresAt', next.expiresAt);
-        this.loginService.startTokenExpirationCheck();
-        this.router.navigate(['/dashboard']);
-        this.isClicked = true;
+        this.storeUserDetails(next);
       },
       (error) => {
         this.isClicked = false;
         this.isLoading = false;
         console.log(error);
-      }
+      },
     );
   }
+
+  storeUserDetails(userInfo:any) {
+    sessionStorage.setItem('userId', userInfo.user.userId);
+    sessionStorage.setItem('user Name', userInfo.user.userName);
+    sessionStorage.setItem('token', userInfo.token);
+    sessionStorage.setItem('expiresAt', userInfo.expiresAt);
+    this.loginService.startTokenExpirationCheck();
+    this.router.navigate(['/dashboard']);
+    this.isClicked = true;
+  }
+
   signUp() {
     this.isLoading = true;
     const formData = this.signUpForm.value;
@@ -113,7 +142,7 @@ export class LoginComponent implements OnInit {
       lastName: formData.lastName,
       emailId: formData.email,
       password: formData.password,
-      userRole: formData.userRole
+      userRole: formData.userRole,
     };
     this.isClicked = true;
     this.loginService.userSignup(reqBody).subscribe(
@@ -127,7 +156,7 @@ export class LoginComponent implements OnInit {
         this.isLoading = false;
         this.isClicked = false;
         console.log(error);
-      }
+      },
     );
   }
 

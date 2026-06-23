@@ -1,10 +1,29 @@
 .main {
-  background:
-  url("https://png.pngtree.com/background/20230527/original/pngtree-an-old-bookcase-in-a-library-picture-image_2760144.jpg") no-repeat center center/cover;
+  position: relative;
+  min-height: 100vh;
   display: flex;
   align-items: center;
   justify-content: center;
-  min-height: 100vh;
+  font-family: "Precision Sans", "Century Gothic", CenturyGothic, sans-serif;
+  overflow: hidden;
+}
+
+/* blurred background layer */
+.main::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: url("https://png.pngtree.com/background/20230527/original/pngtree-an-old-bookcase-in-a-library-picture-image_2760144.jpg")
+    no-repeat center center/cover;
+  filter: blur(4px);
+  transform: scale(1.1);
+  z-index: 0;
+}
+
+/* content stays above background */
+.main > * {
+  position: relative;
+  z-index: 1;
 }
 .login-container {
   display: block;
@@ -14,11 +33,17 @@
   backdrop-filter: blur(12px);
   border-radius: 16px;
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.2);
-  padding: 2rem 2.5rem;
+  padding: 2rem;
   width: 100%;
   max-width: 460px;
   transition: transform 0.2s ease-in-out;
+  background-color: #f3eded;
 }
+
+.signup-container {
+  max-width: 500px;
+}
+
 .login-container:hover {
   transform: translateY(-3px);
 }
@@ -36,19 +61,19 @@
   object-fit: contain;
 }
 .library-text {
-  color: #fbbd08;
+  color: #111827;
   font-weight: 700;
-  font-family: "Roboto Slab", serif;
   letter-spacing: 2px;
   text-shadow: none;
+  font-size: 30px;
 }
 .management {
   margin-top: -10px;
   font-weight: 500;
   font-size: 14px;
-  color: rgb(250, 212, 25);
-  font-family: "Poppins", sans-serif;
-  font-weight: 500;
+  color: royalblue;
+  font-weight: 600;
+  padding: 0 4px;
 }
 
 .login-form h2 {
@@ -60,18 +85,16 @@
   text-align: center;
   margin-top: 1rem;
   font-size: 0.9rem;
-  color: white;
+  color: #111827;
 }
 
 .signup-link a {
-  color: rgb(250, 177, 41);
+  color: #111827;
   text-decoration: none;
+  text-decoration: underline;
+  font-weight: 700;
 }
 
-.signup-link a:hover {
-  text-decoration: underline;
-  color: rgb(250, 177, 41);
-}
 .example-form {
   min-width: 150px;
   max-width: 500px;
@@ -79,7 +102,7 @@
 }
 
 .example-full-width {
-  width: 65%;
+  width: 75%;
 }
 i,
 .fa {
@@ -119,18 +142,31 @@ i,
   height: 35px;
   background-color: whitesmoke;
 }
+
+::ng-deep .input:-internal-autofill-selected{
+  background: white;
+}
+
 .font {
-  color: whitesmoke;
-  font-family: "Roboto Slab", serif;
+  color: #111827;
+  font-family: "Precision Sans", "Century Gothic", CenturyGothic, sans-serif;
   font-weight: 600;
 }
-.login-container ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field, .mat-mdc-form-field-flex {
+
+.login-container ::ng-deep .mat-mdc-text-field-wrapper.mdc-text-field,
+.mat-mdc-form-field-flex {
   background-color: transparent;
+  padding: auto 10px;
 }
 .login-container ::ng-deep .mat-mdc-form-field-flex {
   background-color: transparent;
 }
+
 ::ng-deep .mat-mdc-raised-button.mat-primary {
-  background-color: #f5a623 !important; /* your custom orange */
+  background-color: #2563EB !important;
   color: white !important;
+}
+
+::ng-deep .mat-mdc-raised-button:hover {
+  background-color: #1D4ED8 !important;
 }

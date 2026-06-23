@@ -32,6 +32,11 @@ export class LoginService {
     return this.application.postData(url, data);
   }
 
+  checkEmail(email: string) {
+    let url = environment.apiUrl + '/Auth/check-email?email=' + email;
+    return this.application.postData(url, '');
+  }
+
   verifyOtp(data: any) {
     let url = environment.apiUrl + '/Auth/verify-otp';
     return this.application.postData(url, data);
