@@ -141,3 +141,7 @@
   height: 15px;
   margin-right: 10px;
 }
+
+.disabled-section {
+  cursor: not-allowed;
+}

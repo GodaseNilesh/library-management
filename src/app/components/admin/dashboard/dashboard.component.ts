@@ -48,16 +48,16 @@ export class DashboardComponent implements OnInit {
   ];
 
   studentDataColumns = [
-    { columnDef: 'firstName', header: 'Student Name' },
-    { columnDef: 'email', header: 'Student Email' },
-    { columnDef: 'phone', header: 'Student Phone' },
+    { columnDef: 'firstName', header: 'First Name' },
+    { columnDef: 'email', header: 'Email' },
+    { columnDef: 'phone', header: 'Phone' },
   ];
 
   issuedBooksDataColumns = [
-    { columnDef: 'bookId', header: 'Book Id' },
-    { columnDef: 'userName', header: 'User Name' },
-    { columnDef: 'issueDate', header: 'Issued Date' },
-    { columnDef: 'dueDate', header: 'Return Date' },
+    { columnDef: 'book_id', header: 'Book Id' },
+    { columnDef: 'user_name', header: 'User Name' },
+    { columnDef: 'issue_date', header: 'Issued Date' },
+    { columnDef: 'due_date', header: 'Due Date' },
     { columnDef: 'status', header: 'Status' },
   ];
 
@@ -123,12 +123,12 @@ export class DashboardComponent implements OnInit {
         issuedBookResponse,
         requests,
       ]: any) => {
-        this.studentCount = studentRes.length;
-        this.teacherCount = teacherRes.length;
-        this.booksCount = booksRes.length;
-        this.issuedBooksCount = issuedBookResponse.length;
-        this.pendingRequestsCount = requests.length;
-        this.allBooksData = booksRes.map((x: any, index: number) => ({
+        this.studentCount = studentRes.data.totalRecords;
+        this.teacherCount = teacherRes.data.totalRecords;
+        this.booksCount = booksRes.data.totalRecords;
+        this.issuedBooksCount = issuedBookResponse.pagination.totalRecords;
+        this.pendingRequestsCount = requests.data.length;
+        this.allBooksData = booksRes.data.books.map((x: any, index: number) => ({
           ...x,
           id: index + 1,
         }));
@@ -141,15 +141,12 @@ export class DashboardComponent implements OnInit {
         this.studentDisplayedColumns = this.studentDataColumns.map(
           (c) => c.columnDef,
         );
-        this.studentDataSource = studentRes.map((student: any) => {
-          student.phone = student.phoneNumber;
-          return student;
-        }).splice(0,5);
+        this.studentDataSource = studentRes.data.students.splice(0,5);
 
         this.issuedBooksDisplayedColumns = this.issuedBooksDataColumns.map(
           (c) => c.columnDef,
         );
-        issuedBookResponse = issuedBookResponse.map(
+        issuedBookResponse = issuedBookResponse.data.map(
           (x: any, index: number) => ({
             ...x,
             id: index + 1,
@@ -157,14 +154,13 @@ export class DashboardComponent implements OnInit {
         );
 
         issuedBookResponse.forEach((x: any, index: number) => {
-          if (x.userType === 'Student') {
-            const user = studentRes.find((y: any) => y.studentId === x.userId);
-            x.userName = user?.firstName + ' ' + user?.lastName || '';
-          } else {
-            const user = teacherRes.find((y: any) => y.teacherId === x.userId);
-            x.userName = user?.firstName + ' ' + user?.lastName || '';
-          }
           x.id = index + 1;
+          x.issue_date = new Date(x.issue_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-');
+          x.due_date = new Date(x.due_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-');
         });
 
         this.issuedBookDataSource = issuedBookResponse;

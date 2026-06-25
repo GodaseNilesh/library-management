@@ -41,14 +41,12 @@ export class StudentListComponent implements OnInit {
       (value: any) => {
         console.log(value);
         this.StudentData = value;
-        this.StudentData = this.StudentData.map((x: any) => {
+        this.StudentData = this.StudentData.data.students.map((x: any) => {
           x.studentName = x.firstName + ' ' + x.lastName;
           x.action = 'edit,delete,details';
           x.class = x.className;
-          x.phone = x.phoneNumber;
           return x;
         });
-        console.log(this.StudentData);
         this.studentsDisplayedColumns = this.StudentDataColumns.map(
           (c) => c.columnDef
         );
