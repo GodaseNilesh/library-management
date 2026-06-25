@@ -25,6 +25,12 @@ table {
   background-color: rgba(25, 135, 84, 0.12);
 }
 
+/* Warning */
+.status-info {
+  color: rgb(84, 84, 253);
+  background-color: rgba(25, 135, 84, 0.12);
+}
+
 /* Red */
 .status-danger {
   color: #dc3545;

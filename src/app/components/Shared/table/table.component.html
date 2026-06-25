@@ -44,8 +44,9 @@
               </ng-container>
               <ng-container *ngIf="column.columnDef === 'status'">
                 <span class="fw-semibold status-badge" [ngClass]="{
-                  'status-success': element[column.columnDef] === 'issued',
-                  'status-danger': element[column.columnDef] !== 'issued'
+                  'status-info': element[column.columnDef] === 'Issued',
+                  'status-success': element[column.columnDef] === 'Returned',
+                  'status-danger': element[column.columnDef] === 'Overdue'
                 }">
                   {{ element[column.columnDef] }}
                 </span>

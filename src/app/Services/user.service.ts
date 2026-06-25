@@ -24,7 +24,7 @@ export class UserService {
   }
 
   getPendingRegistrationRequests() {
-    let url = environment.apiUrl + '/admin/pending-requests';
+    let url = environment.apiUrl + '/auth/pending-requests';
     return this.application.getData(url);
   }
 }
