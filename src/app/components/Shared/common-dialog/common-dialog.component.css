@@ -1,7 +1,3 @@
-.font {
-  font-family: 'serif';
-  font-weight: 500;
-}
 .dialog-modal {
   min-height: 250px;
   width: 400px;
@@ -10,6 +6,19 @@
   align-items: center;
   padding: 20px;
 }
+
+::ng-deep .mat-mdc-dialog-title {
+  font-family: "Precision Sans", "Century Gothic", CenturyGothic, sans-serif !important;
+  font-weight: 700 !important;
+  padding-bottom: 0 !important;
+}
+
+::ng-deep .mat-mdc-dialog-content{
+  font-family: "Precision Sans", "Century Gothic", CenturyGothic, sans-serif !important;
+  padding: 10px !important;
+  font-size: 12px !important;
+}
+
 .mdc-dialog__title::before {
   height: 0px;
 }

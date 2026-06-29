@@ -29,7 +29,6 @@ export class CreateTeacherComponent {
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
       email: new FormControl('', [Validators.required, this.customValidator]),
-      // className: new FormControl('', [Validators.required]),
       department: new FormControl('', [Validators.required]),
       phoneNo: new FormControl('', [
         Validators.required,
@@ -37,9 +36,12 @@ export class CreateTeacherComponent {
         Validators.maxLength(10),
         Validators.pattern(/^\d*$/),
       ]),
-      // username: new FormControl('', [Validators.required]),
-      // password: new FormControl('', [Validators.required]),
-      // confirmPassword: new FormControl('', [Validators.required]),
+      employeeId: new FormControl('', [Validators.required]),
+      joiningDate: new FormControl('', [Validators.required]),
+      designation: new FormControl('', [Validators.required]),
+      status: new FormControl('', [Validators.required]),
+      role: new FormControl('', [Validators.required]),
+      password: new FormControl(''),
     });
   }
 
@@ -50,12 +52,19 @@ export class CreateTeacherComponent {
         this.teacherId = id;
         this.teacherService.getTeacherById(this.teacherId).subscribe(
           (res: any) => {
+            const teacherInfo = res.data[0];
             this.teacherForm.patchValue({
-              firstName: res.firstName,
-              lastName: res.lastName,
-              email: res.email,
-              department: res.department,
-              phoneNo: res.phone,
+              firstName: teacherInfo.firstName,
+              lastName: teacherInfo.lastName,
+              email: teacherInfo.email,
+              department: teacherInfo.department,
+              phoneNo: teacherInfo.phoneNo,
+              employeeId: teacherInfo.employeeId,
+              joiningDate: teacherInfo.joiningDate,
+              designation: teacherInfo.designation,
+              status: teacherInfo.status,
+              role: teacherInfo.role,
+              password: teacherInfo.password
             });
           },
           (err) => {
@@ -67,15 +76,21 @@ export class CreateTeacherComponent {
   }
 
   saveTeacher() {
-    let requestBody = {
-      teacherId: '',
-      firstName: this.teacherForm.value.firstName,
-      lastName: this.teacherForm.value.lastName,
-      email: this.teacherForm.value.email,
-      phone: this.teacherForm.value.phoneNo,
-      department: this.teacherForm.value.department,
+    const teacherFormValue = this.teacherForm.value;
+    let requestBody:any = {
+      firstName: teacherFormValue.firstName,
+      lastName: teacherFormValue.lastName,
+      email: teacherFormValue.email,
+      phoneNo: teacherFormValue.phoneNo,
+      department: teacherFormValue.department,
+      employeeId: teacherFormValue.employeeId,
+      joiningDate: teacherFormValue.joiningDate,
+      designation: teacherFormValue.designation,
+      status: teacherFormValue.status === true ? 'active' : 'inactive',
+      role: teacherFormValue.role
     };
     if (!this.teacherId) {
+      requestBody.password = teacherFormValue.password;
       this.teacherService.saveTeacher(requestBody).subscribe(
         (res) => {
           console.log(res);

@@ -13,9 +13,9 @@ export class TeacherService {
     return this.application.postData(url, teacher);
   }
 
-  getAllTeachers() {
+  getAllTeachers(filter:any = {}) {
     let url = environment.apiUrl + '/Teacher';
-    return this.application.getData(url);
+    return this.application.getData(url, {params: filter});
   }
   getTeacherById(id: string) {
     let url = environment.apiUrl + `/Teacher/${id}`;

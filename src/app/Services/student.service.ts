@@ -12,9 +12,9 @@ export class StudentService {
     let url = environment.apiUrl + '/Student';
     return this.application.postData(url, student);
   }
-  getAllStudents() {
+  getAllStudents(filter:any = {}) {
     let url = environment.apiUrl + '/Student';
-    return this.application.getData(url);
+    return this.application.getData(url, {params: filter});
   }
   getStudentById(id: string) {
     let url = environment.apiUrl + '/Student' + `/${id}`;

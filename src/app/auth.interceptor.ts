@@ -66,11 +66,11 @@ export class AuthInterceptor implements HttpInterceptor {
     }
     const endPoints = ['check-email', 'login'];
     if (this.methodType == 'PUT') {
-      this.toastr.success(response.body.message ?? 'Data updated successfully!');
+      this.toastr.success(response.body.data.message ?? 'Data updated successfully!');
     } else if (this.methodType == 'DELETE') {
-      this.toastr.success(response.body.message ?? 'Data deleted successfully!');
+      this.toastr.success(response.body.data.message ?? 'Data deleted successfully!');
     } else if (this.methodType == 'POST' && !endPoints.some(ep => response.url?.includes(ep))) {
-      this.toastr.success(response.body.message ?? 'Data added successfully!');
+      this.toastr.success(response.body.data.message ?? 'Data added successfully!');
     }
   }
 
@@ -78,7 +78,7 @@ export class AuthInterceptor implements HttpInterceptor {
     error.error && typeof error.error === 'object'
       ? error.error instanceof Blob
         ? this.toastr.error('Something went wrong!')
-        : this.toastr.error(error.error.error)
+        : this.toastr.error(error.error.message)
       : this.toastr.error('Something went wrong!');
 
     if (error.error?.error?.includes('expired token') || error.status === 401) {

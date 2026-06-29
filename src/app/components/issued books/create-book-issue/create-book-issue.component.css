@@ -1,14 +1,9 @@
-.font {
-  font-family: "Playfair Display", serif;
-  font-weight: 500;
-}
 .dashboard-content {
-  background-color: rgb(236, 243, 245);
-  height: 100%;
-  min-height: 700px;
-  width: 95%;
+  background-color: rgb(245, 245, 245);
+  height: 100vh;
+  width: calc(100% - 15%);
   padding: 1%;
-  margin-left: 5%;
+  margin-left: 15%;
   margin-top: 60px;
 }
 .mat-mdc-text-field-wrapper:not(.mdc-text-field--outlined)
@@ -58,4 +53,68 @@
   background: linear-gradient(135deg, #627ced 0%, #7e57c2 50%, #643197 100%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
+}
+
+.modal-content svg{
+  margin: 5px;
+  width: 35px;
+  height: 35px;
+  padding: 8px;
+  margin-right: 10px;
+  border-radius: 10px;
+  fill: currentColor;
+  color: purple;
+  background-color: color-mix(in srgb,
+      currentColor 15%,
+      white);
+}
+
+.mat-mdc-card-content{
+  padding: 10px !important;
+}
+
+.confirm-message h5{
+  font-size: 12px !important;
+}
+
+.modal-content h5{
+  margin: 0 !important;
+  font-size: 14px;
+}
+
+.issue-details{
+  padding: 3px 0;
+}
+
+.no-overdue-fine{
+  background-color: rgb(217 243 217);
+  border-radius: 5px;
+
+  svg{
+    background-color: transparent !important;
+    padding: 5px !important;
+  }
+
+  .mat-mdc-card-content{
+    padding: 0 !important;
+  }
+}
+
+.overdue{
+  background-color: rgb(222 108 108 / 44%);
+  border-radius: 5px;
+
+  svg{
+    background-color: transparent !important;
+    padding: 5px !important;
+  }
+
+  .mat-mdc-card-content{
+    padding: 0 !important;
+  }
+
+  h6{
+    margin: 0 !important;
+    font-size: 12px !important;
+  }
 }

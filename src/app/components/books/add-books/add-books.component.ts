@@ -38,7 +38,7 @@ export class AddBooksComponent {
     });
   }
 
-  
+
   ngOnInit(): void {
     this.loadData();
   }
@@ -48,38 +48,37 @@ export class AddBooksComponent {
       id && (this.bookId = id);
       id &&
         this.bookService.getBookDetailsById(id).subscribe((res: any) => {
+          const bookInfo = res.data[0];
           this.bookForm.patchValue({
-            title: res.title,
-            author: res.author,
-            language: res.language,
-            isbn: res.isbn,
-            subject: res.subject,
-            availableQuantity: res.availableQuantity,
-            publisher: res.publisher,
-            publicationDate: new Date(res.publicationDate),
-            totalQuantity: res.totalQuantity,
-            availableStatus: res.availableStatus ? 'available' : 'unavailable',
+            title: bookInfo.title,
+            author: bookInfo.author,
+            language: bookInfo.language,
+            isbn: bookInfo.isbn,
+            subject: bookInfo.subject,
+            availableQuantity: bookInfo.available_quantity,
+            publisher: bookInfo.publisher,
+            publicationDate: new Date(bookInfo.publication_date),
+            totalQuantity: bookInfo.total_quantity,
+            availableStatus: bookInfo.available_status ? 'available' : 'unavailable',
           });
         });
     });
   }
   saveBook() {
     const formValue = this.bookForm.value;
-    const reqBody = {
-      bookId: this.bookId || 0,
+    const reqBody:any = {
       title: formValue.title,
       author: formValue.author,
       language: formValue.language,
-      isbn: String(formValue.isbn),
       subject: formValue.subject,
       availableQuantity: formValue.availableQuantity,
       publisher: formValue.publisher,
-      // publicationDate: new Date(formValue.publicationDate).toISOString().split('T')[0],
       publicationDate: new Date(formValue.publicationDate).toLocaleDateString('en-CA'),
       totalQuantity: formValue.totalQuantity,
       availableStatus: formValue.availableStatus === 'available' ? true : false,
     };
     if (!this.bookId) {
+      reqBody.isbn = String(formValue.isbn);
       this.bookService.saveBook(reqBody).subscribe(
         (res) => {
           this.router.navigate(['/book-list']);
@@ -89,7 +88,7 @@ export class AddBooksComponent {
         }
       );
     } else {
-      this.bookService.updateBookById(reqBody).subscribe(
+      this.bookService.updateBookById(this.bookId, reqBody).subscribe(
         (res) => {
           this.router.navigate(['/book-list']);
         },

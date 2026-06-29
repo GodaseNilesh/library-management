@@ -29,14 +29,12 @@ export class BookIssueHistoryComponent implements OnInit {
   issueBookRecords: any[] = [];
   issuedBooksDataSource: any[] = [];
   issuedBookDataColumns = [
-    { columnDef: 'issueId', header: 'ID' },
-    { columnDef: 'bookId', header: 'Book Id' },
-    { columnDef: 'bookName', header: 'Book Name' },
-    { columnDef: 'userName', header: 'User Name' },
-    { columnDef: 'userType', header: 'user Type' },
-    { columnDef: 'issueDate', header: 'Issue Date' },
-    { columnDef: 'dueDate', header: 'Due Date' },
-    { columnDef: 'quantity', header: 'Quantity' },
+    { columnDef: 'issue_id', header: 'ID' },
+    { columnDef: 'book_title', header: 'Book Name' },
+    { columnDef: 'user_name', header: 'User Name' },
+    { columnDef: 'role', header: 'user Type' },
+    { columnDef: 'issue_date', header: 'Issue Date' },
+    { columnDef: 'due_date', header: 'Due Date' },
     { columnDef: 'status', header: 'Status' },
     { columnDef: 'action', header: 'Action' },
   ];
@@ -52,31 +50,18 @@ export class BookIssueHistoryComponent implements OnInit {
     this.isLoading = true;
     let allBooksData: any[] = [];
     forkJoin(
-      this.bookService.getAllBooks(),
       this.issuedBookService.getAllIssuedBooks(),
-      this.studentService.getAllStudents(),
-      this.teacherService.getAllTeachers()
-    ).subscribe(([books, issuedBooks, students, teachers]: any) => {
-        allBooksData = books;
-        this.issueBookRecords = issuedBooks;
+    ).subscribe(([issuedBooks]: any) => {
+        this.issueBookRecords = issuedBooks.data;
         this.issueBookRecords = this.issueBookRecords.map((x: any) => {
           x.action = 'edit,delete';
+          x.issue_date = new Date(x.issue_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-');
+          x.due_date = new Date(x.due_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-');
           return x;
-        });
-
-        this.issueBookRecords.forEach((x: any) => {
-          const book = allBooksData.find((y: any) => y.bookId === x.bookId);
-          x.bookName = book?.title || '';
-        });
-
-        this.issueBookRecords.forEach((x: any) => {
-          if (x.userType === 'Student') {
-            const user = students.find((y: any) => y.studentId === x.userId);
-            x.userName = user?.firstName + user?.lastName || '';
-          } else {
-            const user = teachers.find((y: any) => y.teacherId === x.userId);
-            x.userName = user?.firstName + user?.lastName || '';
-          }
         });
 
         this.issuedBooksDataSource = this.issueBookRecords;
@@ -107,7 +92,7 @@ export class BookIssueHistoryComponent implements OnInit {
   onEditClicked(event: any) {
     console.log(event);
     this.router.navigate([
-      `issue-book-history/create-book-issue/${event.issueId}`,
+      `issue-book-history/create-book-issue/${event.issue_id}`,
     ]);
   }
   onDeleteClicked(event: any) {
@@ -116,16 +101,17 @@ export class BookIssueHistoryComponent implements OnInit {
       disableClose: true,
       data: {
         status: 'Confirm!',
-        message: 'Do you want delete this record?',
+        message: 'This action cannot be undone. The record will be permanently removed.',
         action: {
           cancel: true,
+          delete: true
         },
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'delete') {
         this.isLoading = true;
-        this.issuedBookService.deleteIssuedBookById(event.issueId).subscribe(
+        this.issuedBookService.deleteIssuedBookById(event.issue_id).subscribe(
           (res: any) => {
             console.log(res);
             this.loadData();

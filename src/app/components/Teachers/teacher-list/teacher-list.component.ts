@@ -22,7 +22,7 @@ export class TeacherListComponent {
     { columnDef: 'teacherName', header: 'Teacher Name' },
     { columnDef: 'email', header: 'Email' },
     { columnDef: 'department', header: 'Department' },
-    { columnDef: 'phone', header: 'Contact Number' },
+    { columnDef: 'phoneNo', header: 'Contact Number' },
     { columnDef: 'action', header: 'Action' },
   ];
 
@@ -38,7 +38,7 @@ export class TeacherListComponent {
     this.isLoading = true;
     this.teacherService.getAllTeachers().subscribe(
       (res: any) => {
-        this.teachersData = res;
+        this.teachersData = res.data.teachers;
         this.teachersData = this.teachersData.map((x: any) => {
           x.teacherName = x.firstName + ' ' + x.lastName;
           x.action = 'edit,delete,details';

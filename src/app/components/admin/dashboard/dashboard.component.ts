@@ -20,6 +20,7 @@ export class DashboardComponent implements OnInit {
   issuedBooksCount: number = 0;
   availableBooksCount: number = 0;
   pendingRequestsCount: number = 0;
+  isLoading: boolean = false;
 
   allBooksData: any = [];
   allAuthorsData: any[] = [];
@@ -54,50 +55,14 @@ export class DashboardComponent implements OnInit {
   ];
 
   issuedBooksDataColumns = [
-    { columnDef: 'book_id', header: 'Book Id' },
+    { columnDef: 'book_title', header: 'Book Name' },
     { columnDef: 'user_name', header: 'User Name' },
     { columnDef: 'issue_date', header: 'Issued Date' },
     { columnDef: 'due_date', header: 'Due Date' },
     { columnDef: 'status', header: 'Status' },
   ];
 
-  recentActivities:any[] = [
-    {
-      action: 'Book Issued',
-      description: 'Issued "Java Basics" to John Doe',
-      performed_by: 'Admin',
-      role: 'admin',
-      created_at: '2026-05-09 10:15 AM',
-    },
-    {
-      action: 'Book Returned',
-      description: 'Returned "Python Basics" by Nilesh',
-      performed_by: 'Librarian',
-      role: 'teacher',
-      created_at: '2026-05-09 09:40 AM',
-    },
-    {
-      action: 'New Book Added',
-      description: 'Added new book "Machine Learning"',
-      performed_by: 'Admin',
-      role: 'admin',
-      created_at: '2026-05-08 06:20 PM',
-    },
-    {
-      action: 'Register New Student',
-      description: 'Registered new student "Test User"',
-      performed_by: 'Admin',
-      role: 'admin',
-      created_at: '2026-05-08 03:10 PM',
-    },
-    {
-      action: 'Update Stock',
-      description: 'Updated stock for "Javascript Advanced"',
-      performed_by: 'Teacher',
-      role: 'teacher',
-      created_at: '2026-05-08 11:30 AM',
-    },
-  ];
+  recentActivities:any[] = [];
 
   constructor(
     public loginService: LoginService,
@@ -109,12 +74,14 @@ export class DashboardComponent implements OnInit {
   ) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     forkJoin(
       this.studentService.getAllStudents(),
       this.teacherService.getAllTeachers(),
       this.bookService.getAllBooks(),
       this.issuedBookService.getAllIssuedBooks(),
       this.userService.getPendingRegistrationRequests(),
+      this.userService.getActivities()
     ).subscribe(
       ([
         studentRes,
@@ -122,6 +89,7 @@ export class DashboardComponent implements OnInit {
         booksRes,
         issuedBookResponse,
         requests,
+        activities
       ]: any) => {
         this.studentCount = studentRes.data.totalRecords;
         this.teacherCount = teacherRes.data.totalRecords;
@@ -132,6 +100,14 @@ export class DashboardComponent implements OnInit {
           ...x,
           id: index + 1,
         }));
+
+        this.recentActivities = activities.map((activity: any) => ({
+          action: activity.activity_type,
+          description: activity.description,
+          performed_by: activity.created_by_name,
+          role: activity.role,
+          created_at: activity.created_at
+        })).reverse().slice(0,5);
 
         this.booksDisplayedColumns = this.BookDataColumns.map(
           (c) => c.columnDef,
@@ -164,6 +140,7 @@ export class DashboardComponent implements OnInit {
         });
 
         this.issuedBookDataSource = issuedBookResponse;
+        this.isLoading = false;
       },
     );
   }

@@ -76,3 +76,12 @@ input:-webkit-autofill:focus {
 ::ng-deep .ngx-toastr{
   border-radius: 5px !important;
 }
+
+/* /////////////////////////////////////////// width classes /////////////////////////////// */
+.w-40{
+  width: 40% !important;
+}
+
+.w-60{
+  width: 60% !important;
+}
