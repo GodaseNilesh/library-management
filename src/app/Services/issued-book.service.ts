@@ -26,7 +26,7 @@ export class IssuedBookService {
   }
 
   updateIssuedBookById(bookDetails: any) {
-    let url = environment.apiUrl + '/issue-book/' + bookDetails.issueId;
+    let url = environment.apiUrl + '/issue-book/' + bookDetails.issueId + '/renew';
     return this.application.putData(url, bookDetails);
   }
 
@@ -38,5 +38,10 @@ export class IssuedBookService {
   getIssuedBookById(issuedId: string) {
     let url = environment.apiUrl + '/issue-book/' + issuedId;
     return this.application.getData(url);
+  }
+
+  returnBookById(issuedId: string, payload: any) {
+    let url = environment.apiUrl + '/issue-book/' + issuedId + '/return';
+    return this.application.putData(url, payload);
   }
 }

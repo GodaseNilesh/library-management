@@ -3,11 +3,11 @@
   font-weight: 500;
 }
 .dashboard-content {
-  background-color: rgb(236, 243, 245);
-  min-height: 700px;
-  width: 95%;
+  background-color: rgb(245, 245, 245);
+  height: 100vh;
+  width: calc(100% - 15%);
   padding: 1%;
-  margin-left: 5%;
+  margin-left: 15%;
   margin-top: 60px;
 }
 

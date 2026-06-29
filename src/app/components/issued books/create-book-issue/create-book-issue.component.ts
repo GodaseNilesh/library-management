@@ -8,7 +8,8 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
-import { filter, map, Observable, startWith, tap } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
+import { debounceTime, distinctUntilChanged, filter, finalize, map, Observable, startWith, switchMap, tap } from 'rxjs';
 import { BookService } from 'src/app/Services/book.service';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { StudentService } from 'src/app/Services/student.service';
@@ -23,12 +24,15 @@ export class CreateBookIssueComponent {
   issuedBookForm: FormGroup;
   searchBookCtrl = new FormControl('');
   AllBooksData: any[] = [];
-  allUsers: any;
+  allUsers: any = [];
   today = new Date();
   isLoading: boolean = false;
   quantityAvailable: number = 1;
   issuedBookId!: string;
-  filteredOptions: Observable<any[]> | undefined;
+  filteredOptions: any;
+  issuedDetails: any;
+  isFineCollected: any = new FormControl(null);
+  showFineCollectedError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -37,100 +41,142 @@ export class CreateBookIssueComponent {
     private router: Router,
     private route: ActivatedRoute,
     private studentService: StudentService,
-    private teacherService: TeacherService
+    private teacherService: TeacherService,
+    private toastr:ToastrService
   ) {
     this.issuedBookForm = this.fb.group({
-      bookName: new FormControl('', [Validators.required]),
-      bookId: new FormControl('', [Validators.required]),
+      bookName: new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+      ]),
+      bookId: new FormControl({ value: '', disabled: true }, [
+        Validators.required,
+      ]),
       userType: new FormControl('', [Validators.required]),
       userName: new FormControl('', [Validators.required]),
-      issueDate: new FormControl(new Date(), [Validators.required]),
+      userId: new FormControl(''),
+      issueDate: new FormControl({ value: new Date(), disabled: true }, [
+        Validators.required,
+      ]),
       dueDate: new FormControl(new Date(), [Validators.required]),
-      issuedQuantity: new FormControl(1, [Validators.required,this.quantityValidator.bind(this)]),
-      issuedStatus: new FormControl('pending', [Validators.required]),
+      issuedQuantity: new FormControl({ value: 1, disabled: true }, [
+        Validators.required,
+        this.quantityValidator.bind(this),
+      ]),
+      issuedStatus: new FormControl({ value: 'Issued', disabled: true }, [
+        Validators.required,
+      ]),
     });
   }
 
-
   ngOnInit() {
-    this.bookService.getAllBooks().subscribe((res: any) => {
-      this.AllBooksData = res;
-    });
+    this.searchBookCtrl.valueChanges
+      .pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) => {
+          const filter = {
+            title: value || '',
+          };
+
+          return this.bookService
+            .getAllBooks(filter)
+            .pipe(finalize(() => (this.isLoading = false)));
+        }),
+      )
+      .subscribe({
+        next: (res: any) => {
+          this.AllBooksData = res.data.books;
+          this.filteredOptions = res.data.books;
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
 
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
         this.issuedBookId = id;
         this.issuedBookService.getIssuedBookById(id).subscribe((book: any) => {
-          let title = this.AllBooksData.filter((x) => {
-            return x.bookId == book.bookId;
-          })[0].title ?? '';
-          this.onBookSelected(title);
+          const bookInfo = book.data;
+          this.issuedDetails = bookInfo;
+          this.searchBookCtrl.setValue(bookInfo.book_title);
+          this.onBookSelected(bookInfo.book_title, bookInfo.book_id);
           this.issuedBookForm.patchValue({
-            bookId: book.bookId,
-            userType: book.userType,
-            userName: book.userName,
-            issueDate: new Date(book.issueDate),
-            dueDate: new Date(book.dueDate),
-            issuedQuantity: book.quantity,
-            issuedStatus: book.status,
+            bookId: bookInfo.book_id,
+            userType: bookInfo.role,
+            userName: bookInfo.full_name,
+            issueDate: new Date(bookInfo.issue_date),
+            dueDate: new Date(bookInfo.due_date),
+            issuedQuantity: 1,
+            issuedStatus: bookInfo.status,
           });
-          this.searchBookCtrl.setValue(title);
+          this.issuedBookForm.get('userType')?.disable();
+          this.issuedBookForm.get('userName')?.disable();
+          this.searchBookCtrl.disable();
+          if (bookInfo.return_date)
+            this.issuedBookForm.get('dueDate')?.disable();
         });
       }
     });
 
-    this.filteredOptions = this.searchBookCtrl.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '', this.AllBooksData))
-    );
+    this.issuedBookForm
+      .get('userName')
+      ?.valueChanges.pipe(
+        debounceTime(500),
+        distinctUntilChanged(),
+        tap(() => (this.isLoading = true)),
+        switchMap((value) => {
+          const filter = {
+            email: value || '',
+          };
 
-    this.allUsers = this.issuedBookForm.get('userName')?.valueChanges.pipe(
-      startWith(''),
-      map((value) => this._filter(value || '', this.allUsers as any))
-    );
-
-    this.issuedBookForm.get('userType')?.valueChanges.subscribe((userType) => {
-      if (userType === 'teacher') {
-        this.teacherService.getAllTeachers().subscribe((allTeachers: any) => {
-          this.allUsers = allTeachers.map((x: any) => {
-            x.fullName = x.firstName + ' ' + x.lastName;
-            x.userId = x.teacherId;
-            return x;
-          });
-        });
-      } else if (userType === 'student') {
-        this.studentService.getAllStudents().subscribe((allStudents: any) => {
-          this.allUsers = allStudents.map((x: any) => {
-            x.fullName = x.firstName + ' ' + x.lastName;
-            x.userId = x.studentId;
-            return x;
-          });
-        });
-      }
-    });
+          if (this.issuedBookForm.get('userType')?.value === 'teacher') {
+            return this.teacherService
+              .getAllTeachers(filter)
+              .pipe(finalize(() => (this.isLoading = false)));
+          } else {
+            return this.studentService
+              .getAllStudents(filter)
+              .pipe(finalize(() => (this.isLoading = false)));
+          }
+        }),
+      )
+      .subscribe({
+        next: (res: any) => {
+          if (this.issuedBookForm.get('userType')?.value === 'teacher') {
+            this.allUsers = res.data.teachers;
+          } else {
+            this.allUsers = res.data.students;
+          }
+        },
+        error: (err) => {
+          console.error(err);
+        },
+      });
   }
 
-  private _filter(
-    value: string, data:any[]=[]
-  ): { id: number; name: string; email: string; contactNo: string }[] {
-    const filterValue = value.toLowerCase();
-
-    return data.filter((option) =>
-      option.title.toLowerCase().includes(filterValue)
-    );
-  }
-  onBookSelected(bookName: string) {
+  onBookSelected(bookName: string, bookId: number = 0) {
     let selectedBook: any = this.AllBooksData.filter((book) => {
       return book.title == bookName;
     });
-
-    this.quantityAvailable = selectedBook[0].availableQuantity;
     this.issuedBookForm.patchValue({
-      bookName: selectedBook[0].title,
-      bookId: selectedBook[0].bookId,
-      // issuedQuantity: selectedBook[0].availableQuantity,
+      bookName: selectedBook.length ? selectedBook[0].title : bookName,
+      bookId: selectedBook.length ? selectedBook[0].bookId : bookId,
     });
+  }
+
+  onUserSelected(userName: string) {
+    const selectedUser = this.allUsers.find(
+      (x: any) => x.full_name === userName,
+    );
+    this.issuedBookForm.get('userId')?.setValue(selectedUser.userId);
+  }
+
+  onUserTypeChange(event: any) {
+    this.allUsers = [];
+    this.issuedBookForm.get('userName')?.setValue('');
   }
 
   quantityValidator(control: AbstractControl): ValidationErrors | null {
@@ -148,42 +194,79 @@ export class CreateBookIssueComponent {
   }
 
   saveIssuedBook() {
-    let formValue = this.issuedBookForm.value;
-    const reqBody = {
-      issueId: this.issuedBookId || 0,
-      // bookName: formValue.bookName,
-      bookId: formValue.bookId,
-      userType: formValue.userType,
-      userId: this.allUsers.find((x: any) => (x.fullName = formValue.userName)).userId,
-      issueDate:
-        typeof formValue.issueDate == 'string'
-          ? formValue.issueDate
-          : this.formatDateToLocalString(formValue.issueDate),
-      dueDate:
-        typeof formValue.dueDate == 'string'
-          ? formValue.dueDate
-          : this.formatDateToLocalString(formValue.dueDate),
-      quantity: formValue.issuedQuantity,
-      status: formValue.issuedStatus,
-    };
+    let formValue = this.issuedBookForm.getRawValue();
+    const closeRenewModalBtn = document.getElementById('closeRenewBookModal');
+
     if (!this.issuedBookId) {
+      const reqBody = {
+        bookId: formValue.bookId,
+        userId: formValue.userId,
+        dueDate:
+          typeof formValue.dueDate == 'string'
+            ? formValue.dueDate
+            : this.formatDateToLocalString(formValue.dueDate),
+        remarks: '',
+      };
       this.issuedBookService.saveIssuedBook(reqBody).subscribe(
         (res) => {
           this.router.navigate(['issue-book-history']);
         },
         (err) => {
           console.error(err);
-        }
+        },
       );
     } else {
+      const reqBody = {
+        issueId: this.issuedBookId,
+        dueDate:
+        typeof formValue.dueDate == 'string'
+        ? formValue.dueDate
+        : this.formatDateToLocalString(formValue.dueDate),
+      };
+
+      const isDuedateUpdate = reqBody.dueDate === this.formatDateToLocalString(new Date(this.issuedDetails.due_date));
+      if (isDuedateUpdate) {
+        this.toastr.info('Due date is unchanged.');
+        closeRenewModalBtn?.click();
+        return;
+      }
+
       this.issuedBookService.updateIssuedBookById(reqBody).subscribe(
         (res) => {
           this.router.navigate(['issue-book-history']);
+          closeRenewModalBtn?.click();
         },
         (err) => {
           console.error(err);
-        }
+          closeRenewModalBtn?.click();
+        },
       );
     }
+  }
+
+  returnIssuedBook() {
+    const isFineCollected = this.isFineCollected.value;
+    if (isFineCollected === null && this.issuedDetails?.is_overdue) {
+      this.showFineCollectedError = true;
+      return;
+    }
+    const reqBody = {
+      isFinePaid: isFineCollected || 0,
+      fineAmount: this.issuedDetails.fine_amount,
+    };
+
+    const closeModalBtn = document.getElementById('closeReturnBookModal');
+
+    this.issuedBookService.returnBookById(this.issuedBookId, reqBody).subscribe(
+      (res) => {
+        console.log(res);
+        closeModalBtn?.click();
+        this.router.navigate(['issue-book-history']);
+      },
+      (err) => {
+        console.log(err);
+        closeModalBtn?.click();
+      },
+    );
   }
 }

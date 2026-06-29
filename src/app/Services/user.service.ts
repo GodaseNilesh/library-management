@@ -27,4 +27,9 @@ export class UserService {
     let url = environment.apiUrl + '/auth/pending-requests';
     return this.application.getData(url);
   }
+
+  getActivities() {
+    let url = environment.apiUrl + '/auth/activities';
+    return this.application.getData(url);
+  }
 }

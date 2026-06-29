@@ -21,6 +21,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatRadioModule } from '@angular/material/radio';
 
 const components: any = [
   MatCardModule,
@@ -43,7 +44,8 @@ const components: any = [
   MatTabsModule,
   MatChipsModule,
   MatMenuModule,
-  MatTooltipModule
+  MatTooltipModule,
+  MatRadioModule
 ];
 @NgModule({
   declarations: [],

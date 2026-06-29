@@ -20,8 +20,8 @@ export class BookListComponent {
     { columnDef: 'bookId', header: 'Book ID' },
     { columnDef: 'title', header: 'Book Name' },
     { columnDef: 'language', header: 'Language' },
-    { columnDef: 'author', header: 'Author' },
-    { columnDef: 'publisher', header: 'Publisher' },
+    // { columnDef: 'author', header: 'Author' },
+    // { columnDef: 'publisher', header: 'Publisher' },
     { columnDef: 'isbn', header: 'ISBN' },
     { columnDef: 'subject', header: 'Subject' },
     { columnDef: 'availableStatus', header: 'Status' },
@@ -39,7 +39,7 @@ export class BookListComponent {
   }
   loadData() {
     this.bookService.getAllBooks().subscribe((res: any) => {
-      this.booksData = res;
+      this.booksData = res.data.books;
       this.booksData = this.booksData.map((x: any) => {
         x.action = 'edit,delete,details';
         x.availableStatus = x.availableStatus ? 'Available' : 'Unavailable';
@@ -76,9 +76,10 @@ export class BookListComponent {
       disableClose: true,
       data: {
         status: 'Confirm!',
-        message: 'Do you want delete this record?',
+        message: 'Are you sure you want to delete this book? This action cannot be undone.',
         action: {
           cancel: true,
+          delete: true
         },
       },
     });

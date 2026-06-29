@@ -21,6 +21,7 @@ export class TeacherDetailsComponent implements OnInit {
       department: new FormControl(''),
       mobileNo: new FormControl(''),
       email: new FormControl(''),
+      employeeId: new FormControl('')
     });
   }
   TeacherData = [
@@ -54,13 +55,14 @@ export class TeacherDetailsComponent implements OnInit {
       id &&
         this.teacherService.getTeacherById(id).subscribe(
           (res: any) => {
-            console.log(res);
+            const teacherInfo = res.data[0];
             this.teacherDetailsForm.patchValue({
-              teacherId: res.teacherId,
-              fullName: res.firstName + ' ' + res.lastName,
-              department: res.department,
-              mobileNo: res.phone,
-              email: res.email,
+              teacherId: teacherInfo.teacherId,
+              fullName: teacherInfo.firstName + ' ' + teacherInfo.lastName,
+              department: teacherInfo.department,
+              mobileNo: teacherInfo.phoneNo,
+              email: teacherInfo.email,
+              employeeId: teacherInfo.employeeId
             });
           },
           (err) => {

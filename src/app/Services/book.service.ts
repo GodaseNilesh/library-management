@@ -12,16 +12,16 @@ export class BookService {
     let url = environment.apiUrl + '/Book';
     return this.application.postData(url, bookDetails);
   }
-  getAllBooks() {
+  getAllBooks(filter: any = {}) {
     let url = environment.apiUrl + '/Book';
-    return this.application.getData(url);
+    return this.application.getData(url, { params: filter });
   }
   getBookDetailsById(id: string) {
     let url = environment.apiUrl + `/Book/${id}`;
     return this.application.getData(url);
   }
-  updateBookById(bookDetails: any) {
-    let url = environment.apiUrl + `/Book/${bookDetails.bookId}`;
+  updateBookById(bookId:any, bookDetails: any) {
+    let url = environment.apiUrl + `/Book/${bookId}`;
     return this.application.putData(url, bookDetails);
   }
   deleteBookById(id: string) {
