@@ -245,7 +245,6 @@
                   <mat-form-field class="example-full-width" style="width: 70%">
                     <input
                       matInput
-                      [min]="today"
                       [matDatepicker]="dueDatePicker"
                       formControlName="dueDate"
                     />
@@ -429,7 +428,7 @@
                               </div>
                               <div class="d-flex align-items-center w-60 gap-3">
                                 <h5 class="m-0">:</h5>
-                                <h5 class="m-0">{{issuedBookForm.get('dueDate')?.value | date:'dd-MM-yyyy'}}</h5>
+                                <h5 class="m-0">{{issuedDetails.due_date | date:'dd-MM-yyyy'}}</h5>
                               </div>
                             </div>
                             <mat-divider></mat-divider>
