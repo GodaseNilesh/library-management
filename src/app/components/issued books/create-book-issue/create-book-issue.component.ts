@@ -197,6 +197,12 @@ export class CreateBookIssueComponent {
     let formValue = this.issuedBookForm.getRawValue();
     const closeRenewModalBtn = document.getElementById('closeRenewBookModal');
 
+    const isDueDateValid = this.formatDateToLocalString(formValue.dueDate) >= this.formatDateToLocalString(this.today);
+    if (!isDueDateValid) {
+      this.toastr.info('Please select valid due date.');
+      return;
+    }
+
     if (!this.issuedBookId) {
       const reqBody = {
         bookId: formValue.bookId,

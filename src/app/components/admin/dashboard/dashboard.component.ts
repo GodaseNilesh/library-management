@@ -112,12 +112,12 @@ export class DashboardComponent implements OnInit {
         this.booksDisplayedColumns = this.BookDataColumns.map(
           (c) => c.columnDef,
         );
-        this.bookDataSource = this.allBooksData.splice(0, 4);
+        this.bookDataSource = this.allBooksData.slice(0, 5);
 
         this.studentDisplayedColumns = this.studentDataColumns.map(
           (c) => c.columnDef,
         );
-        this.studentDataSource = studentRes.data.students.splice(0,5);
+        this.studentDataSource = studentRes.data.students.splice(0,7);
 
         this.issuedBooksDisplayedColumns = this.issuedBooksDataColumns.map(
           (c) => c.columnDef,
@@ -139,7 +139,7 @@ export class DashboardComponent implements OnInit {
             .replace(/\//g, '-');
         });
 
-        this.issuedBookDataSource = issuedBookResponse;
+        this.issuedBookDataSource = issuedBookResponse.slice(0,5);
         this.isLoading = false;
       },
     );
