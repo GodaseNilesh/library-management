@@ -21,13 +21,21 @@
                   matTooltip="Details" matTooltipClass="custom-tooltip">
                   <mat-icon>keyboard_arrow_right</mat-icon>
                 </button>
+                <button *ngIf="act === 'remove'" mat-icon-button color="warn" (click)="onRemoveClicked(element)"
+                  matTooltip="Remove" matTooltipClass="custom-tooltip">
+                  <mat-icon>remove_circle</mat-icon>
+                </button>
+                <button *ngIf="act === 'add'" mat-icon-button color="success" (click)="onAddClicked(element)"
+                  matTooltip="Remove" matTooltipClass="custom-tooltip">
+                  <mat-icon class="text-success">add_circle</mat-icon>
+                </button>
                 <button class="m-2 approve-btn" *ngIf="act === 'approve'" mat-raised-button (click)="onApproveClicked(element)">
                   Approve <mat-icon>check_circle_outline</mat-icon>
                 </button>
                 <button class="m-2" *ngIf="act === 'reject'" mat-raised-button color="warn" (click)="onRejectClicked(element)">
                   Reject<mat-icon>cancel</mat-icon>
                 </button>
-                <button *ngIf="!['edit', 'delete', 'details', 'approve', 'reject'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
+                <button *ngIf="!['edit', 'delete', 'details', 'approve', 'reject', 'remove', 'add'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
                   <span class="text-light">{{ act }}</span>
                 </button>
               </ng-container>
@@ -44,9 +52,10 @@
               </ng-container>
               <ng-container *ngIf="column.columnDef === 'status'">
                 <span class="fw-semibold status-badge" [ngClass]="{
-                  'status-info': element[column.columnDef] === 'Issued',
-                  'status-success': element[column.columnDef] === 'Returned',
-                  'status-danger': element[column.columnDef] === 'Overdue'
+                  'status-info': ['Issued', 'pending', 'inactive'].includes(element[column.columnDef]),
+                  'status-success': ['Returned', 'active'].includes(element[column.columnDef]),
+                  'status-danger': ['Overdue', 'blocked'].includes(element[column.columnDef]),
+                  'status-warn': ['inactive'].includes(element[column.columnDef])
                 }">
                   {{ element[column.columnDef] }}
                 </span>

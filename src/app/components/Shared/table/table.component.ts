@@ -68,4 +68,12 @@ export class TableComponent {
   onRejectClicked(element: any) {
     this.onReject.emit(element);
   }
+
+  onRemoveClicked(element: any) {
+    this.onReject.emit(element);
+  }
+
+  onAddClicked(element: any) {
+    this.onApprove.emit(element);
+  }
 }

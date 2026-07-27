@@ -1,49 +1,75 @@
 <app-sidenavbar></app-sidenavbar>
 <app-loader *ngIf="isLoading"></app-loader>
 <div class="dashboard-content">
-    <div class="header-section w-100 pt-3 px-3">
-        <h4 class="font">Update User Roles & Permissions!</h4>
+    <div class="header-section w-100">
+      <h2>Users</h2>
+      <h4>Manage system users, roles and permissions.</h4>
     </div>
     <div class="grid-section d-flex justify-content-start m-0">
-        <div class="grid-options d-flex bg-white">
-            <div class="w-50">
-                <div class="m-3 p-2 mb-0 mt-4 pb-0">
-                    <span class="font fs-5 fw-normal">Users</span>
-                </div>
-                <div class="m-3 p-2 pt-0 mt-0">
-                    <span class="font fs-5 fw-normal">{{allUsers.length}}</span>
-                </div>
-            </div>
-            <div class="w-50 m-2 pt-1">
-                <img src="https://icon-library.com/images/user-icon-png-transparent/user-icon-png-transparent-23.jpg" alt="student icon" class="grid-image" />
-            </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-25 m-2 box-svgs">
+          <svg class="users-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+            <path
+              d="M320 80C377.4 80 424 126.6 424 184C424 241.4 377.4 288 320 288C262.6 288 216 241.4 216 184C216 126.6 262.6 80 320 80zM96 152C135.8 152 168 184.2 168 224C168 263.8 135.8 296 96 296C56.2 296 24 263.8 24 224C24 184.2 56.2 152 96 152zM0 480C0 409.3 57.3 352 128 352C140.8 352 153.2 353.9 164.9 357.4C132 394.2 112 442.8 112 496L112 512C112 523.4 114.4 534.2 118.7 544L32 544C14.3 544 0 529.7 0 512L0 480zM521.3 544C525.6 534.2 528 523.4 528 512L528 496C528 442.8 508 394.2 475.1 357.4C486.8 353.9 499.2 352 512 352C582.7 352 640 409.3 640 480L640 512C640 529.7 625.7 544 608 544L521.3 544zM472 224C472 184.2 504.2 152 544 152C583.8 152 616 184.2 616 224C616 263.8 583.8 296 544 296C504.2 296 472 263.8 472 224zM160 496C160 407.6 231.6 336 320 336C408.4 336 480 407.6 480 496L480 512C480 529.7 465.7 544 448 544L192 544C174.3 544 160 529.7 160 512L160 496z" />
+          </svg>
         </div>
-        <div class="grid-options d-flex bg-white">
-            <div class="w-50">
-                <div class="m-3 p-2 mb-0 mt-4 pb-0">
-                    <span class="font fs-5 fw-normal">Roles</span>
-                </div>
-                <div class="m-3 p-2 pt-0 mt-0">
-                    <span class="font fs-5 fw-normal">{{roles.length}}</span>
-                </div>
-            </div>
-            <div class="w-50 m-2 pt-1">
-                <img src="https://cdn.iconscout.com/icon/premium/png-256-thumb/identify-roles-icon-svg-download-png-5450881.png?f=webp" alt="Teacher icon" class="grid-image" />
-            </div>
+        <div class="w-75">
+          <div class="m-3 p-2 mb-0 pb-0">
+            <span class="fs-7 fw-bolder">Total Users</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="fs-6 fw-normal">{{allUsers.length}}</span> <br>
+            <span class="card-description">All registered users</span>
+          </div>
         </div>
+      </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-25 m-2 box-svgs">
+          <svg class="active-users-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512">
+            <path
+              d="M286 304c98.5 0 178.3 79.8 178.3 178.3 0 16.4-13.3 29.7-29.7 29.7L78 512c-16.4 0-29.7-13.3-29.7-29.7 0-98.5 79.8-178.3 178.3-178.3l59.4 0zM585.7 105.9c7.8-10.7 22.8-13.1 33.5-5.3s13.1 22.8 5.3 33.5L522.1 274.9c-4.2 5.7-10.7 9.4-17.7 9.8s-14-2.2-18.9-7.3l-46.4-48c-9.2-9.5-9-24.7 .6-33.9 9.5-9.2 24.7-8.9 33.9 .6l26.5 27.4 85.6-117.7zM256.3 248a120 120 0 1 1 0-240 120 120 0 1 1 0 240z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-3 p-2 mb-0 pb-0">
+            <span class="fs-7 fw-bolder">Active Users</span>
+          </div>
+          <div class="m-3 p-2 pt-0 mt-0">
+            <span class="fs-6 fw-normal">{{activeUsersCount}}</span> <br>
+            <span class="card-description">Currently active users</span>
+          </div>
+        </div>
+      </div>
+      <div class="grid-options d-flex bg-white">
+        <div class="w-25 m-2 box-svgs">
+          <svg class="roles-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+            <path
+              d="M224 248a120 120 0 1 0 0-240 120 120 0 1 0 0 240zm-29.7 56C95.8 304 16 383.8 16 482.3 16 498.7 29.3 512 45.7 512l251.5 0C261 469.4 240 414.5 240 356.4l0-31.1c0-7.3 1-14.5 2.9-21.3l-48.6 0zm251 184.5l-13.3 6.3 0-188.1 96 32 0 19.6c0 55.8-32.2 106.5-82.7 130.3zM421.9 259.5l-112 37.3c-13.1 4.4-21.9 16.6-21.9 30.4l0 31.1c0 74.4 43 142.1 110.2 173.7l18.5 8.7c4.8 2.2 10 3.4 15.2 3.4s10.5-1.2 15.2-3.4l18.5-8.7C533 500.3 576 432.6 576 358.2l0-31.1c0-13.8-8.8-26-21.9-30.4l-112-37.3c-6.6-2.2-13.7-2.2-20.2 0z" />
+          </svg>
+        </div>
+        <div class="w-75">
+          <div class="m-2 p-2 mb-0 pb-0 mt-3">
+            <span class="fs-7 fw-bolder">Total Roles</span>
+          </div>
+          <div class="m-3 pt-0 mt-0">
+            <span class="fs-6 fw-normal">{{totalRolesCount}}</span> <br>
+            <span class="card-description">All registered roles</span>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="d-flex w-100 pb-2">
         <div class="list-section">
-            <div class="mx-1 px-2 pt-3 w-100">
+            <div class="w-100">
                 <mat-card appearance="outlined" class="rounded-3">
                     <mat-card-content>
                         <div class="">
                             <mat-tab-group (selectedTabChange)="onTabChanged($event)">
                                 <mat-tab label="Users">
-                                    <app-table [data]="usersDataSource" (onEdit)="onEditClicked($event)" [columns]="usersDataColumns"></app-table>
+                                    <app-table [data]="usersDataSource" (onEdit)="openDrawer('User', $event)" (onDetails)="goToDetails($event)" [columns]="usersDataColumns"></app-table>
                                 </mat-tab>
                                 <mat-tab label="Roles">
-                                    <app-table [data]="rolesDataSource" (onEdit)="onEditClicked($event)" [columns]="rolesDataColumns"></app-table>
+                                    <app-table [data]="rolesDataSource" (onEdit)="openDrawer('Role', $event)" [columns]="rolesDataColumns"></app-table>
                                 </mat-tab>
                             </mat-tab-group>
                         </div>
@@ -51,136 +77,254 @@
                 </mat-card>
             </div>
         </div>
-        <div class="list-section" style="width: 48%;" *ngIf="isUserEditable">
-            <div class="mx-1 px-2 pt-3 w-100">
-                <mat-card appearance="outlined" class="rounded-3">
-                    <mat-card-content>
-                        <div class="">
-                            <h2 class="font text-align-left mb-0">Update User Role:</h2>
-                            <span class="mt-0 d-block">*Here you can update role only.</span>
-                            <form class="login-form example-form w-100 mt-4" [formGroup]="userForm">
-
-                                <div class="d-flex justify-content-between font mx-1 w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 15%">User Id:<span class="text-danger fs-5">*</span>
-                                        </label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="text" matInput formControlName="userId" class="cursor-not-allowed"/>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between font mx-1 w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 15%">User Name: <span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="text" matInput placeholder="Ex.John Doe" class="cursor-not-allowed" formControlName="userName" />
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mx-1 font w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 15%">Email/Gmail:<span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="email" matInput placeholder="Ex. john@gmail.com" class="cursor-not-allowed" formControlName="email" />
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mx-1 font w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label style="width: 15%" class="mx-1">User Role:<span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field style="width: 70%" class="example-full-width">
-                                            <mat-select formControlName="userRole">
-                                                <mat-option value="admin">Admin</mat-option>
-                                                <mat-option value="user">User</mat-option>
-                                            </mat-select>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="m-2 mx-3">
-                                    <button mat-raised-button color="primary" class="px-4" type="button" (click)="updateRole()"
-                                     [disabled]="userForm.invalid">
-                                        Update Role
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
-        <div class="list-section" style="width: 48%;" *ngIf="isRoleEditable">
-            <div class="mx-1 px-2 pt-3 w-100">
-                <mat-card appearance="outlined" class="rounded-3">
-                    <mat-card-content>
-                        <div class="">
-                            <h2 class="font text-align-left mb-0">Update User Role:</h2>
-                            <span class="mt-0 d-block">*Here you can add users for role only.</span>
-                            <form class="login-form example-form w-100 mt-4" [formGroup]="roleForm">
-
-                                <div class="d-flex justify-content-between font mx-1 w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 18%">Role Id:<span class="text-danger fs-5">*</span>
-                                        </label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="text" matInput formControlName="roleId" class="cursor-not-allowed"/>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between font mx-1 w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 18%">Role Name: <span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="text" matInput class="cursor-not-allowed" formControlName="roleName" />
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mx-1 font w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label class="mx-1" style="width: 18%">usersAssigned:<span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <input type="text" matInput class="cursor-not-allowed" formControlName="usersAssigned" />
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="d-flex justify-content-between mx-1 font w-100">
-                                    <div class="mb-4 d-flex justify-content-start align-items-center w-100">
-                                        <label style="width: 18%" class="mx-1">Add users:<span class="text-danger fs-5">*</span></label>
-                                        <mat-form-field class="example-full-width" style="width: 70%">
-                                            <mat-chip-grid #chipGrid>
-                                                <mat-chip-row *ngFor="let user of selectedUsers" [removable]="true" (removed)="removeUser(user)">
-                                                    {{user}}
-                                                    <mat-icon matChipRemove>cancel</mat-icon>
-                                                </mat-chip-row>
-                                                <input placeholder="Select users" [matAutocomplete]="auto" [formControl]="userCtrl" [matChipInputFor]="chipGrid"
-                                                    (matChipInputTokenEnd)="addUser($event)" />
-                                            </mat-chip-grid>
-                                            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selectUser($event)">
-                                                <mat-option *ngFor="let user of filteredUsers" [value]="user">
-                                                    {{user}}
-                                                </mat-option>
-                                            </mat-autocomplete>
-                                        </mat-form-field>
-                                    </div>
-                                </div>
-
-                                <div class="m-2 mx-3">
-                                    <button mat-raised-button color="primary" class="px-4" type="button" (click)="updateRole()"
-                                     [disabled]="roleForm.invalid">
-                                        Update Role
-                                    </button>
-                                </div>
-                            </form>
-                        </div>
-                    </mat-card-content>
-                </mat-card>
-            </div>
-        </div>
     </div>
+</div>
+
+<!-- /////////////////////////////////////////////////// edit users section- for admin //////////////////////////////////////// -->
+<div class="users-page">
+  <!-- Overlay -->
+  <div class="drawer" [class.open]="isEditOpen">
+    <div class="drawer-header">
+      <h3 class="fs-5 fw-bold mb-0">Edit {{drawerType}}</h3>
+      <button class="btn-close" (click)="closeDrawer()"></button>
+    </div>
+    <hr class="m-0">
+
+    <div class="profile-image-wrapper" *ngIf="selectedUser">
+      <div class="image-wrapper">
+        <img [src]="'../../../assets/images/default_profile_photo.png'" alt="Profile photo">
+      </div>
+      <div class="profile-description-wrapper">
+        <h4>{{selectedUser.fullName}}</h4>
+        <h5>{{selectedUser.email}}</h5>
+        <h5 class="mt-1">
+            <span class="pending-status-box"
+                        [ngClass]="{
+                          'active-status-box': ['active'].includes(selectedUser.status),
+                          'inactive-status-box': ['inactive'].includes(selectedUser.status),
+                          'blocked-status-box': ['blocked'].includes(selectedUser.status),
+                          'pending-status-box': ['pending'].includes(selectedUser.status)
+                        }">
+          {{selectedUser.status}}</span>
+        </h5>
+      </div>
+    </div>
+
+    <hr class="m-0">
+    <div class="drawer-body mx-3" *ngIf="drawerType === 'User'">
+      <div class="info-svgs d-flex align-items-center my-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="rgb(0, 112, 253)"
+            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+        </svg>
+        <h2 class="text-align-left mb-0 fs-6 fw-bolder mx-2">Basic Information:</h2>
+      </div>
+
+      <form class="login-form example-form mx-2" [formGroup]="userForm">
+        <div class="d-flex">
+          <div class="mb-4 d-block justify-content-center align-items-center">
+            <label class="mx-1">First Name:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field class="example-full-width" style="width: 90%">
+              <input type="text" matInput formControlName="firstName" />
+            </mat-form-field>
+          </div>
+
+          <div class="mb-4 d-block justify-content-center align-items-center">
+            <label class="mx-1">Last Name:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field class="example-full-width" style="width: 90%">
+              <input type="text" matInput formControlName="lastName" />
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div class="mb-4 d-flex flex-column">
+          <label class="mx-1 w-25">Email:<span class="text-danger fs-5">*</span>
+          </label>
+          <mat-form-field class="example-full-width" style="width: 95%">
+            <input type="text" matInput formControlName="email" />
+          </mat-form-field>
+        </div>
+
+        <div class="d-flex">
+          <div class="mb-4">
+            <label class="mx-1">User Role:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field class="example-full-width" style="width: 90%">
+              <mat-select formControlName="userRole">
+                <mat-option value="librarian">Librarian</mat-option>
+                <mat-option value="admin">Admin</mat-option>
+                <mat-option value="teacher">Teacher</mat-option>
+                <mat-option value="student">Student</mat-option>
+                <mat-option value="user">User</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div class="mb-4 d-flex flex-column">
+            <label class="mx-1">Status:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field style="width: 90%" class="example-full-width">
+              <mat-select formControlName="status">
+                <mat-option value="active">Active</mat-option>
+                <mat-option value="blocked">Blocked</mat-option>
+                <mat-option value="inactive">Inactive</mat-option>
+                <mat-option value="pending">Pending</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+        </div>
+      </form>
+      <hr class="m-0">
+
+      <div class="info-svgs d-flex align-items-center my-2">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 640 512">
+          <path fill="rgb(0, 112, 253)"
+            d="M256.5 8a120 120 0 1 1 0 240 120 120 0 1 1 0-240zM226.7 304l59.4 0 1.5 0c-12.9 26.8-7.8 58.2 11.5 79.5-20.2 22.3-24.8 55.8-9.4 83.4l22.5 40.4c.9 1.6 1.9 3.2 2.9 4.7l-237 0c-16.4 0-29.7-13.3-29.7-29.7 0-98.5 79.8-178.3 178.3-178.3zm205.9-56.4c0-13.3 10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 6.1c0 18.9 24.1 32.8 40.5 23.4l5-2.9c11.6-6.7 26.5-2.6 33 9.1l22.4 40.2c6.2 11.2 2.6 25.2-8.2 32l-4.7 2.9c-16.2 10.1-16.2 39.9 0 50.1l4.6 2.9c10.8 6.8 14.5 20.8 8.3 32L607 483.8c-6.5 11.7-21.4 15.9-33 9.1l-4.9-2.9c-16.4-9.5-40.5 4.5-40.5 23.4l0 6.1c0 13.3-10.7 24-24 24l-48 0c-13.3 0-24-10.7-24-24l0-5.9c0-19-24.2-33-40.7-23.5l-4.8 2.8c-11.6 6.7-26.4 2.6-33-9.1l-22.6-40.4c-6.2-11.2-2.6-25.3 8.3-32.1l4.4-2.7c16.3-10.1 16.3-40.1 0-50.2l-4.5-2.8c-10.9-6.8-14.5-20.9-8.3-32.1l22.5-40.3c6.5-11.7 21.4-15.8 32.9-9.1l4.8 2.8c16.5 9.5 40.7-4.5 40.7-23.5l0-5.9zm99.9 136.2a52 52 0 1 0 -104 0 52 52 0 1 0 104 0z" />
+        </svg>
+        <h2 class="text-align-left mb-0 fs-6 fw-bolder mx-2">Account Information:</h2>
+      </div>
+
+      <div class="mx-1" *ngIf="selectedUser">
+        <div class="d-flex mx-2">
+          <h4 class="w-50 m-0">User ID:</h4>
+          <h4 class="m-0">{{selectedUser.userId}}</h4>
+        </div>
+        <div class="d-flex mx-2">
+          <h4 class="w-50 m-0">Created On:</h4>
+          <h4 class="m-0">{{selectedUser.createdOn}}</h4>
+        </div>
+        <div class="d-flex mx-2">
+          <h4 class="w-50 m-0">Last updated:</h4>
+          <h4 class="m-0">{{selectedUser.lastUpdatedAt}}</h4>
+        </div>
+      </div>
+    </div>
+
+    <div class="drawer-body mx-3" *ngIf="drawerType === 'Role'">
+      <div class="info-svgs d-flex align-items-center my-2">
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+          <path fill="rgb(0, 112, 253)"
+            d="M256 512a256 256 0 1 0 0-512 256 256 0 1 0 0 512zM224 160a32 32 0 1 1 64 0 32 32 0 1 1 -64 0zm-8 64l48 0c13.3 0 24 10.7 24 24l0 88 8 0c13.3 0 24 10.7 24 24s-10.7 24-24 24l-80 0c-13.3 0-24-10.7-24-24s10.7-24 24-24l24 0 0-64-24 0c-13.3 0-24-10.7-24-24s10.7-24 24-24z" />
+        </svg>
+        <h2 class="text-align-left mb-0 fs-6 fw-bolder mx-2">Basic Information:</h2>
+      </div>
+
+      <form class="login-form example-form mx-2" [formGroup]="roleForm">
+        <div class="d-flex">
+          <div class="mb-4 d-block justify-content-center align-items-center">
+            <label class="mx-1">Role Name:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field class="example-full-width" style="width: 90%">
+              <input type="text" matInput formControlName="roleName" />
+            </mat-form-field>
+          </div>
+
+          <div class="mb-4 d-block justify-content-center align-items-center">
+            <label class="mx-1">Users Assigned:<span class="text-danger fs-5">*</span>
+            </label>
+            <mat-form-field class="example-full-width" style="width: 90%">
+              <input type="text" matInput formControlName="usersAssigned"/>
+            </mat-form-field>
+          </div>
+        </div>
+        <div *ngIf="selectedRole.roleName !== 'user'">
+          <label class="mx-1">Assigned users:</label>
+          <div class="d-flex align-items-center mx-1">
+            <div class="d-flex align-items-center">
+              <div><span class="fs-7">Assigned: </span></div>
+              <button mat-icon-button color="warn">
+                <mat-icon>remove_circle</mat-icon>
+              </button>
+            </div>
+            <div class="d-flex align-items-center mx-2">
+              <div><span class="fs-7">Unassigned: </span></div>
+              <button mat-icon-button color="success">
+                <mat-icon class="text-success">add_circle</mat-icon>
+              </button>
+            </div>
+          </div>
+          <mat-card class="example-card mt-1 mb-3" appearance="outlined">
+            <mat-card-header>
+              <div class="header-section w-100 d-flex">
+                <mat-form-field class="w-100">
+                  <input type="email" (keyup)="quickFilter($event)" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" matInput placeholder="Search users..." />
+                </mat-form-field>
+                <mat-icon class="search-icon">search</mat-icon>
+              </div>
+            </mat-card-header>
+            <mat-card-content class="px-1">
+              <app-table [data]="assignedUsersDataSource" (onReject)="removeUser($event)" (onApprove)="addUser($event)" [columns]="assignedUsersDataColumns"></app-table>
+            </mat-card-content>
+          </mat-card>
+        </div>
+        <div *ngIf="selectedRole.roleName === 'user'">
+          <label class="mx-1">Assigned users:</label>
+          <mat-card class="example-card mt-1 mb-3 added-user-section" appearance="outlined">
+            <mat-card-content>
+              <ul>
+                <ng-container *ngFor="let user of allUsers">
+                  <li *ngIf="user.role === 'user'">
+                    <h4 class="m-0" style="font-size: 13px;">{{ user.fullName }}</h4>
+                  </li>
+                </ng-container>
+              </ul>
+            </mat-card-content>
+          </mat-card>
+          <label class="mx-1">*The <b>User</b> is default role, so you can't edit users for this role.</label>
+        </div>
+      </form>
+      <hr class="m-0">
+
+      <div class="info-svgs d-flex align-items-center my-2" *ngIf="addedUsers.length > 0 || removedUsers.length > 0">
+        <svg xmlns="http://www.w3.org/2000/svg"
+          viewBox="0 0 640 512">
+          <path fill="rgb(0, 112, 253)"
+            d="M256.5 8a120 120 0 1 1 0 240 120 120 0 1 1 0-240zM226.7 304l59.4 0 1.5 0c-12.9 26.8-7.8 58.2 11.5 79.5-20.2 22.3-24.8 55.8-9.4 83.4l22.5 40.4c.9 1.6 1.9 3.2 2.9 4.7l-237 0c-16.4 0-29.7-13.3-29.7-29.7 0-98.5 79.8-178.3 178.3-178.3zm205.9-56.4c0-13.3 10.7-24 24-24l48 0c13.3 0 24 10.7 24 24l0 6.1c0 18.9 24.1 32.8 40.5 23.4l5-2.9c11.6-6.7 26.5-2.6 33 9.1l22.4 40.2c6.2 11.2 2.6 25.2-8.2 32l-4.7 2.9c-16.2 10.1-16.2 39.9 0 50.1l4.6 2.9c10.8 6.8 14.5 20.8 8.3 32L607 483.8c-6.5 11.7-21.4 15.9-33 9.1l-4.9-2.9c-16.4-9.5-40.5 4.5-40.5 23.4l0 6.1c0 13.3-10.7 24-24 24l-48 0c-13.3 0-24-10.7-24-24l0-5.9c0-19-24.2-33-40.7-23.5l-4.8 2.8c-11.6 6.7-26.4 2.6-33-9.1l-22.6-40.4c-6.2-11.2-2.6-25.3 8.3-32.1l4.4-2.7c16.3-10.1 16.3-40.1 0-50.2l-4.5-2.8c-10.9-6.8-14.5-20.9-8.3-32.1l22.5-40.3c6.5-11.7 21.4-15.8 32.9-9.1l4.8 2.8c16.5 9.5 40.7-4.5 40.7-23.5l0-5.9zm99.9 136.2a52 52 0 1 0 -104 0 52 52 0 1 0 104 0z" />
+        </svg>
+        <h2 class="text-align-left mb-0 fs-6 fw-bolder mx-2">Changes to be saved:</h2>
+      </div>
+      <div class="d-flex added-removed-wrapper m-2" *ngIf="addedUsers.length > 0 || removedUsers.length > 0">
+        <mat-card class="example-card mt-1 mb-3 added-user-section" appearance="outlined" *ngIf="addedUsers.length > 0">
+          <mat-card-header>
+            <h3>Added ({{addedUsers.length}})</h3>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let user of addedUsers">
+                <h4>{{user.fullName}}</h4>
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+        <mat-card class="example-card mt-1 mb-3 removed-user-section" appearance="outlined" *ngIf="removedUsers.length > 0">
+          <mat-card-header>
+            <h3>Removed ({{removedUsers.length}})</h3>
+          </mat-card-header>
+          <mat-card-content>
+            <ul>
+              <li *ngFor="let user of removedUsers">
+                <h4>{{user.fullName}}</h4>
+              </li>
+            </ul>
+          </mat-card-content>
+        </mat-card>
+      </div>
+    </div>
+
+    <div class="drawer-footer">
+      <div class="d-flex gap-3">
+        <button mat-raised-button class="px-3 cancel-btn" type="button" (click)="closeDrawer()">
+          <span>Cancel</span>
+        </button>
+
+        <button mat-raised-button color="primary" class="px-3 save-btn" type="button" (click)="updateData()"
+        *ngIf="selectedRole?.roleName !== 'user'">
+          <span> Update {{drawerType}}</span>
+        </button>
+      </div>
+    </div>
+  </div>
 </div>

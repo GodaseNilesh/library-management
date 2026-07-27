@@ -85,3 +85,27 @@ input:-webkit-autofill:focus {
 .w-60{
   width: 60% !important;
 }
+
+.w-70{
+  width: 70% !important;
+}
+/* //////////////////////////////////// cdk //////////////////////////////// */
+.cdk-overlay-container {
+  z-index: 1111 !important;
+}
+
+/* ///////////////////////////////////// custom buttons //////////////////////////////////////////// */
+.cancel-btn{
+  background-color: white;
+  color: black;
+}
+
+.cancel-btn:hover{
+  background-color: rgb(251, 183, 58) !important;
+  color: white !important;
+}
+
+.save-btn{
+  background-color: green !important;
+  color: white !important;
+}
