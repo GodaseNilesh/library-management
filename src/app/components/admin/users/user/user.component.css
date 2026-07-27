@@ -1,7 +1,3 @@
-.font {
-font-family: "Playfair Display", serif;    font-weight: 500;
-}
-
 .example-header {
     position: fixed;
     top: 0;
@@ -11,24 +7,38 @@ font-family: "Playfair Display", serif;    font-weight: 500;
 }
 
 .dashboard-content {
-    background-color: rgb(236, 243, 245);
-    min-height: 100vh;
-    height: auto;
-    width: 95%;
-    margin-left: 5%;
-    margin-top: 60px;
+  background-color: rgb(245, 245, 245);
+  height: auto;
+  min-height: 100vh;
+  width: calc(100% - 15%);
+  margin-left: 15%;
+  margin-top: 60px;
+  padding: 1%;
+}
+
+.header-section {
+  h2,
+  h4 {
+    margin: 0;
+    line-height: 25px;
+  }
+
+  h2{
+    font-weight: 600;
+  }
 }
 
 .grid-section {
     width: 100% !important;
     display: block;
     margin: auto;
+    gap: 15px;
 }
 
 .grid-options {
     height: 110px;
     width: 24%;
-    margin: 1%;
+    margin: 1% 0;
     border-radius: 10px;
 }
 
@@ -44,7 +54,7 @@ h2 {
     object-fit: contain;
 }
 .list-section{
-    width: 51%;
+    width: 100%;
     height: auto;
 }
 
@@ -73,4 +83,199 @@ h2 {
 }
 .cursor-not-allowed {
   cursor: not-allowed !important;
+}
+
+.box-svgs svg, .info-svgs svg {
+  margin: 5px;
+  width: 55px;
+  height: 55px;
+  padding: 10px;
+  border-radius: 15px;
+  fill: currentColor;
+  background-color: color-mix(in srgb,
+      currentColor 15%,
+      white);
+}
+
+.info-svgs svg {
+  width: 35px;
+  height: 35px;
+  padding: 6px;
+  border-radius: 10px;
+}
+
+.users-icon {
+  color: #7e08d4;
+}
+
+.active-users-icon {
+  color: #18e509;
+}
+
+.roles-icon {
+  color: #f70f96;
+}
+
+.card-description {
+  font-size: 12px;
+}
+
+.search-icon{
+  position: relative;
+  top: 25%;
+  right: 8%;
+  color: gray;
+  cursor: pointer;
+}
+
+/* ///////////////////////// admin - edit users section //////////////////////////////// */
+.users-page {
+  position: relative;
+  overflow: hidden;
+}
+
+/* Dark background */
+.users-page::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, .35);
+  opacity: 0;
+  visibility: hidden;
+  transition: .3s;
+  z-index: 1040;
+}
+
+.users-page.drawer-active::before {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Drawer */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: -500px;
+  width: 500px;
+  height: 100vh;
+  background: #fff;
+  box-shadow: -5px 0 20px rgba(0, 0, 0, .15);
+  transition: right .35s ease;
+  z-index: 1050;
+  display: flex;
+  flex-direction: column;
+}
+
+.drawer.open {
+  right: 0;
+}
+
+.drawer-header {
+  padding: 15px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.drawer-body {
+  flex: 1;
+  overflow: auto;
+}
+
+.drawer-footer {
+  padding: 20px;
+  border-top: 1px solid #eee;
+  display: flex;
+  justify-content: end;
+  gap: 10px;
+}
+
+/* ///////////////////////////////////////// profile photo ////////////////////////// */
+.profile-image-wrapper{
+  display: flex;
+  margin: 16px;
+}
+
+.image-wrapper{
+  width: 90px;
+  height: 90px;
+}
+
+.image-wrapper img{
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+}
+
+.profile-description-wrapper{
+  margin: 0 15px;
+  margin-top: 10px;
+
+  .active-status-box{
+    color: rgb(1, 110, 1);
+    padding: 5px 8px;
+    background-color: #cef3cc;
+    border-radius: 7px;
+  }
+
+  .blocked-status-box{
+    color: red;
+    padding: 5px 8px;
+    background-color: #f2d4cc;
+    border-radius: 7px;
+  }
+
+  .inactive-status-box{
+    color: rgb(255 166 4);
+    padding: 5px 8px;
+    background-color: #f0e0c6;
+    border-radius: 7px;
+  }
+
+  .pending-status-box{
+    color: blue;
+    padding: 5px 8px;
+    background-color: #c1dbf7;
+    border-radius: 7px;
+  }
+}
+
+.profile-description-wrapper h4{
+  margin-bottom: 0px;
+  font-weight: 600;
+}
+
+.profile-description-wrapper h5{
+  margin-bottom: 0px;
+  font-weight: 500;
+}
+
+/* //////////////////////////////////// added-removed-wrapper ////////////////////////////// */
+.added-removed-wrapper {
+
+  display: flex;
+  justify-content: space-between;
+
+  h3 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 0;
+  }
+
+  h4{
+    margin: 0;
+    font-size: 13px;
+  }
+
+  .added-user-section {
+    color: green;
+    width: 47%;
+    background-color: #e7ffe7;
+  }
+
+  .removed-user-section {
+    color: red;
+    width: 47%;
+    background-color: #ffe7e7;
+  }
 }
