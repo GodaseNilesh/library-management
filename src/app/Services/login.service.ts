@@ -97,14 +97,18 @@ export class LoginService {
   }
 
   userLogout() {
-    const userId = sessionStorage.getItem('userId');
-    const payload = { id: userId };
-    let url = environment.apiUrl + '/Auth/logout';
-    this.application.postData(url, payload).subscribe((res) => {
-      clearInterval(this.tokenExpirationCheckInterval);
-      sessionStorage.clear();
-      this.authService.isUserLoggedIn = false;
-      this.router.navigate(['']);
-    });
+    // const userId = sessionStorage.getItem('userId');
+    // const payload = { id: userId };
+    // let url = environment.apiUrl + '/Auth/logout';
+    // this.application.postData(url, payload).subscribe((res) => {
+    //   clearInterval(this.tokenExpirationCheckInterval);
+    //   sessionStorage.clear();
+    //   this.authService.isUserLoggedIn = false;
+    //   this.router.navigate(['']);
+    // });
+
+    sessionStorage.clear();
+    this.router.navigate(['']);
+    this.authService.isAuthenticated();
   }
 }

@@ -5,6 +5,7 @@ import { DashboardComponent } from './components/admin/dashboard/dashboard.compo
 import { authGuardGuard } from './auth-guards/auth-guard.guard';
 import { loginGuard } from './auth-guards/login.guard';
 import { PendingRequestsComponent } from './components/admin/pending-requests/pending-requests.component';
+import { ReportsComponent } from './components/admin/reports/reports.component';
 
 const routes: Routes = [
   {
@@ -26,6 +27,11 @@ const routes: Routes = [
     canActivate: [authGuardGuard],
     path:'pending-requests',
     component:PendingRequestsComponent
+  },
+  {
+    canActivate: [authGuardGuard],
+    path:'reports',
+    component:ReportsComponent
   },
   {
     path:'student-list',
