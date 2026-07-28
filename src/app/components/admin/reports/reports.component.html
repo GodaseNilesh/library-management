@@ -1,0 +1,138 @@
+<app-sidenavbar></app-sidenavbar>
+<app-loader *ngIf="isLoading"></app-loader>
+<div class="dashboard-content">
+  <div class="header-section w-100 d-flex justify-content-between align-items-center">
+    <div>
+      <h2>Reports</h2>
+      <h4>View system reports, analytics and activities.</h4>
+    </div>
+  </div>
+
+  <div class="grid-section d-flex justify-content-start mx-2 my-3 gap-4">
+    <mat-card class="example-card mt-1 mb-3">
+      <mat-card-header>
+        <div>
+          <h4 class="fw-bold">Users by Role</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="px-1">
+        <apx-chart [series]="userChartOptions.series" [chart]="userChartOptions.chart"
+          [labels]="userChartOptions.labels" [colors]="userChartOptions.colors" [legend]="userChartOptions.legend"
+          [plotOptions]="userChartOptions.plotOptions" [dataLabels]="userChartOptions.dataLabels"
+          [responsive]="userChartOptions.responsive">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="example-card mt-1 mb-3">
+      <mat-card-header>
+        <div>
+          <h4 class="fw-bold">Books by Subject</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="px-1">
+        <apx-chart [series]="BooksDonutChartOptions.series" [chart]="BooksDonutChartOptions.chart"
+          [labels]="BooksDonutChartOptions.labels" [colors]="BooksDonutChartOptions.colors"
+          [legend]="BooksDonutChartOptions.legend" [plotOptions]="BooksDonutChartOptions.plotOptions"
+          [dataLabels]="BooksDonutChartOptions.dataLabels" [responsive]="BooksDonutChartOptions.responsive">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+
+    <mat-card class="w-100 mt-1 mb-3" *ngIf="summaryData">
+      <mat-card-header>
+        <div>
+          <h4 class="fw-bold">Library Summary</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="px-1">
+        <div class="summary-card-wrapper">
+          <div class="summary-card">
+            <svg class="book-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path
+                d="M418.6 175.5L433.7 424.5L422.7 424.2C386.5 423.4 351.1 433 320 452.2C289 433 253.6 424.2 217.3 424.2C171.7 424.2 135.2 434.9 93.8 451.9L125.2 193.6C153.7 181.8 186.7 175.5 217.4 175.5C258.6 175.5 291.2 188.7 320.1 218C347.8 189.7 379.1 176.3 418.6 175.5zM601.2 512C575.7 512 553.7 506.8 530.7 496.4C496.4 480.8 460.7 471.4 422.8 471.4C383.8 471.4 347.9 484.3 320.1 512C292.4 484.3 256.4 471.4 217.4 471.4C179.5 471.4 143.8 480.7 109.5 496.4C87.3 506.3 64.8 512 40.3 512L39 512L81.6 162.9C120.9 140.7 168.6 128 213.9 128C251 128 289.1 135.7 320.1 157.1C351.1 135.7 389.3 128 426.3 128C471.6 128 519.3 140.6 558.6 162.9L601.2 512zM557.8 467.3L523.8 187C493.1 173 456.6 165.6 422.8 165.6C384.4 165.6 348.4 177.7 320.1 204.3C291.8 177.7 255.9 165.6 217.4 165.6C183.6 165.6 147.1 173 116.4 187L82.4 467.2C129.6 447.7 165.3 433.7 217.4 433.7C255 433.7 288.2 443.3 320.1 463.3C351.9 443.3 385.2 433.7 422.8 433.7C475 433.7 510.6 447.7 557.8 467.2z" />
+            </svg>
+            <div class="d-flex justify-content-between align-items-center mt-3 ms-2 w-50">
+              <h4 class="fw-bold">Total Books:</h4>
+              <h3 class="fw-bold">{{summaryData.totalBooks}}</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <svg class="issue-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path
+                d="M192 576L512 576C529.7 576 544 561.7 544 544C544 526.3 529.7 512 512 512L512 445.3C530.6 438.7 544 420.9 544 400L544 112C544 85.5 522.5 64 496 64L448 64L448 233.4C448 245.9 437.9 256 425.4 256C419.4 256 413.6 253.6 409.4 249.4L368 208L326.6 249.4C322.4 253.6 316.6 256 310.6 256C298.1 256 288 245.9 288 233.4L288 64L192 64C139 64 96 107 96 160L96 480C96 533 139 576 192 576zM160 480C160 462.3 174.3 448 192 448L448 448L448 512L192 512C174.3 512 160 497.7 160 480z" />
+            </svg>
+            <div class="d-flex justify-content-between align-items-center mt-3 ms-2 w-50">
+              <h4 class="fw-bold">Issued Today:</h4>
+              <h3 class="fw-bold">{{summaryData.issuedToday}}</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <svg class="users-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path
+                d="M320 80C377.4 80 424 126.6 424 184C424 241.4 377.4 288 320 288C262.6 288 216 241.4 216 184C216 126.6 262.6 80 320 80zM96 152C135.8 152 168 184.2 168 224C168 263.8 135.8 296 96 296C56.2 296 24 263.8 24 224C24 184.2 56.2 152 96 152zM0 480C0 409.3 57.3 352 128 352C140.8 352 153.2 353.9 164.9 357.4C132 394.2 112 442.8 112 496L112 512C112 523.4 114.4 534.2 118.7 544L32 544C14.3 544 0 529.7 0 512L0 480zM521.3 544C525.6 534.2 528 523.4 528 512L528 496C528 442.8 508 394.2 475.1 357.4C486.8 353.9 499.2 352 512 352C582.7 352 640 409.3 640 480L640 512C640 529.7 625.7 544 608 544L521.3 544zM472 224C472 184.2 504.2 152 544 152C583.8 152 616 184.2 616 224C616 263.8 583.8 296 544 296C504.2 296 472 263.8 472 224zM160 496C160 407.6 231.6 336 320 336C408.4 336 480 407.6 480 496L480 512C480 529.7 465.7 544 448 544L192 544C174.3 544 160 529.7 160 512L160 496z" />
+            </svg>
+            <div class="d-flex justify-content-between align-items-center mt-3 ms-2 w-50">
+              <h4 class="fw-bold">Active users:</h4>
+              <h3 class="fw-bold">{{summaryData.activeUsers}}</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <svg class="overdue-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 640">
+              <path
+                d="M320 576C178.6 576 64 461.4 64 320C64 178.6 178.6 64 320 64C461.4 64 576 178.6 576 320C576 461.4 461.4 576 320 576zM320 384C302.3 384 288 398.3 288 416C288 433.7 302.3 448 320 448C337.7 448 352 433.7 352 416C352 398.3 337.7 384 320 384zM320 192C301.8 192 287.3 207.5 288.6 225.7L296 329.7C296.9 342.3 307.4 352 319.9 352C332.5 352 342.9 342.3 343.8 329.7L351.2 225.7C352.5 207.5 338.1 192 319.8 192z" />
+            </svg>
+            <div class="d-flex justify-content-between align-items-center mt-3 ms-2 w-50">
+              <h4 class="fw-bold">Overdue Books:</h4>
+              <h3 class="fw-bold">{{summaryData.overdueBooks}}</h3>
+            </div>
+          </div>
+          <div class="summary-card">
+            <svg class="fine-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 576 512">
+              <path
+                d="M288-16c-13.3 0-24 10.7-24 24l0 12-1.8 0c-36.6 0-66.2 29.7-66.2 66.2 0 33.4 24.9 61.6 58 65.7l61 7.6c5.1 .6 9 5 9 10.2 0 5.7-4.6 10.2-10.2 10.2L240 180c-15.5 0-28 12.5-28 28s12.5 28 28 28l24 0 0 12c0 13.3 10.7 24 24 24s24-10.7 24-24l0-12 1.8 0c36.6 0 66.2-29.7 66.2-66.2 0-33.4-24.9-61.6-58-65.7l-61-7.6c-5.1-.6-9-5-9-10.2 0-5.7 4.6-10.2 10.2-10.2L328 76c15.5 0 28-12.5 28-28s-12.5-28-28-28l-16 0 0-12c0-13.3-10.7-24-24-24zM109.3 341.5L66.7 384 32 384c-17.7 0-32 14.3-32 32l0 64c0 17.7 14.3 32 32 32l320.5 0c29 0 57.3-9.3 80.7-26.5l126.6-93.3c17.8-13.1 21.6-38.1 8.5-55.9s-38.1-21.6-55.9-8.5L392.6 416 280 416c-13.3 0-24-10.7-24-24s10.7-24 24-24l72 0c17.7 0 32-14.3 32-32s-14.3-32-32-32l-152.2 0c-33.9 0-66.5 13.5-90.5 37.5z" />
+            </svg>
+            <div class="d-flex justify-content-between align-items-center mt-3 ms-2 w-75">
+              <h4 class="fw-bold">Pending Fine:</h4>
+              <h3 class="fw-bold" style="margin-right: 35px;">{{summaryData.pendingFine | currency:'INR'}}</h3>
+            </div>
+          </div>
+        </div>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="mx-2 my-3">
+    <mat-card class="example-card mt-1 mb-3">
+      <mat-card-header>
+        <div>
+          <h4 class="fw-bold">{{IssuedBooksLineChartOptions.title.text}}</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="px-1">
+        <apx-chart [series]="IssuedBooksLineChartOptions.series" [chart]="IssuedBooksLineChartOptions.chart"
+          [xaxis]="IssuedBooksLineChartOptions.xaxis" [stroke]="IssuedBooksLineChartOptions.stroke"
+          [markers]="IssuedBooksLineChartOptions.markers" [grid]="IssuedBooksLineChartOptions.grid"
+          [dataLabels]="IssuedBooksLineChartOptions.dataLabels">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+
+  <div class="mx-2 my-3">
+    <mat-card class="example-card mt-1 mb-3">
+      <mat-card-header>
+        <div>
+          <h4 class="fw-bold">{{libraryActivityChart.title.text}}</h4>
+        </div>
+      </mat-card-header>
+      <mat-card-content class="px-1">
+        <apx-chart [series]="libraryActivityChart.series" [chart]="libraryActivityChart.chart"
+          [plotOptions]="libraryActivityChart.plotOptions" [dataLabels]="libraryActivityChart.dataLabels"
+          [xaxis]="libraryActivityChart.xaxis" [legend]="libraryActivityChart.legend"
+          [colors]="libraryActivityChart.colors">
+        </apx-chart>
+      </mat-card-content>
+    </mat-card>
+  </div>
+</div>

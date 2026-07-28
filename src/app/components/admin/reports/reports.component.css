@@ -1,0 +1,70 @@
+.dashboard-content {
+  background-color: rgb(245, 245, 245);
+  height: auto;
+  min-height: 100vh;
+  width: calc(100% - 15%);
+  margin-left: 15%;
+  margin-top: 60px;
+  padding: 1%;
+}
+
+.header-section {
+  h2,
+  h4 {
+    margin: 0;
+    line-height: 25px;
+  }
+
+  h2{
+    font-weight: 600;
+  }
+}
+
+/* ///////////////////////////////////////////// summary-card-wrapper //////////////////////////////// */
+.summary-card-wrapper {
+
+  .summary-card {
+    width: 92%;
+    margin: auto;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    border-bottom: 1px dashed gray;
+
+    svg {
+      width: 40px;
+      height: 40px;
+      padding: 6px;
+      border-radius: 10px;
+      fill: currentColor;
+      background-color: color-mix(in srgb,
+          currentColor 15%,
+          white);
+    }
+
+    h4{
+      font-size: 14px;
+    }
+  }
+}
+
+/* Individual icon colors */
+.users-icon {
+  color: Green;
+}
+
+.book-icon {
+  color: Blue;
+}
+
+.issue-icon {
+  color: Orange;
+}
+
+.overdue-icon {
+  color: Red;
+}
+
+.fine-icon {
+  color: Purple;
+}

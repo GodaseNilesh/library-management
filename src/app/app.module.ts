@@ -14,9 +14,11 @@ import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { AuthInterceptor } from './auth.interceptor';
 import { ToastrModule } from 'ngx-toastr';
 import { PendingRequestsComponent } from './components/admin/pending-requests/pending-requests.component';
+import { ReportsComponent } from './components/admin/reports/reports.component';
+import { NgApexchartsModule } from "ng-apexcharts";
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, PendingRequestsComponent],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, PendingRequestsComponent, ReportsComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -27,6 +29,7 @@ import { PendingRequestsComponent } from './components/admin/pending-requests/pe
     ReactiveFormsModule,
     SharedModule,
     HttpClientModule,
+    NgApexchartsModule,
     ToastrModule.forRoot(),
   ],
   providers: [
