@@ -257,8 +257,7 @@ export class CreateBookIssueComponent {
       return;
     }
     const reqBody = {
-      isFinePaid: isFineCollected || 0,
-      fineAmount: this.issuedDetails.fine_amount,
+      isFinePaid: isFineCollected || 0
     };
 
     const closeModalBtn = document.getElementById('closeReturnBookModal');

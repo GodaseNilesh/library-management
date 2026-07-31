@@ -16,9 +16,10 @@ import { ToastrModule } from 'ngx-toastr';
 import { PendingRequestsComponent } from './components/admin/pending-requests/pending-requests.component';
 import { ReportsComponent } from './components/admin/reports/reports.component';
 import { NgApexchartsModule } from "ng-apexcharts";
+import { FinesComponent } from './components/admin/fines/fines.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, PendingRequestsComponent, ReportsComponent],
+  declarations: [AppComponent, LoginComponent, DashboardComponent, PendingRequestsComponent, ReportsComponent, FinesComponent],
   imports: [
     BrowserModule,
     AppRoutingModule,
