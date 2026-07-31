@@ -223,6 +223,7 @@ export class ReportsComponent {
   constructor(private reportService: ReportService) {}
 
   ngOnInit(): void {
+    this.isLoading = true;
     forkJoin([
       this.reportService.getUserDistribution(),
       this.reportService.getBookDistribution(),
@@ -259,16 +260,18 @@ export class ReportsComponent {
         this.summaryData = summary[0];
 
         //Set monthly issued books
-        this.IssuedBooksLineChartOptions.series = [
-          {
-            name: 'Books Issued',
-            data: monthlyIssuedBooks.map((item: any) => item.totalIssued),
-          },
-        ];
+        setTimeout(() => {
+          this.IssuedBooksLineChartOptions.series = [
+            {
+              name: 'Books Issued',
+              data: monthlyIssuedBooks.map((item: any) => item.totalIssued),
+            },
+          ];
 
-        this.IssuedBooksLineChartOptions.xaxis = {
-          categories: monthlyIssuedBooks.map((item: any) => item.month),
-        };
+          this.IssuedBooksLineChartOptions.xaxis = {
+            categories: monthlyIssuedBooks.map((item: any) => item.month),
+          };
+        }, 1000);
 
         //Set monthly activity (Issued, Returned, Overdue)
         this.libraryActivityChart.series = [
@@ -289,6 +292,8 @@ export class ReportsComponent {
         this.libraryActivityChart.xaxis = {
           categories: monthlyActivity.map((x: any) => x.month),
         };
+
+        this.isLoading = false;
       },
     );
   }

@@ -6,6 +6,7 @@ import { authGuardGuard } from './auth-guards/auth-guard.guard';
 import { loginGuard } from './auth-guards/login.guard';
 import { PendingRequestsComponent } from './components/admin/pending-requests/pending-requests.component';
 import { ReportsComponent } from './components/admin/reports/reports.component';
+import { FinesComponent } from './components/admin/fines/fines.component';
 
 const routes: Routes = [
   {
@@ -32,6 +33,11 @@ const routes: Routes = [
     canActivate: [authGuardGuard],
     path:'reports',
     component:ReportsComponent
+  },
+  {
+    canActivate: [authGuardGuard],
+    path:'fines',
+    component:FinesComponent
   },
   {
     path:'student-list',

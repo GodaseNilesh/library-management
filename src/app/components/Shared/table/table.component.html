@@ -50,12 +50,12 @@
                   {{ element[column.columnDef] }}
                 </span>
               </ng-container>
-              <ng-container *ngIf="column.columnDef === 'status'">
+              <ng-container *ngIf="column.columnDef === 'status' || column.columnDef === 'fine_paid'">
                 <span class="fw-semibold status-badge" [ngClass]="{
-                  'status-info': ['Issued', 'pending', 'inactive'].includes(element[column.columnDef]),
-                  'status-success': ['Returned', 'active'].includes(element[column.columnDef]),
-                  'status-danger': ['Overdue', 'blocked'].includes(element[column.columnDef]),
-                  'status-warn': ['inactive'].includes(element[column.columnDef])
+                  'status-info': ['Issued', 'pending', 'inactive', 'N/A'].includes(element[column.columnDef]),
+                  'status-success': ['Returned', 'active', 'Paid'].includes(element[column.columnDef]),
+                  'status-danger': ['Overdue', 'blocked', 'Unpaid'].includes(element[column.columnDef]),
+                  'status-warn': ['inactive'].includes(element[column.columnDef]),
                 }">
                   {{ element[column.columnDef] }}
                 </span>
@@ -77,7 +77,7 @@
                   </span>
                 </div>
               </ng-container>
-              <ng-container *ngIf="column.columnDef !== 'availableStatus' && column.columnDef !== 'status' && column.columnDef !== 'studentName'">
+              <ng-container *ngIf="column.columnDef !== 'availableStatus' && column.columnDef !== 'status' && column.columnDef !== 'studentName'  && column.columnDef !== 'fine_paid'">
                 <ng-container *ngTemplateOutlet="defaultCell"></ng-container>
               </ng-container>
             </ng-template>
