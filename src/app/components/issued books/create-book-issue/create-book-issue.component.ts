@@ -9,9 +9,20 @@ import {
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { debounceTime, distinctUntilChanged, filter, finalize, map, Observable, startWith, switchMap, tap } from 'rxjs';
+import {
+  debounceTime,
+  distinctUntilChanged,
+  filter,
+  finalize,
+  map,
+  Observable,
+  startWith,
+  switchMap,
+  tap,
+} from 'rxjs';
 import { BookService } from 'src/app/Services/book.service';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
+import { PaymentService } from 'src/app/Services/payment.service';
 import { StudentService } from 'src/app/Services/student.service';
 import { TeacherService } from 'src/app/Services/teacher.service';
 
@@ -31,8 +42,6 @@ export class CreateBookIssueComponent {
   issuedBookId!: string;
   filteredOptions: any;
   issuedDetails: any;
-  isFineCollected: any = new FormControl(null);
-  showFineCollectedError: boolean = false;
 
   constructor(
     private fb: FormBuilder,
@@ -42,7 +51,8 @@ export class CreateBookIssueComponent {
     private route: ActivatedRoute,
     private studentService: StudentService,
     private teacherService: TeacherService,
-    private toastr:ToastrService
+    private toastr: ToastrService,
+    private paymentService: PaymentService,
   ) {
     this.issuedBookForm = this.fb.group({
       bookName: new FormControl({ value: '', disabled: true }, [
@@ -94,32 +104,7 @@ export class CreateBookIssueComponent {
         },
       });
 
-    this.route.paramMap.subscribe((params) => {
-      const id = params.get('id');
-      if (id) {
-        this.issuedBookId = id;
-        this.issuedBookService.getIssuedBookById(id).subscribe((book: any) => {
-          const bookInfo = book.data;
-          this.issuedDetails = bookInfo;
-          this.searchBookCtrl.setValue(bookInfo.book_title);
-          this.onBookSelected(bookInfo.book_title, bookInfo.book_id);
-          this.issuedBookForm.patchValue({
-            bookId: bookInfo.book_id,
-            userType: bookInfo.role,
-            userName: bookInfo.full_name,
-            issueDate: new Date(bookInfo.issue_date),
-            dueDate: new Date(bookInfo.due_date),
-            issuedQuantity: 1,
-            issuedStatus: bookInfo.status,
-          });
-          this.issuedBookForm.get('userType')?.disable();
-          this.issuedBookForm.get('userName')?.disable();
-          this.searchBookCtrl.disable();
-          if (bookInfo.return_date)
-            this.issuedBookForm.get('dueDate')?.disable();
-        });
-      }
-    });
+    this.loadData();
 
     this.issuedBookForm
       .get('userName')
@@ -155,6 +140,35 @@ export class CreateBookIssueComponent {
           console.error(err);
         },
       });
+  }
+
+  loadData() {
+    this.route.paramMap.subscribe((params) => {
+      const id = params.get('id');
+      if (id) {
+        this.issuedBookId = id;
+        this.issuedBookService.getIssuedBookById(id).subscribe((book: any) => {
+          const bookInfo = book.data;
+          this.issuedDetails = bookInfo;
+          this.searchBookCtrl.setValue(bookInfo.book_title);
+          this.onBookSelected(bookInfo.book_title, bookInfo.book_id);
+          this.issuedBookForm.patchValue({
+            bookId: bookInfo.book_id,
+            userType: bookInfo.role,
+            userName: bookInfo.full_name,
+            issueDate: new Date(bookInfo.issue_date),
+            dueDate: new Date(bookInfo.due_date),
+            issuedQuantity: 1,
+            issuedStatus: bookInfo.status,
+          });
+          this.issuedBookForm.get('userType')?.disable();
+          this.issuedBookForm.get('userName')?.disable();
+          this.searchBookCtrl.disable();
+          if (bookInfo.return_date)
+            this.issuedBookForm.get('dueDate')?.disable();
+        });
+      }
+    });
   }
 
   onBookSelected(bookName: string, bookId: number = 0) {
@@ -197,7 +211,9 @@ export class CreateBookIssueComponent {
     let formValue = this.issuedBookForm.getRawValue();
     const closeRenewModalBtn = document.getElementById('closeRenewBookModal');
 
-    const isDueDateValid = this.formatDateToLocalString(formValue.dueDate) >= this.formatDateToLocalString(this.today);
+    const isDueDateValid =
+      this.formatDateToLocalString(formValue.dueDate) >=
+      this.formatDateToLocalString(this.today);
     if (!isDueDateValid) {
       this.toastr.info('Please select valid due date.');
       return;
@@ -225,12 +241,14 @@ export class CreateBookIssueComponent {
       const reqBody = {
         issueId: this.issuedBookId,
         dueDate:
-        typeof formValue.dueDate == 'string'
-        ? formValue.dueDate
-        : this.formatDateToLocalString(formValue.dueDate),
+          typeof formValue.dueDate == 'string'
+            ? formValue.dueDate
+            : this.formatDateToLocalString(formValue.dueDate),
       };
 
-      const isDuedateUpdate = reqBody.dueDate === this.formatDateToLocalString(new Date(this.issuedDetails.due_date));
+      const isDuedateUpdate =
+        reqBody.dueDate ===
+        this.formatDateToLocalString(new Date(this.issuedDetails.due_date));
       if (isDuedateUpdate) {
         this.toastr.info('Due date is unchanged.');
         closeRenewModalBtn?.click();
@@ -250,14 +268,9 @@ export class CreateBookIssueComponent {
     }
   }
 
-  returnIssuedBook() {
-    const isFineCollected = this.isFineCollected.value;
-    if (isFineCollected === null && this.issuedDetails?.is_overdue) {
-      this.showFineCollectedError = true;
-      return;
-    }
+  returnIssuedBook(finePaid: boolean = false) {
     const reqBody = {
-      isFinePaid: isFineCollected || 0
+      isFinePaid: finePaid,
     };
 
     const closeModalBtn = document.getElementById('closeReturnBookModal');
@@ -273,5 +286,72 @@ export class CreateBookIssueComponent {
         closeModalBtn?.click();
       },
     );
+  }
+
+  payFineNow() {
+    this.isLoading = true;
+    this.paymentService.createOrder(Number(this.issuedBookId)).subscribe({
+      next: (response: any) => {
+        console.log(response);
+        this.openCheckout(response.data);
+      },
+      error: (error: any) => {
+        this.isLoading = false;
+        console.log(error);
+      },
+    });
+  }
+
+  openCheckout(order: any) {
+    const options = {
+      key: order.key,
+      amount: order.amount,
+      currency: order.currency,
+      name: 'The Best Library',
+      description: 'Overdue fine payment',
+      order_id: order.orderId,
+      handler: (response: any) => {
+        const paymentData = {
+          razorpay_order_id: response.razorpay_order_id,
+          razorpay_payment_id: response.razorpay_payment_id,
+          razorpay_signature: response.razorpay_signature,
+          issued_id: Number(this.issuedBookId),
+        };
+
+        this.toastr.info(`Payment of ₹${order.amount / 100} successfully`);
+        this.paymentService.verifyPayment(paymentData).subscribe({
+          next: (result: any) => {
+            this.isLoading = false;
+            if (this.issuedDetails.return_date === null) {
+              this.returnIssuedBook(true);
+              return;
+            }
+            this.router.navigate(['issue-book-history']);
+          },
+          error: (error: Error) => {
+            this.isLoading = false;
+            this.toastr.info(`Payment verification failed`);
+            console.error('Payment verification failed:', error);
+          },
+        });
+      },
+      modal: {
+        ondismiss: () => {
+          this.isLoading = false;
+          this.toastr.warning('Payment cancelled');
+        },
+      },
+      prefill: {
+        name: '',
+        email: '',
+        contact: '',
+      },
+      theme: {
+        color: '#1976d2',
+      },
+    };
+
+    const razoppay = new Razorpay(options);
+    razoppay.open();
   }
 }

@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
   teacherCount: number = 0;
   booksCount: number = 0;
   issuedBooksCount: number = 0;
+  overdueIssuedBooksCount: number = 0;
   availableBooksCount: number = 0;
   pendingRequestsCount: number = 0;
   isLoading: boolean = false;
@@ -95,6 +96,9 @@ export class DashboardComponent implements OnInit {
         this.teacherCount = teacherRes.data.totalRecords;
         this.booksCount = booksRes.data.totalRecords;
         this.issuedBooksCount = issuedBookResponse.pagination.totalRecords;
+        this.overdueIssuedBooksCount = issuedBookResponse.data.filter((x:any) => {
+          return x.return_date == null && x.return_date > x.due_date;
+        }).length;
         this.pendingRequestsCount = requests.data.length;
         this.allBooksData = booksRes.data.books.map((x: any, index: number) => ({
           ...x,

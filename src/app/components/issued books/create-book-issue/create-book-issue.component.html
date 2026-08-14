@@ -1,4 +1,6 @@
 <app-sidenavbar></app-sidenavbar>
+<app-loader *ngIf="isLoading"></app-loader>
+
 <div class="w-auto">
   <div class="dashboard-content">
     <div class="d-flex justify-content-start">
@@ -344,6 +346,11 @@
                   data-bs-toggle="modal" data-bs-target="#exampleModal">
                   <span>Return Book</span>
                 </button>
+                <button mat-raised-button color="primary" class="px-4 me-3" type="button"
+                  *ngIf="(issuedDetails?.return_date != null && !issuedDetails?.fine_paid && issuedDetails?.fine_amount)"
+                  (click)="payFineNow()">
+                  <span>Pay Fine</span>
+                </button>
 
                 <!-- ////////////////////////////// Return book modal ///////////////////////////////// -->
                 <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="returnBookModal" aria-hidden="true" *ngIf="issuedDetails">
@@ -488,18 +495,11 @@
                             </div>
                           </mat-card-content>
                         </mat-card>
-                        <ng-container *ngIf="issuedDetails?.is_overdue">
-                          <label id="example-radio-group-label">Fine paid: </label>
-                          <mat-radio-group aria-labelledby="example-radio-group-label" class="example-radio-group" [formControl]="isFineCollected">
-                            <mat-radio-button class="example-radio-button" [value]="1">Yes</mat-radio-button>
-                            <mat-radio-button class="example-radio-button" [value]="0">No</mat-radio-button>
-                          </mat-radio-group> <br>
-                          <span class="text-danger" style="font-size: smaller;" *ngIf="showFineCollectedError">*Please ensure fine is paid or not.</span>
-                        </ng-container>
                         </div>
                       <div class="modal-footer">
                         <button type="button" class="btn btn-secondary" data-bs-dismiss="modal" id="closeReturnBookModal">Cancel</button>
-                        <button type="button" class="btn btn-primary" (click)="returnIssuedBook()">Return Book</button>
+                        <button type="button" class="btn btn-primary" (click)="returnIssuedBook(false)">Return Book</button>
+                        <button type="button" class="btn btn-primary" *ngIf="issuedDetails?.is_overdue" (click)="payFineNow()">Pay Fine & Return Book</button>
                       </div>
                     </div>
                   </div>
