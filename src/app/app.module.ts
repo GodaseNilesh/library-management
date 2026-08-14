@@ -19,7 +19,14 @@ import { NgApexchartsModule } from "ng-apexcharts";
 import { FinesComponent } from './components/admin/fines/fines.component';
 
 @NgModule({
-  declarations: [AppComponent, LoginComponent, DashboardComponent, PendingRequestsComponent, ReportsComponent, FinesComponent],
+  declarations: [
+    AppComponent,
+    LoginComponent,
+    DashboardComponent,
+    PendingRequestsComponent,
+    ReportsComponent,
+    FinesComponent,
+  ],
   imports: [
     BrowserModule,
     AppRoutingModule,
@@ -31,7 +38,11 @@ import { FinesComponent } from './components/admin/fines/fines.component';
     SharedModule,
     HttpClientModule,
     NgApexchartsModule,
-    ToastrModule.forRoot(),
+    ToastrModule.forRoot({
+      timeOut: 3000,
+      closeButton: true,
+      progressBar: true,
+    }),
   ],
   providers: [
     {
