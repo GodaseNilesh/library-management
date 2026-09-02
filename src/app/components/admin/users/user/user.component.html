@@ -230,7 +230,7 @@
             </mat-form-field>
           </div>
         </div>
-        <div *ngIf="selectedRole.roleName !== 'user'">
+        <div *ngIf="selectedRole?.roleName !== 'user'">
           <label class="mx-1">Assigned users:</label>
           <div class="d-flex align-items-center mx-1">
             <div class="d-flex align-items-center">
@@ -260,7 +260,7 @@
             </mat-card-content>
           </mat-card>
         </div>
-        <div *ngIf="selectedRole.roleName === 'user'">
+        <div *ngIf="selectedRole?.roleName === 'user'">
           <label class="mx-1">Assigned users:</label>
           <mat-card class="example-card mt-1 mb-3 added-user-section" appearance="outlined">
             <mat-card-content>

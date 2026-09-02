@@ -4,10 +4,9 @@ import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { BookService } from 'src/app/Services/book.service';
-import { forkJoin } from 'rxjs';
-import { UserService } from 'src/app/Services/user.service';
 import { StudentService } from 'src/app/Services/student.service';
 import { TeacherService } from 'src/app/Services/teacher.service';
+import { IssuedBook, IssuedBookResponse, IssuedBookTable } from 'src/app/models/IssuedBook.model';
 
 @Component({
   selector: 'app-book-issue-history',
@@ -26,8 +25,8 @@ export class BookIssueHistoryComponent implements OnInit {
     private teacherService: TeacherService
   ) {}
   // For issued book list
-  issueBookRecords: any[] = [];
-  issuedBooksDataSource: any[] = [];
+  issueBookRecords: IssuedBookTable[] = [];
+  issuedBooksDataSource: IssuedBook[] = [];
   issuedBookDataColumns = [
     { columnDef: 'issue_id', header: 'ID' },
     { columnDef: 'book_title', header: 'Book Name' },
@@ -46,32 +45,32 @@ export class BookIssueHistoryComponent implements OnInit {
   ngOnInit(): void {
     this.loadData();
   }
+
   loadData() {
     this.isLoading = true;
-    let allBooksData: any[] = [];
-    forkJoin(
-      this.issuedBookService.getAllIssuedBooks(),
-    ).subscribe(([issuedBooks]: any) => {
-        this.issueBookRecords = issuedBooks.data;
-        this.issueBookRecords = this.issueBookRecords.map((x: any) => {
-          x.action = 'edit,delete';
-          x.issue_date = new Date(x.issue_date)
-            .toLocaleDateString('en-GB')
-            .replace(/\//g, '-');
-          x.due_date = new Date(x.due_date)
-            .toLocaleDateString('en-GB')
-            .replace(/\//g, '-');
-          return x;
-        });
-
+    this.issuedBookService.getAllIssuedBooks().subscribe({
+      next: (issuedBooks: IssuedBookResponse) => {
+        this.issueBookRecords = issuedBooks.data.map(
+          (x): IssuedBookTable => ({
+            ...x,
+            action: 'edit,delete',
+            issue_date: new Date(x.issue_date)
+              .toLocaleDateString('en-GB')
+              .replace(/\//g, '-'),
+            due_date: new Date(x.due_date)
+              .toLocaleDateString('en-GB')
+              .replace(/\//g, '-'),
+          }),
+        );
         this.issuedBooksDataSource = this.issueBookRecords;
-        this.isLoading = false;
       },
-      (err) => {
+      error: (err: Error) => {
+        console.error(err);
+      },
+      complete:()=>{
         this.isLoading = false;
-        console.log(err);
       }
-    );
+    });
   }
 
   quickFilter(event: Event): void {
@@ -81,21 +80,22 @@ export class BookIssueHistoryComponent implements OnInit {
     if (value === '') {
       this.issuedBooksDataSource = [...this.issueBookRecords];
     } else {
-      const filtered = this.issueBookRecords.filter((book: any) =>
-        Object.values(book).some((val: any) =>
+      const filtered = this.issueBookRecords.filter((book: IssuedBookTable) =>
+        Object.values(book).some((val) =>
           val.toString().toLowerCase().includes(value)
         )
       );
       this.issuedBooksDataSource = [...filtered];
     }
   }
-  onEditClicked(event: any) {
+  onEditClicked(event: IssuedBook) {
     console.log(event);
     this.router.navigate([
       `issue-book-history/create-book-issue/${event.issue_id}`,
     ]);
   }
-  onDeleteClicked(event: any) {
+
+  onDeleteClicked(event: IssuedBook) {
     console.log(event);
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
@@ -111,12 +111,12 @@ export class BookIssueHistoryComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'delete') {
         this.isLoading = true;
-        this.issuedBookService.deleteIssuedBookById(event.issue_id).subscribe(
-          (res: any) => {
+        this.issuedBookService.deleteIssuedBookById(String(event.issue_id)).subscribe(
+          (res) => {
             console.log(res);
             this.loadData();
           },
-          (err: any) => {
+          (err) => {
             console.log(err);
           }
         );
@@ -124,7 +124,8 @@ export class BookIssueHistoryComponent implements OnInit {
       }
     });
   }
-  onDetailsClicked(event: any) {
+
+  onDetailsClicked(event: IssuedBook) {
     console.log(event);
     // this.router.navigate([`student-list/student-details/${event.studentId}`]);
   }

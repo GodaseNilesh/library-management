@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { BookService } from 'src/app/Services/book.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
+import { Book, BookResponse } from 'src/app/models/book.model';
 
 @Component({
   selector: 'app-book-list',
@@ -15,7 +16,7 @@ export class BookListComponent {
     private bookService: BookService,
     private dialog: MatDialog,
   ) {}
-  booksData: any[] = [];
+  booksData: Book[] = [];
   bookDataColumns = [
     { columnDef: 'bookId', header: 'Book ID' },
     { columnDef: 'title', header: 'Book Name' },
@@ -37,13 +38,16 @@ export class BookListComponent {
   ngOnInit(): void {
     this.loadData();
   }
+
   loadData() {
-    this.bookService.getAllBooks().subscribe((res: any) => {
+    this.bookService.getAllBooks().subscribe((res: BookResponse) => {
       this.booksData = res.data.books;
-      this.booksData = this.booksData.map((x: any) => {
-        x.action = 'edit,delete,details';
-        x.availableStatus = x.availableStatus ? 'Available' : 'Unavailable';
-        return x;
+      this.booksData = this.booksData.map((x: Book) => {
+        return{
+          ...x,
+          action: 'edit,delete,details',
+          availableStatus: x.availableStatus ? 'Available' : 'Unavailable',
+        }
       });
       this.booksDisplayedColumns = this.bookDataColumns.map((c) => c.columnDef);
       this.booksDataSource = this.booksData;
@@ -58,20 +62,26 @@ export class BookListComponent {
       this.booksDataSource = [...this.booksData];
     } else {
       const filtered = this.booksData.filter((book) =>
-        Object.values(book).some((val: any) =>
+        Object.values(book).some((val) =>
           val.toString().toLowerCase().includes(value),
         ),
       );
       this.booksDataSource = [...filtered];
     }
   }
-  onEditClicked(event: any) {
+
+  onEditClicked(event: Book) {
     this.router.navigate([`book-list/add-book/${event.bookId}`]);
   }
-  onDetailsClicked(event: any) {
+
+  onDetailsClicked(event: Book) {
     this.router.navigate([`book-list/book-details/${event.bookId}`]);
   }
-  onDeleteClicked(event: any) {
+
+  onDeleteClicked(event: Book) {
+    const bookId = event.bookId;
+    if(!bookId) return;
+
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
       data: {
@@ -85,7 +95,7 @@ export class BookListComponent {
     });
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'delete') {
-        this.bookService.deleteBookById(event.bookId).subscribe(
+        this.bookService.deleteBookById(bookId).subscribe(
           (res) => {
             this.loadData();
           },
@@ -103,7 +113,7 @@ export class BookListComponent {
       }
     } else if (type === 'export') {
       if (value === 'excel') {
-        this.bookService.exportAllBooksData().subscribe((res: any) => {
+        this.bookService.exportAllBooksData().subscribe((res) => {
           const blob = new Blob([res], {
             type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
           });

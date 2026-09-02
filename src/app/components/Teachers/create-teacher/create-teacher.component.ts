@@ -8,6 +8,7 @@ import {
   Validators,
 } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
+import { Teacher, TeacherResponse } from 'src/app/models/teacher.model';
 import { TeacherService } from 'src/app/Services/teacher.service';
 
 @Component({
@@ -51,8 +52,8 @@ export class CreateTeacherComponent {
       if (id) {
         this.teacherId = id;
         this.teacherService.getTeacherById(this.teacherId).subscribe(
-          (res: any) => {
-            const teacherInfo = res.data[0];
+          (res: Teacher) => {
+            const teacherInfo = res;
             this.teacherForm.patchValue({
               firstName: teacherInfo.firstName,
               lastName: teacherInfo.lastName,
@@ -77,7 +78,7 @@ export class CreateTeacherComponent {
 
   saveTeacher() {
     const teacherFormValue = this.teacherForm.value;
-    let requestBody:any = {
+    let requestBody: Teacher = {
       firstName: teacherFormValue.firstName,
       lastName: teacherFormValue.lastName,
       email: teacherFormValue.email,
@@ -86,8 +87,8 @@ export class CreateTeacherComponent {
       employeeId: teacherFormValue.employeeId,
       joiningDate: teacherFormValue.joiningDate,
       designation: teacherFormValue.designation,
-      status: teacherFormValue.status === true ? 'active' : 'inactive',
-      role: teacherFormValue.role
+      status: teacherFormValue.status === true,
+      role: teacherFormValue.role,
     };
     if (!this.teacherId) {
       requestBody.password = teacherFormValue.password;
@@ -101,7 +102,7 @@ export class CreateTeacherComponent {
         }
       );
     } else {
-      requestBody.teacherId = this.teacherId;
+      requestBody.teacherId = Number(this.teacherId);
       this.teacherService.updateTeacherById(requestBody).subscribe(
         (res) => {
           console.log(res);

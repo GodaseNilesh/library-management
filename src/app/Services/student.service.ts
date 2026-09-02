@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environment';
 import { ApplicationService } from './application.service';
+import { Student, StudentResponse } from '../models/student.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,29 +10,37 @@ import { ApplicationService } from './application.service';
 export class StudentService {
   constructor(private application: ApplicationService) {}
 
-  saveStudent(student: any) {
+  saveStudent(student: Student) {
     let url = environment.apiUrl + '/Student';
     return this.application.postData(url, student);
   }
-  getAllStudents(filter:any = {}) {
-    let url = environment.apiUrl + '/Student';
-    return this.application.getData(url, {params: filter});
+
+  getAllStudents(
+    filter: Record<string, string | number | boolean> = {},
+  ): Observable<StudentResponse> {
+    const url = `${environment.apiUrl}/Student`;
+    return this.application.getData<StudentResponse>(url, {
+      params: filter,
+    });
   }
-  getStudentById(id: string) {
-    let url = environment.apiUrl + '/Student' + `/${id}`;
-    return this.application.getData(url);
+
+  getStudentById(id: string): Observable<Student> {
+    const url = `${environment.apiUrl}/Student/${id}`;
+    return this.application.getData<Student>(url);
   }
-  updateStudentById(data: any) {
+
+  updateStudentById(data: Student) {
     let url = environment.apiUrl + '/Student' + `/${data.studentId}`;
     return this.application.putData(url, data);
   }
-  deleteStudentById(id: string) {
+
+  deleteStudentById(id: number) {
     let url = environment.apiUrl + '/Student' + `/${id}`;
     return this.application.deleteData(url);
   }
 
-  exportAllStudentsData() {
-    let url = environment.apiUrl + '/Student/exportStudentsData';
-    return this.application.getData(url, { responseType: 'blob' as 'blob' });
+  exportAllStudentsData(): Observable<Blob> {
+    const url = `${environment.apiUrl}/Student/exportStudentsData`;
+    return this.application.exportData(url);
   }
 }

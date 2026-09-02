@@ -2,6 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
 import { forkJoin, map } from 'rxjs';
+import { Student } from 'src/app/models/student.model';
+import { IssuedBookResponse } from 'src/app/models/IssuedBook.model';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { StudentService } from 'src/app/Services/student.service';
 
@@ -18,7 +20,7 @@ export class StudentDetailsComponent implements OnInit {
     private fb: FormBuilder,
     private route: ActivatedRoute,
     private studentService: StudentService,
-    private issuedBookService: IssuedBookService
+    private issuedBookService: IssuedBookService,
   ) {
     this.studentDetailsForm = this.fb.group({
       studentId: new FormControl(''),
@@ -43,7 +45,7 @@ export class StudentDetailsComponent implements OnInit {
   ];
 
   studentsDisplayedColumns = this.StudentDataColumns.map((c) => c.columnDef);
-  studentsDataSource:any = this.StudentData;
+  studentsDataSource: Student[] = this.StudentData;
 
   ngOnInit(): void {
     this.isLoading = true;
@@ -54,21 +56,20 @@ export class StudentDetailsComponent implements OnInit {
           this.studentService
             .getStudentById(id)
             .pipe(map((student) => [student])),
-          this.issuedBookService.getAllIssuedBooks('',id)
-        ).subscribe((res) => {
-          //patch student information
-          let studentInfo: any = res[0][0];
+          this.issuedBookService.getAllIssuedBooks('', id),
+        ).subscribe((res: [Student[], IssuedBookResponse]) => {
+          const studentInfo = res[0][0];
+
           this.studentDetailsForm.patchValue({
             studentId: studentInfo.studentId,
             email: studentInfo.email,
-            className: studentInfo.class,
+            className: studentInfo.className,
             department: studentInfo.department,
             mobileNo: studentInfo.phone,
-            fullName: studentInfo.firstName + ' ' + studentInfo.lastName,
+            fullName: `${studentInfo.firstName} ${studentInfo.lastName}`,
           });
 
-          this.studentsDataSource = res[1];
-
+          this.studentsDataSource = res[0];
           this.isLoading = false;
         });
       }

@@ -184,10 +184,10 @@
                       <mat-option class="border-bottom" *ngFor="
                                             let user of allUsers;
                                             let i = index
-                                          " [value]="user.full_name">
+                                          " [value]="user.fullName">
                         <div class="d-flex flex-column">
                           <span>
-                            {{ user.employeeId ?? user.rollNo }} - {{ user.full_name }}
+                            {{ user.employeeId ?? user.rollNo }} - {{ user.fullName }}
                           </span>
                         </div>
                       </mat-option>
@@ -482,7 +482,7 @@
                             <div class="d-flex ms-3 justify-content-evenly mb-2">
                               <div>
                                 <h6>Overdue Days</h6>
-                                <h6>{{issuedDetails.overdueDays}}</h6>
+                                <h6>{{issuedDetails.overdue_days}}</h6>
                               </div>
                               <div>
                                 <h6>Fine Rate</h6>

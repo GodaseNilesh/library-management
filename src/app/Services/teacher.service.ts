@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { ApplicationService } from './application.service';
 import { environment } from '../environment';
+import { Observable } from 'rxjs';
+import { Teacher, TeacherResponse } from '../models/teacher.model';
 
 @Injectable({
   providedIn: 'root',
@@ -8,30 +10,33 @@ import { environment } from '../environment';
 export class TeacherService {
   constructor(private application: ApplicationService) {}
 
-  saveTeacher(teacher: any) {
+  saveTeacher(teacher: Teacher) {
     let url = environment.apiUrl + '/Teacher';
     return this.application.postData(url, teacher);
   }
 
-  getAllTeachers(filter:any = {}) {
+  getAllTeachers(filter: { email?: string } = {}): Observable<TeacherResponse> {
     let url = environment.apiUrl + '/Teacher';
-    return this.application.getData(url, {params: filter});
+    return this.application.getData<TeacherResponse>(url, { params: filter });
   }
-  getTeacherById(id: string) {
+
+  getTeacherById(id: string): Observable<Teacher> {
     let url = environment.apiUrl + `/Teacher/${id}`;
-    return this.application.getData(url);
+    return this.application.getData<Teacher>(url);
   }
-  updateTeacherById(teacher: any) {
+
+  updateTeacherById(teacher: Teacher) {
     let url = environment.apiUrl + `/Teacher/${teacher.teacherId}`;
     return this.application.putData(url, teacher);
   }
-  deleteTeacherById(id: string) {
+
+  deleteTeacherById(id: number) {
     let url = environment.apiUrl + `/Teacher/${id}`;
     return this.application.deleteData(url);
   }
 
   exportAllTeachersData() {
     let url = environment.apiUrl + '/Teacher/exportTeachersData';
-    return this.application.getData(url, { responseType: 'blob' as 'blob' });
+    return this.application.exportData(url);
   }
 }

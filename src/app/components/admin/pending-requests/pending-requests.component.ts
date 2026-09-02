@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { UserService } from 'src/app/Services/user.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { AdminService } from 'src/app/Services/admin.service';
+import { PendingRequest } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-pending-requests',
@@ -10,7 +11,7 @@ import { AdminService } from 'src/app/Services/admin.service';
   styleUrls: ['./pending-requests.component.css'],
 })
 export class PendingRequestsComponent {
-  requestData: any[] = [];
+  requestData: PendingRequest[] = [];
   requestsDataColumns = [
     { columnDef: 'fullName', header: 'Full Name' },
     { columnDef: 'email', header: 'Email' },
@@ -36,12 +37,14 @@ export class PendingRequestsComponent {
 
   loadData() {
     this.isLoading = true;
-    this.userService.getPendingRegistrationRequests().subscribe((res: any) => {
+    this.userService.getPendingRegistrationRequests().subscribe((res: PendingRequest[]) => {
       this.requestData = res;
-      this.requestData = this.requestData.map((x: any) => {
-        x.action = 'approve,reject';
-        x.formattedCreatedAt = this.formatDate(x.createdAt);
-        return x;
+      this.requestData = this.requestData.map((x: PendingRequest) => {
+        return {
+          ...x,
+          action: 'approve,reject',
+          formattedCreatedAt: this.formatDate(x.createdAt),
+        }
       });
       this.requestsDisplayedColumns = this.requestsDataColumns.map(
         (c) => c.columnDef,
@@ -59,7 +62,7 @@ export class PendingRequestsComponent {
       this.requestsDataSource = [...this.requestData];
     } else {
       const filtered = this.requestData.filter((request) =>
-        Object.values(request).some((val: any) =>
+        Object.values(request).some((val) =>
           val.toString().toLowerCase().includes(value),
         ),
       );
@@ -78,7 +81,7 @@ export class PendingRequestsComponent {
     });
   }
 
-  onRejectClicked(row: any) {
+  onRejectClicked(row: PendingRequest) {
     this.isLoading = true;
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
@@ -105,7 +108,7 @@ export class PendingRequestsComponent {
     });
   }
 
-  onApproveClicked(row: any) {
+  onApproveClicked(row: PendingRequest) {
     this.isLoading = true;
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,

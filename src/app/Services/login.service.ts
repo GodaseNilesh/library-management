@@ -5,12 +5,14 @@ import { Router } from '@angular/router';
 import { CommonDialogComponent } from '../components/Shared/common-dialog/common-dialog.component';
 import { MatDialog } from '@angular/material/dialog';
 import { AuthService } from './auth.service';
+import { Observable } from 'rxjs';
+import { LoginResponse, signUpRequest } from '../models/user.model';
 
 @Injectable({
   providedIn: 'root',
 })
 export class LoginService {
-  tokenExpirationCheckInterval: any;
+  tokenExpirationCheckInterval!: ReturnType<typeof setInterval>;
 
   constructor(
     private application: ApplicationService,
@@ -19,7 +21,7 @@ export class LoginService {
     private authService: AuthService,
   ) {}
 
-  userSignup(data: any) {
+  userSignup(data: signUpRequest) {
     let url = environment.apiUrl + '/Auth/register';
     return this.application.postData(url, data);
   }
@@ -27,19 +29,24 @@ export class LoginService {
     return sessionStorage.getItem('user Name');
   }
 
-  userLogin(data: any) {
+  userLogin(data: {
+    email: string;
+    password: string;
+  }): Observable<LoginResponse> {
     let url = environment.apiUrl + '/Auth/login';
-    return this.application.postData(url, data);
+    return this.application.postData<LoginResponse>(url, data);
   }
 
   checkEmail(email: string) {
-    let url = environment.apiUrl + '/Auth/check-email?email=' + email;
-    return this.application.postData(url, '');
+    const url = environment.apiUrl + '/Auth/check-email';
+    return this.application.getData<{ exists: boolean }>(url, {
+      params: { email },
+    });
   }
 
-  verifyOtp(data: any) {
+  verifyOtp(data: { email: string; otp: string }) {
     let url = environment.apiUrl + '/Auth/verify-otp';
-    return this.application.postData(url, data);
+    return this.application.postData<LoginResponse>(url, data);
   }
 
   isUserLoggedIn(): boolean {
@@ -49,7 +56,7 @@ export class LoginService {
 
   checkTokenExpiry() {
     let token = sessionStorage.getItem('token');
-    let expiryTime: any = sessionStorage.getItem('expiresAt');
+    let expiryTime = sessionStorage.getItem('expiresAt');
     if (!token || !expiryTime) {
       return true;
     }
