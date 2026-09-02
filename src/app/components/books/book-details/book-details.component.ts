@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute, Router } from '@angular/router';
 import { forkJoin, map } from 'rxjs';
+import { Student } from 'src/app/models/student.model';
 import { BookService } from 'src/app/Services/book.service';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 
@@ -42,7 +43,7 @@ export class BookDetailsComponent implements OnInit {
   ];
 
   studentsDisplayedColumns = this.StudentDataColumns.map((c) => c.columnDef);
-  studentsDataSource: any = this.StudentData;
+  studentsDataSource: Student[] = this.StudentData;
 
   ngOnInit(): void {
     this.route.paramMap.subscribe((params) => {
@@ -55,7 +56,7 @@ export class BookDetailsComponent implements OnInit {
           console.log(res);
 
           //patch book information
-          let bookInfo: any = res[0][0];
+          let bookInfo = res[0][0];
           this.bookDetailsForm.patchValue({
             bookTitle: bookInfo.title,
             subject: bookInfo.subject,
@@ -64,7 +65,7 @@ export class BookDetailsComponent implements OnInit {
             availableQuantity: bookInfo.availableQuantity,
           });
 
-          this.studentsDataSource = res[1];
+          // this.studentsDataSource = res[1];
         });
     });
   }

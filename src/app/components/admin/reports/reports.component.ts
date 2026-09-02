@@ -7,6 +7,7 @@ import {
 } from './reportOptions';
 import { forkJoin } from 'rxjs';
 import { ReportService } from 'src/app/Services/report.service';
+import { MonthlyBookStats, MonthlyIssued, SubjectCount, SummaryDetail, UserRoleCountDistribution } from 'src/app/models/report.model';
 
 @Component({
   selector: 'app-reports',
@@ -15,7 +16,7 @@ import { ReportService } from 'src/app/Services/report.service';
 })
 export class ReportsComponent {
   isLoading: boolean = false;
-  summaryData: any;
+  summaryData!: SummaryDetail;
 
   public userChartOptions: UserDonutChartOptions = {
     series: [],
@@ -237,12 +238,17 @@ export class ReportsComponent {
         summary,
         monthlyIssuedBooks,
         monthlyActivity,
-      ]: any) => {
+      ]: [UserRoleCountDistribution[],
+        SubjectCount[],
+        SummaryDetail[],
+        MonthlyIssued[],
+        MonthlyBookStats[]
+      ]) => {
         //Set the value for users chart
         this.userChartOptions.labels.forEach((label) => {
           const count =
             allUsers.find(
-              (role: any) => role.role.toLowerCase() == label.toLowerCase(),
+              (role) => role.role.toLowerCase() == label.toLowerCase(),
             )?.count || 0;
           this.userChartOptions.series.push(count);
         });
@@ -251,7 +257,7 @@ export class ReportsComponent {
         this.BooksDonutChartOptions.labels.forEach((label) => {
           const count =
             allBooks.find(
-              (book: any) => book.subject.toLowerCase() == label.toLowerCase(),
+              (book) => book.subject.toLowerCase() == label.toLowerCase(),
             )?.count || 0;
           this.BooksDonutChartOptions.series.push(count);
         });
@@ -264,12 +270,12 @@ export class ReportsComponent {
           this.IssuedBooksLineChartOptions.series = [
             {
               name: 'Books Issued',
-              data: monthlyIssuedBooks.map((item: any) => item.totalIssued),
+              data: monthlyIssuedBooks.map((item) => item.totalIssued),
             },
           ];
 
           this.IssuedBooksLineChartOptions.xaxis = {
-            categories: monthlyIssuedBooks.map((item: any) => item.month),
+            categories: monthlyIssuedBooks.map((item) => item.month),
           };
         }, 1000);
 
@@ -277,20 +283,20 @@ export class ReportsComponent {
         this.libraryActivityChart.series = [
           {
             name: 'Issued',
-            data: monthlyActivity.map((x: any) => x.issued),
+            data: monthlyActivity.map((x) => x.issued),
           },
           {
             name: 'Returned',
-            data: monthlyActivity.map((x: any) => x.returned),
+            data: monthlyActivity.map((x) => x.returned),
           },
           {
             name: 'Overdue',
-            data: monthlyActivity.map((x: any) => x.overdue),
+            data: monthlyActivity.map((x) => x.overdue),
           },
         ];
 
         this.libraryActivityChart.xaxis = {
-          categories: monthlyActivity.map((x: any) => x.month),
+          categories: monthlyActivity.map((x) => x.month),
         };
 
         this.isLoading = false;

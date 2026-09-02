@@ -12,6 +12,7 @@ import { CommonDialogComponent } from './components/Shared/common-dialog/common-
 import { MatDialog } from '@angular/material/dialog';
 import { ToastrService } from 'ngx-toastr';
 import { LoginService } from './Services/login.service';
+import { ApiResponseBody } from './models/global.model';
 
 @Injectable()
 export class AuthInterceptor implements HttpInterceptor {
@@ -20,9 +21,9 @@ export class AuthInterceptor implements HttpInterceptor {
   methodType: string = '';
 
   intercept(
-    request: HttpRequest<any>,
+    request: HttpRequest<unknown>,
     next: HttpHandler
-  ): Observable<HttpEvent<any>> {
+  ): Observable<HttpEvent<unknown>> {
     let token = sessionStorage.getItem('token');
     let requestToSend = request;
 
@@ -51,26 +52,34 @@ export class AuthInterceptor implements HttpInterceptor {
     );
   }
 
-  private handleSuccessResponse(response: HttpResponse<any>): void {
-    let message = '';
-    if (response.status == 200 && (response.url?.includes('/Auth/verify-otp') || response.url?.includes('/Auth/login'))) {
+  private handleSuccessResponse(response: HttpResponse<ApiResponseBody>): void {
+    if (
+      response.status == 200 &&
+      (response.url?.includes('/Auth/verify-otp') ||
+        response.url?.includes('/Auth/login'))
+    ) {
       this.toastr.info(
-        `Welcome back, ${response.body.user.userName}!`,
+        `Welcome back, ${response.body?.user?.userName}!`,
         'Login Successful',
         {
           positionClass: 'toast-top-right',
           timeOut: 4000,
           closeButton: true,
-        }
+        },
       );
     }
     const endPoints = ['check-email', 'login'];
-    if (this.methodType == 'PUT') {
-      this.toastr.success(response.body.data.message ?? 'Data updated successfully!');
-    } else if (this.methodType == 'DELETE') {
-      this.toastr.success(response.body.data.message ?? 'Data deleted successfully!');
-    } else if (this.methodType == 'POST' && !endPoints.some(ep => response.url?.includes(ep))) {
-      this.toastr.success(response.body.data.message ?? 'Data added successfully!');
+    const message = response.body?.data?.message;
+
+    if (this.methodType === 'PUT') {
+      this.toastr.success(message ?? 'Data updated successfully!');
+    } else if (this.methodType === 'DELETE') {
+      this.toastr.success(message ?? 'Data deleted successfully!');
+    } else if (
+      this.methodType === 'POST' &&
+      !endPoints.some((ep) => response.url?.includes(ep))
+    ) {
+      this.toastr.success(message ?? 'Data added successfully!');
     }
   }
 

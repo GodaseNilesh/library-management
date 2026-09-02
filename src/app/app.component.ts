@@ -23,9 +23,8 @@ export class AppComponent implements OnInit {
     }
   }
 
-  onActionChange(event: any): void {
-    const selectedValue = event.target.value;
-
+  onActionChange(event: Event): void {
+    const selectedValue = (event.target as HTMLSelectElement).value;
     if (selectedValue === 'administrator') {
       // Navigate to the administrator page
       this.router.navigate(['/administrator']);
@@ -36,6 +35,7 @@ export class AppComponent implements OnInit {
       this.logout();
     }
   }
+
   logout() {
     this.loginService.userLogout();
   }

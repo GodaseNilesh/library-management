@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Router } from '@angular/router';
 import { StudentService } from 'src/app/Services/student.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
+import { Student, StudentTableData, StudentResponse } from 'src/app/models/student.model';
 
 @Component({
   selector: 'app-student-list',
@@ -15,7 +16,7 @@ export class StudentListComponent implements OnInit {
     private studentService: StudentService,
     private dialog: MatDialog
   ) {}
-  StudentData: any = [];
+  StudentData: Student[] = [];
   isLoading: boolean = false;
   showExportOptions: boolean = false;
   showImportOptions: boolean = false;
@@ -31,22 +32,26 @@ export class StudentListComponent implements OnInit {
   ];
 
   studentsDisplayedColumns: string[] = [];
-  studentsDataSource: any[] = [];
+  studentsDataSource: Student[] = [];
   ngOnInit(): void {
     this.loadData();
   }
+
   loadData() {
     this.isLoading = true;
     this.studentService.getAllStudents().subscribe(
-      (value: any) => {
-        console.log(value);
-        this.StudentData = value;
-        this.StudentData = this.StudentData.data.students.map((x: any) => {
-          x.studentName = x.firstName + ' ' + x.lastName;
-          x.action = 'edit,delete,details';
-          x.class = x.className;
-          return x;
-        });
+      (response: StudentResponse) => {
+        this.StudentData = response.students;
+        this.StudentData = this.StudentData.map(
+          (x: Student): StudentTableData => {
+            return {
+              ...x,
+              studentName: `${x.firstName} ${x.lastName}`,
+              action: 'edit,delete,details',
+              class: x.className,
+            };
+          },
+        );
         this.studentsDisplayedColumns = this.StudentDataColumns.map(
           (c) => c.columnDef
         );
@@ -67,24 +72,27 @@ export class StudentListComponent implements OnInit {
     if (value === '') {
       this.studentsDataSource = [...this.StudentData];
     } else {
-      const filtered = this.StudentData.filter((student: any) =>
-        Object.values(student).some((val: any) =>
+      const filtered = this.StudentData.filter((student: Student) =>
+        Object.values(student).some((val) =>
           val.toString().toLowerCase().includes(value)
         )
       );
       this.studentsDataSource = [...filtered];
     }
   }
-  onEditClicked(event: any) {
+  onEditClicked(event: Student) {
     console.log(event);
     this.router.navigate([`student-list/create-student/${event.studentId}`]);
   }
-  onDetailsClicked(event: any) {
+
+  onDetailsClicked(event: Student) {
     console.log(event);
     this.router.navigate([`student-list/student-details/${event.studentId}`]);
   }
-  onDeleteClicked(event: any) {
-    console.log(event);
+
+  onDeleteClicked(event: Student) {
+    if(event.studentId === undefined) return;
+    const studentId = event.studentId;
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
       data: {
@@ -98,7 +106,7 @@ export class StudentListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
       if (result === 'delete') {
         this.isLoading = true;
-        this.studentService.deleteStudentById(event.studentId).subscribe(
+        this.studentService.deleteStudentById(studentId).subscribe(
           (res) => {
             console.log(res);
             this.loadData();
@@ -118,7 +126,7 @@ export class StudentListComponent implements OnInit {
       }
     } else if (type === 'export') {
       if (value === 'excel') {
-       this.studentService.exportAllStudentsData().subscribe((res: any) => {
+       this.studentService.exportAllStudentsData().subscribe((res) => {
         const blob = new Blob([res], {
           type: 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
         });

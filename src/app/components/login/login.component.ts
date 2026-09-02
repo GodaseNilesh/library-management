@@ -10,6 +10,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { LoginService } from 'src/app/Services/login.service';
 import { Router } from '@angular/router';
 import { debounceTime, distinctUntilChanged, filter, switchMap, tap } from 'rxjs';
+import { LoginResponse } from 'src/app/models/user.model';
 
 @Component({
   selector: 'app-login',
@@ -32,7 +33,7 @@ export class LoginComponent implements OnInit {
 
   minutes: number = 0;
   seconds: number = 10;
-  timer: any;
+  timer!: ReturnType<typeof setInterval>;
   timeUp: boolean = false;
   otp: string = '';
   emailStatus: string = 'idle';
@@ -80,7 +81,7 @@ export class LoginComponent implements OnInit {
           return this.loginService.checkEmail(email);
         }),
       )
-      .subscribe((res: any) => {
+      .subscribe((res: { exists: boolean }) => {
         this.emailStatus = !res.exists ? 'available' : 'exists';
       });
   }
@@ -93,7 +94,7 @@ export class LoginComponent implements OnInit {
     };
     this.isClicked = true;
     this.loginService.userLogin(reqBody).subscribe(
-      (next: any) => {
+      (next: LoginResponse) => {
         this.isLoading = false;
         // this.isForgotPasswordPage = true;
         this.storeUserDetails(next);
@@ -113,7 +114,7 @@ export class LoginComponent implements OnInit {
       otp: this.otp.toString(),
     };
     this.loginService.verifyOtp(reqBody).subscribe(
-      (next: any) => {
+      (next: LoginResponse) => {
         this.storeUserDetails(next);
       },
       (error) => {
@@ -124,7 +125,7 @@ export class LoginComponent implements OnInit {
     );
   }
 
-  storeUserDetails(userInfo:any) {
+  storeUserDetails(userInfo: LoginResponse) {
     sessionStorage.setItem('userId', userInfo.user.userId);
     sessionStorage.setItem('user Name', userInfo.user.userName);
     sessionStorage.setItem('token', userInfo.token);
@@ -189,7 +190,7 @@ export class LoginComponent implements OnInit {
     this.startTimer();
   }
 
-  onOtpChange(event: any) {
+  onOtpChange(event: string) {
     this.otp = event;
   }
 

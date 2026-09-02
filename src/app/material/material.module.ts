@@ -23,7 +23,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatRadioModule } from '@angular/material/radio';
 
-const components: any = [
+const components = [
   MatCardModule,
   MatButtonModule,
   MatInputModule,

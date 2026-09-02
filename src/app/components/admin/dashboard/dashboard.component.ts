@@ -1,6 +1,10 @@
 import { Component, inject, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { forkJoin } from 'rxjs';
+import { Book } from 'src/app/models/book.model';
+import { IssuedBook, UpdateIssuedBook } from 'src/app/models/IssuedBook.model';
+import { Student } from 'src/app/models/student.model';
+import { RecentActivity } from 'src/app/models/user.model';
 import { BookService } from 'src/app/Services/book.service';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { LoginService } from 'src/app/Services/login.service';
@@ -23,9 +27,7 @@ export class DashboardComponent implements OnInit {
   pendingRequestsCount: number = 0;
   isLoading: boolean = false;
 
-  allBooksData: any = [];
-  allAuthorsData: any[] = [];
-  allIssuedBooksData: any[] = [];
+  allBooksData: Book[] = [];
 
   private _formBuilder = inject(FormBuilder);
 
@@ -35,14 +37,14 @@ export class DashboardComponent implements OnInit {
     top: 0,
   });
 
-  bookDataSource: any[] = [];
-  booksDisplayedColumns: any[] = [];
+  bookDataSource: Book[] = [];
+  booksDisplayedColumns: string[] = [];
 
-  studentDataSource: any[] = [];
-  studentDisplayedColumns: any[] = [];
+  studentDataSource: Student[] = [];
+  studentDisplayedColumns: string[] = [];
 
-  issuedBookDataSource: any[] = [];
-  issuedBooksDisplayedColumns: any[] = [];
+  issuedBookDataSource: IssuedBook[] = [];
+  issuedBooksDisplayedColumns: string[] = [];
 
   BookDataColumns = [
     { columnDef: 'title', header: 'Title' },
@@ -63,7 +65,7 @@ export class DashboardComponent implements OnInit {
     { columnDef: 'status', header: 'Status' },
   ];
 
-  recentActivities:any[] = [];
+  recentActivities: RecentActivity[] = [];
 
   constructor(
     public loginService: LoginService,
@@ -82,7 +84,7 @@ export class DashboardComponent implements OnInit {
       this.bookService.getAllBooks(),
       this.issuedBookService.getAllIssuedBooks(),
       this.userService.getPendingRegistrationRequests(),
-      this.userService.getActivities()
+      this.userService.getActivities(),
     ).subscribe(
       ([
         studentRes,
@@ -90,28 +92,35 @@ export class DashboardComponent implements OnInit {
         booksRes,
         issuedBookResponse,
         requests,
-        activities
-      ]: any) => {
-        this.studentCount = studentRes.data.totalRecords;
-        this.teacherCount = teacherRes.data.totalRecords;
-        this.booksCount = booksRes.data.totalRecords;
+        activities,
+      ]) => {
+        this.studentCount = studentRes.pagination.totalRecords ?? 0;
+        this.teacherCount = teacherRes.pagination.totalRecords ?? 0;
+        this.booksCount = booksRes.data.pagination.totalRecords ?? 0;
         this.issuedBooksCount = issuedBookResponse.pagination.totalRecords;
-        this.overdueIssuedBooksCount = issuedBookResponse.data.filter((x:any) => {
-          return x.return_date == null && x.return_date > x.due_date;
-        }).length;
-        this.pendingRequestsCount = requests.data.length;
-        this.allBooksData = booksRes.data.books.map((x: any, index: number) => ({
-          ...x,
-          id: index + 1,
-        }));
+        this.overdueIssuedBooksCount = issuedBookResponse.data.filter(
+          (x: IssuedBook) => {
+            return x.return_date == null;
+          },
+        ).length;
+        this.pendingRequestsCount = requests.length;
+        this.allBooksData = booksRes.data.books.map(
+          (x: Book, index: number) => ({
+            ...x,
+            id: index + 1,
+          }),
+        );
 
-        this.recentActivities = activities.map((activity: any) => ({
-          action: activity.activity_type,
-          description: activity.description,
-          performed_by: activity.created_by_name,
-          role: activity.role,
-          created_at: activity.created_at
-        })).reverse().slice(0,5);
+        this.recentActivities = activities
+          .map((activity: RecentActivity) => ({
+            activity_type: activity.activity_type,
+            description: activity.description,
+            performed_by_name: activity.performed_by_name,
+            role: activity.role,
+            created_at: activity.created_at,
+          }))
+          .reverse()
+          .slice(0, 5);
 
         this.booksDisplayedColumns = this.BookDataColumns.map(
           (c) => c.columnDef,
@@ -121,19 +130,13 @@ export class DashboardComponent implements OnInit {
         this.studentDisplayedColumns = this.studentDataColumns.map(
           (c) => c.columnDef,
         );
-        this.studentDataSource = studentRes.data.students.splice(0,7);
+        this.studentDataSource = studentRes.students.splice(0, 7);
 
         this.issuedBooksDisplayedColumns = this.issuedBooksDataColumns.map(
           (c) => c.columnDef,
         );
-        issuedBookResponse = issuedBookResponse.data.map(
-          (x: any, index: number) => ({
-            ...x,
-            id: index + 1,
-          }),
-        );
 
-        issuedBookResponse.forEach((x: any, index: number) => {
+        issuedBookResponse.data.forEach((x: IssuedBook, index: number) => {
           x.id = index + 1;
           x.issue_date = new Date(x.issue_date)
             .toLocaleDateString('en-GB')
@@ -143,7 +146,7 @@ export class DashboardComponent implements OnInit {
             .replace(/\//g, '-');
         });
 
-        this.issuedBookDataSource = issuedBookResponse.slice(0,5);
+        this.issuedBookDataSource = issuedBookResponse.data.slice(0, 5);
         this.isLoading = false;
       },
     );

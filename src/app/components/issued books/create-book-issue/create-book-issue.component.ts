@@ -7,6 +7,7 @@ import {
   ValidationErrors,
   Validators,
 } from '@angular/forms';
+import { MatSelectChange } from '@angular/material/select';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import {
@@ -20,6 +21,10 @@ import {
   switchMap,
   tap,
 } from 'rxjs';
+import { Book, BookResponse } from 'src/app/models/book.model';
+import { AllUsersResponse, IssuedBook } from 'src/app/models/IssuedBook.model';
+import { CreateOrderData, CreateOrderResponse, PaymentSuccessResponse, verifyPaymentResponse } from 'src/app/models/payment.model';
+import { IssueUser } from 'src/app/models/user.model';
 import { BookService } from 'src/app/Services/book.service';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 import { PaymentService } from 'src/app/Services/payment.service';
@@ -34,14 +39,14 @@ import { TeacherService } from 'src/app/Services/teacher.service';
 export class CreateBookIssueComponent {
   issuedBookForm: FormGroup;
   searchBookCtrl = new FormControl('');
-  AllBooksData: any[] = [];
-  allUsers: any = [];
+  AllBooksData: Book[] = [];
+  allUsers: IssueUser[] = [];
   today = new Date();
   isLoading: boolean = false;
   quantityAvailable: number = 1;
   issuedBookId!: string;
-  filteredOptions: any;
-  issuedDetails: any;
+  filteredOptions!: Book[];
+  issuedDetails!: IssuedBook;
 
   constructor(
     private fb: FormBuilder,
@@ -95,7 +100,7 @@ export class CreateBookIssueComponent {
         }),
       )
       .subscribe({
-        next: (res: any) => {
+        next: (res: BookResponse) => {
           this.AllBooksData = res.data.books;
           this.filteredOptions = res.data.books;
         },
@@ -129,11 +134,35 @@ export class CreateBookIssueComponent {
         }),
       )
       .subscribe({
-        next: (res: any) => {
-          if (this.issuedBookForm.get('userType')?.value === 'teacher') {
-            this.allUsers = res.data.teachers;
+        next: (res: AllUsersResponse) => {
+          if ('teachers' in res) {
+            this.allUsers = res.teachers?.map((user)=>{
+              return{
+                fullName: user.fullName || '',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role,
+                status: user.status,
+                userId: user.userId || 0,
+                teacherId: user.teacherId || 0,
+                employeeId: user.employeeId,
+              }
+            });
           } else {
-            this.allUsers = res.data.students;
+            this.allUsers = res.students.map((user)=>{
+              return{
+                fullName: user.fullName ?? '',
+                firstName: user.firstName,
+                lastName: user.lastName,
+                email: user.email,
+                role: user.role ?? 'student',
+                status: user.status,
+                userId: user.userId ?? 0,
+                studentId: user.studentId ?? 0,
+                rollNo: user.rollNo,
+              }
+            });
           }
         },
         error: (err) => {
@@ -147,8 +176,8 @@ export class CreateBookIssueComponent {
       const id = params.get('id');
       if (id) {
         this.issuedBookId = id;
-        this.issuedBookService.getIssuedBookById(id).subscribe((book: any) => {
-          const bookInfo = book.data;
+        this.issuedBookService.getIssuedBookById(id).subscribe((book: IssuedBook) => {
+          const bookInfo = book;
           this.issuedDetails = bookInfo;
           this.searchBookCtrl.setValue(bookInfo.book_title);
           this.onBookSelected(bookInfo.book_title, bookInfo.book_id);
@@ -172,7 +201,7 @@ export class CreateBookIssueComponent {
   }
 
   onBookSelected(bookName: string, bookId: number = 0) {
-    let selectedBook: any = this.AllBooksData.filter((book) => {
+    let selectedBook: Book[] = this.AllBooksData.filter((book) => {
       return book.title == bookName;
     });
     this.issuedBookForm.patchValue({
@@ -183,12 +212,13 @@ export class CreateBookIssueComponent {
 
   onUserSelected(userName: string) {
     const selectedUser = this.allUsers.find(
-      (x: any) => x.full_name === userName,
+      (x) => x.fullName === userName,
     );
+    if (!selectedUser) return;
     this.issuedBookForm.get('userId')?.setValue(selectedUser.userId);
   }
 
-  onUserTypeChange(event: any) {
+  onUserTypeChange(event: MatSelectChange) {
     this.allUsers = [];
     this.issuedBookForm.get('userName')?.setValue('');
   }
@@ -239,7 +269,7 @@ export class CreateBookIssueComponent {
       );
     } else {
       const reqBody = {
-        issueId: this.issuedBookId,
+        issueId: Number(this.issuedBookId),
         dueDate:
           typeof formValue.dueDate == 'string'
             ? formValue.dueDate
@@ -291,18 +321,18 @@ export class CreateBookIssueComponent {
   payFineNow() {
     this.isLoading = true;
     this.paymentService.createOrder(Number(this.issuedBookId)).subscribe({
-      next: (response: any) => {
+      next: (response: CreateOrderResponse) => {
         console.log(response);
         this.openCheckout(response.data);
       },
-      error: (error: any) => {
+      error: (error: Error) => {
         this.isLoading = false;
         console.log(error);
       },
     });
   }
 
-  openCheckout(order: any) {
+  openCheckout(order: CreateOrderData) {
     const options = {
       key: order.key,
       amount: order.amount,
@@ -310,7 +340,7 @@ export class CreateBookIssueComponent {
       name: 'The Best Library',
       description: 'Overdue fine payment',
       order_id: order.orderId,
-      handler: (response: any) => {
+      handler: (response: PaymentSuccessResponse) => {
         const paymentData = {
           razorpay_order_id: response.razorpay_order_id,
           razorpay_payment_id: response.razorpay_payment_id,
@@ -320,7 +350,7 @@ export class CreateBookIssueComponent {
 
         this.toastr.info(`Payment of ₹${order.amount / 100} successfully`);
         this.paymentService.verifyPayment(paymentData).subscribe({
-          next: (result: any) => {
+          next: (result: verifyPaymentResponse) => {
             this.isLoading = false;
             if (this.issuedDetails.return_date === null) {
               this.returnIssuedBook(true);

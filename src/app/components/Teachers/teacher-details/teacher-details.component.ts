@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
 import { ActivatedRoute } from '@angular/router';
+import { Teacher } from 'src/app/models/teacher.model';
 import { TeacherService } from 'src/app/Services/teacher.service';
 
 @Component({
@@ -54,8 +55,8 @@ export class TeacherDetailsComponent implements OnInit {
       const id = params.get('id');
       id &&
         this.teacherService.getTeacherById(id).subscribe(
-          (res: any) => {
-            const teacherInfo = res.data[0];
+          (res: Teacher) => {
+            const teacherInfo = res;
             this.teacherDetailsForm.patchValue({
               teacherId: teacherInfo.teacherId,
               fullName: teacherInfo.firstName + ' ' + teacherInfo.lastName,

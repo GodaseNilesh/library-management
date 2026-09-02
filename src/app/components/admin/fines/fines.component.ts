@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { Router } from '@angular/router';
+import { IssuedBook, IssuedBookResponse } from 'src/app/models/IssuedBook.model';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
 
 @Component({
@@ -13,8 +14,8 @@ export class FinesComponent {
   collectedFine: number = 0;
   pendingFine: number = 0;
 
-  issueBookRecords: any[] = [];
-  issuedBooksDataSource: any[] = [];
+  issueBookRecords: IssuedBook[] = [];
+  issuedBooksDataSource: IssuedBook[] = [];
   issuedBookDataColumns = [
     { columnDef: 'issue_id', header: 'ID' },
     { columnDef: 'book_title', header: 'Book Name' },
@@ -37,21 +38,26 @@ export class FinesComponent {
 
   ngOnInit(): void {
     this.isLoading = true;
-    this.issuedBookService.getAllIssuedBooks().subscribe((issuedBooks: any) => {
+    this.issuedBookService.getAllIssuedBooks().subscribe((issuedBooks: IssuedBookResponse) => {
       this.issueBookRecords = issuedBooks.data;
-      this.issueBookRecords = this.issueBookRecords.map((x: any) => {
-        x.action = 'details';
-        x.issue_date = new Date(x.issue_date)
-          .toLocaleDateString('en-GB')
-          .replace(/\//g, '-');
-        x.due_date = new Date(x.due_date)
-          .toLocaleDateString('en-GB')
-          .replace(/\//g, '-');
-        x.return_date = x.return_date ? new Date(x.return_date)
-          .toLocaleDateString('en-GB')
-          .replace(/\//g, '-') : '-';
-        x.fine_paid = x.fine_amount > 0 ? (x.fine_paid ? 'Paid' : 'Unpaid') : 'N/A';
-        return x;
+      this.issueBookRecords = this.issueBookRecords.map((x: IssuedBook) => {
+        return {
+          ...x,
+          action: 'details',
+          issue_date: new Date(x.issue_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-'),
+          due_date: new Date(x.due_date)
+            .toLocaleDateString('en-GB')
+            .replace(/\//g, '-'),
+          return_date: x.return_date
+            ? new Date(x.return_date)
+                .toLocaleDateString('en-GB')
+                .replace(/\//g, '-')
+            : '-',
+          fine_paid:
+            x.fine_amount > 0 ? (x.fine_paid ? 'Paid' : 'Unpaid') : 'N/A',
+        };
       });
 
       this.totalFine = this.issueBookRecords
@@ -79,7 +85,7 @@ export class FinesComponent {
     });
   }
 
-  goToDetails(row: any) {
+  goToDetails(row: IssuedBook) {
     this.router.navigate([
       `issue-book-history/create-book-issue/${row.issue_id}`,
     ]);

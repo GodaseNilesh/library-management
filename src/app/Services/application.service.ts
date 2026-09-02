@@ -1,5 +1,6 @@
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -21,21 +22,40 @@ export class ApplicationService {
     return headers;
   }
 
-  postData(url: string, params: any) {
+  postData<T, P = unknown>(url: string, params: P): Observable<T> {
     const skipInterceptor = url.includes('/Auth');
     const headers = this.buildHeaders(skipInterceptor);
-    return this.http.post(url, params, { headers: headers });
+    return this.http.post<T>(url, params, { headers: headers });
   }
-  getData(url: string, options?: any) {
+
+  getData<T>(
+    url: string,
+    options?: {
+      params?: Record<string, string | number | boolean>;
+    },
+  ): Observable<T> {
     const headers = this.buildHeaders();
-    return this.http.get(url, { headers: headers, ...options });
+    return this.http.get<T>(url, {
+      headers,
+      ...options,
+    });
   }
-  putData(url: string, params: any) {
+
+  putData<T, P = unknown>(url: string, params: P) {
     const headers = this.buildHeaders();
     return this.http.put(url, params, { headers: headers });
   }
+
   deleteData(url: string) {
     const headers = this.buildHeaders();
     return this.http.delete(url, { headers: headers });
+  }
+
+  exportData(url: string): Observable<Blob> {
+    const headers = this.buildHeaders();
+    return this.http.get(url, {
+      headers,
+      responseType: 'blob',
+    });
   }
 }

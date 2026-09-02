@@ -11,6 +11,7 @@ import {
 import { ActivatedRoute, Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { min } from 'rxjs';
+import { Student } from 'src/app/models/student.model';
 import { StudentService } from 'src/app/Services/student.service';
 
 @Component({
@@ -67,8 +68,8 @@ export class CreateStudentComponent implements OnInit {
       if (id) {
         this.studentId = id;
         this.student.getStudentById(id).subscribe(
-          (res: any) => {
-            const studentData = res.data;
+          (res: Student) => {
+            const studentData = res;
             this.studentForm.patchValue({
               studentId: studentData.studentId,
               firstName: studentData.firstName,
@@ -139,7 +140,7 @@ export class CreateStudentComponent implements OnInit {
       this.isLoading = false;
     } else {
       const reqBody = {
-        studentId: this.studentId || 0,
+        studentId: Number(this.studentId) || 0,
         firstName: this.studentForm.value.firstName,
         lastName: this.studentForm.value.lastName,
         email: this.studentForm.value.email,
@@ -204,8 +205,8 @@ export class CreateStudentComponent implements OnInit {
     return Object.keys(errors).length ? errors : null;
   }
 
-  onFileSelected(event: any): void {
-    const file = event.target.files[0];
+  onFileSelected(event: Event): void {
+    const file = (event.target as HTMLInputElement).files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = () => {

@@ -8,6 +8,8 @@ import {
 } from '@angular/forms';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 import { Router } from '@angular/router';
+import { UserRole } from 'src/app/models/common.model';
+import { Role, RolesCount, User } from 'src/app/models/user.model';
 import { UserService } from 'src/app/Services/user.service';
 
 @Component({
@@ -17,8 +19,8 @@ import { UserService } from 'src/app/Services/user.service';
   providers: [DatePipe],
 })
 export class UserComponent {
-  allUsers: any = [];
-  usersDataSource: any[] = this.allUsers;
+  allUsers: User[] = [];
+  usersDataSource: User[] = this.allUsers;
   usersDataColumns = [
     { columnDef: 'fullName', header: 'Full Name' },
     { columnDef: 'email', header: 'Email' },
@@ -28,17 +30,17 @@ export class UserComponent {
     { columnDef: 'action', header: 'Action' },
   ];
 
-  roles: any = [];
-  rolesDataSource: any[] = this.roles;
-  rolesDataColumns: any[] = [
+  roles: Role[] = [];
+  rolesDataSource: Role[] = this.roles;
+  rolesDataColumns: { columnDef: string; header: string }[] = [
     { columnDef: 'roleId', header: 'Role ID' },
     { columnDef: 'roleName', header: 'Role Name' },
     { columnDef: 'usersAssigned', header: 'User Assigned' },
     { columnDef: 'action', header: 'Action' },
   ];
 
-  assignedUsersDataSource: any[] = [];
-  assignedUsersDataColumns: any[] = [
+  assignedUsersDataSource: User[] = [];
+  assignedUsersDataColumns: { columnDef: string; header: string }[] = [
     { columnDef: 'fullName', header: 'Full Name' },
     { columnDef: 'action', header: 'Action' },
   ];
@@ -51,16 +53,16 @@ export class UserComponent {
   isLoading: boolean = false;
   searchText: string = '';
 
-  usersList: any = [];
+  usersList: string[] = [];
   selectedUsers: string[] = [];
-  addedUsers: any[] = [];
-  removedUsers: any[] = [];
+  addedUsers: User[] = [];
+  removedUsers: User[] = [];
 
   filteredUsers = this.usersList.slice();
   userCtrl = new FormControl();
   isEditOpen = false;
-  selectedUser: any;
-  selectedRole: any;
+  selectedUser!: User | null;
+  selectedRole!: Role | null;
   drawerType: string = 'User';
 
   totalUsersCount: number = 0;
@@ -106,7 +108,7 @@ export class UserComponent {
   ngOnInit(): void {
     this.getAllUsers();
     this.userCtrl.valueChanges.subscribe((value) => {
-      this.filteredUsers = this.usersList.filter((user: any) =>
+      this.filteredUsers = this.usersList.filter((user: string) =>
         user.toLowerCase().includes(value?.toLowerCase()),
       );
     });
@@ -115,31 +117,33 @@ export class UserComponent {
   getAllUsers() {
     this.isLoading = true;
     this.userService.getAllUsers().subscribe(
-      (users: any) => {
-        this.allUsers = users.map((user: any) => {
-          user.action = 'edit,delete,details';
-          user.createdOn =
-            this.datePipe.transform(
-              user.createdOn,
-              'dd-MM-yyyy hh:mm a',
-              'UTC',
-            ) || '';
-          user.lastUpdatedAt =
-            this.datePipe.transform(
-              user.lastUpdatedAt,
-              'dd-MM-yyyy hh:mm a',
-              'UTC',
-            ) || '';
-          return user;
+      (users: User[]) => {
+        this.allUsers = users.map((user) => {
+          return {
+            ...user,
+            action: 'edit,delete,details',
+            createdOn:
+              this.datePipe.transform(
+                user.createdOn,
+                'dd-MM-yyyy hh:mm a',
+                'UTC',
+              ) || '',
+            lastUpdatedAt:
+              this.datePipe.transform(
+                user.lastUpdatedAt,
+                'dd-MM-yyyy hh:mm a',
+                'UTC',
+              ) || '',
+          };
         });
         this.totalUsersCount = this.allUsers.length ?? 0;
         this.activeUsersCount = this.allUsers.filter(
-          (x: any) => x.status === 'active',
+          (x: User) => x.status === 'active',
         )?.length;
         this.totalRolesCount = [
-          ...new Set(this.allUsers.map((x: any) => x.role)),
+          ...new Set(this.allUsers.map((x: User) => x.role)),
         ]?.length;
-        this.usersList = this.allUsers.map((user: any) => user.fullName);
+        this.usersList = this.allUsers.map((user: User) => user.fullName);
         this.usersDataSource = this.allUsers;
         this.filteredUsers = this.usersList;
         this.setRolesAndAssignedUsers();
@@ -158,9 +162,9 @@ export class UserComponent {
     this.searchText = value;
 
     if (value !== '') {
-      filtered = this.getAllAssignUnassignedUsers().filter((user: any) =>
+      filtered = this.getAllAssignUnassignedUsers().filter((user: User) =>
         Object.values(user).some(
-          (val: any) =>
+          (val: string | number) =>
             val !== null && val.toString().toLowerCase().includes(value),
         ),
       );
@@ -171,13 +175,25 @@ export class UserComponent {
   }
 
   setRolesAndAssignedUsers() {
-    const roleCounts: any = {};
+    const roleCounts: RolesCount = {
+      admin: 0,
+      librarian: 0,
+      student: 0,
+      teacher: 0,
+      user: 0,
+    };
 
-    this.allUsers.forEach((user: any) => {
+    this.allUsers.forEach((user: User) => {
       roleCounts[user.role] = (roleCounts[user.role] || 0) + 1;
     });
 
-    const allRoles = ['admin', 'teacher', 'student', 'librarian', 'user'];
+    const allRoles: UserRole[] = [
+      'admin',
+      'teacher',
+      'student',
+      'librarian',
+      'user',
+    ];
 
     this.roles = allRoles.map((role, index) => ({
       roleId: index + 1,
@@ -200,7 +216,7 @@ export class UserComponent {
     this.userForm.reset();
   }
 
-  goToDetails(row: any) {
+  goToDetails(row: User) {
     if (['librarian', 'admin', 'teacher'].includes(row.role)) {
       this.router.navigate([`/teacher-list/create-teacher/${row.teacherId}`]);
     } else {
@@ -246,7 +262,7 @@ export class UserComponent {
     }
   }
 
-  removeUser(user: any) {
+  removeUser(user: User) {
     this.searchText = '';
     const addedIndex = this.addedUsers.findIndex(
       (u) => u.userId === user.userId,
@@ -262,7 +278,7 @@ export class UserComponent {
     this.cdr.detectChanges();
   }
 
-  addUser(user: any) {
+  addUser(user: User) {
     this.searchText = '';
     const removedIndex = this.removedUsers.findIndex(
       (u) => u.userId === user.userId,
@@ -278,28 +294,30 @@ export class UserComponent {
     this.cdr.detectChanges();
   }
 
-  openDrawer(type: string, row: any) {
+  openDrawer(type: 'User' | 'Role', row: User | Role) {
     this.removedUsers = [];
     this.addedUsers = [];
-    this.selectedUser = '';
+    this.selectedUser = null;
+    this.selectedRole = null;
     if (type === 'User') {
-      this.selectedUser = row;
+      this.selectedUser = row as User;
       this.userForm.patchValue({
-        firstName: row.firstName,
-        lastName: row.lastName,
-        email: row.email,
-        userRole: row.role,
-        status: row.status,
-        userId: row.userId,
+        firstName: this.selectedUser.firstName,
+        lastName: this.selectedUser.lastName,
+        email: this.selectedUser.email,
+        userRole: this.selectedUser.role,
+        status: this.selectedUser.status,
+        userId: this.selectedUser.userId,
       });
     } else {
+      const role = row as Role;
       this.roleForm.patchValue({
-        roleId: row.roleId,
-        roleName: row.roleName,
-        usersAssigned: row.usersAssigned,
+        roleId: role.roleId,
+        roleName: role.roleName,
+        usersAssigned: role.usersAssigned,
         users: this.usersList,
       });
-      this.selectedRole = row;
+      this.selectedRole = role;
       this.assignedUsersDataSource = this.getAllAssignUnassignedUsers();
     }
 
@@ -313,7 +331,7 @@ export class UserComponent {
     const unAssignedUsers = [];
 
     for (const user of this.allUsers) {
-      let isAssigned = user.role === this.selectedRole.roleName;
+      let isAssigned = user.role === this.selectedRole?.roleName;
 
       // Apply pending changes
       if (this.removedUsers.some((u) => u.userId === user.userId)) {

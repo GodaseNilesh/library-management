@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { environment } from '../environment';
 import { ApplicationService } from './application.service';
+import { CreateOrderResponse, verifyPaymentRequest, verifyPaymentResponse } from '../models/payment.model';
+import { Observable } from 'rxjs';
 
 @Injectable({
   providedIn: 'root',
@@ -8,13 +10,13 @@ import { ApplicationService } from './application.service';
 export class PaymentService {
   constructor(private applicationService: ApplicationService) {}
 
-  createOrder(issueId: number) {
+  createOrder(issueId: number):Observable<CreateOrderResponse> {
     let url = environment.apiUrl + '/payments/create-order';
-    return this.applicationService.postData(url, { issueId: issueId });
+    return this.applicationService.postData<CreateOrderResponse>(url, { issueId: issueId });
   }
 
-  verifyPayment(paymentData: any) {
+  verifyPayment(paymentData: verifyPaymentRequest):Observable<verifyPaymentResponse> {
     let url = environment.apiUrl + '/payments/verify';
-    return this.applicationService.postData(url, paymentData);
+    return this.applicationService.postData<verifyPaymentResponse>(url, paymentData);
   }
 }
