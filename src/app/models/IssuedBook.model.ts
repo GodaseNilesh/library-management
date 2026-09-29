@@ -7,7 +7,7 @@ export interface IssuedBook {
   issue_id: number;
   issue_date: string;
   due_date: string;
-  return_date: null | string;
+  return_date: string | null;
   fine_amount: number;
   fine_paid: boolean | string;
   remarks: string;
