@@ -17,7 +17,7 @@ export class IssuedBookService {
 
   getAllIssuedBooks(
     bookId: string = '',
-    userId: string = '',
+    userId: number = 0,
   ): Observable<IssuedBookResponse> {
     const url = new URL(`${environment.apiUrl}/issue-book`);
     if (bookId) url.searchParams.set('bookId', bookId);
