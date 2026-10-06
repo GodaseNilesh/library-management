@@ -21,11 +21,13 @@ export class TableComponent<T> {
   @Input() showPagination: boolean = true;
   @Input() tableName: String = '';
 
-  @Output() onEdit= new EventEmitter<T>();
-  @Output() onDetails= new EventEmitter<T>();
-  @Output() onDelete= new EventEmitter<T>();
-  @Output() onApprove= new EventEmitter<T>();
-  @Output() onReject= new EventEmitter<T>();
+  @Output() onEdit = new EventEmitter<T>();
+  @Output() onDetails = new EventEmitter<T>();
+  @Output() onDelete = new EventEmitter<T>();
+  @Output() onApprove = new EventEmitter<T>();
+  @Output() onReject = new EventEmitter<T>();
+  @Output() onDeactivate = new EventEmitter<T>();
+  @Output() onActivate = new EventEmitter<T>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;
 
@@ -43,7 +45,7 @@ export class TableComponent<T> {
     if (changes['pageSize'] && changes['pageSize'].currentValue) {
       this.pageSize = changes['pageSize'].currentValue;
     }
-    console.log(this.dataSource.data)
+    console.log(this.dataSource.data);
   }
 
   ngAfterViewInit() {
@@ -76,5 +78,13 @@ export class TableComponent<T> {
 
   onAddClicked(element: T) {
     this.onApprove.emit(element);
+  }
+
+  onDeactivateClicked(element: T) {
+    this.onDeactivate.emit(element);
+  }
+
+  onActivateClicked(element: T) {
+    this.onActivate.emit(element);
   }
 }

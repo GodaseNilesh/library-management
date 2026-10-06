@@ -55,7 +55,7 @@ export class LoginComponent implements OnInit {
     this.signUpForm = this.fb.group({
       firstName: new FormControl('', [Validators.required]),
       lastName: new FormControl('', [Validators.required]),
-      userRole: new FormControl('student', [Validators.required]),
+      userType: new FormControl('student', [Validators.required]),
       email: new FormControl('', [Validators.required, Validators.email]),
       password: new FormControl('', [Validators.required]),
       confirmPassword: new FormControl('', [Validators.required]),
@@ -141,9 +141,9 @@ export class LoginComponent implements OnInit {
     let reqBody = {
       firstName: formData.firstName,
       lastName: formData.lastName,
-      emailId: formData.email,
+      email: formData.email,
       password: formData.password,
-      userRole: formData.userRole,
+      userType: formData.userType,
     };
     this.isClicked = true;
     this.loginService.userSignup(reqBody).subscribe(

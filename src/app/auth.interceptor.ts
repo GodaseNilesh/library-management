@@ -69,7 +69,7 @@ export class AuthInterceptor implements HttpInterceptor {
       );
     }
     const endPoints = ['check-email', 'login'];
-    const message = response.body?.data?.message;
+    const message = response.body?.message || response.body?.data?.message;
 
     if (this.methodType === 'PUT') {
       this.toastr.success(message ?? 'Data updated successfully!');

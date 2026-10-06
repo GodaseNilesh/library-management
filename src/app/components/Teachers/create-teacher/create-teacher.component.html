@@ -301,8 +301,8 @@
                   >
                   <mat-form-field style="width: 70%" class="example-full-width">
                     <mat-select formControlName="status">
-                      <mat-option [value]="true">Active</mat-option>
-                      <mat-option [value]="false">Inactive</mat-option>
+                      <mat-option [value]="'active'">Active</mat-option>
+                      <mat-option [value]="'inactive'">Inactive</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <div style="display: block" class="custom-error">
@@ -332,22 +332,23 @@
                   style="width: 32%"
                 >
                   <label class="mx-1" style="width: 25%"
-                    >Role:<span class="text-danger fs-5">*</span>
+                    >User Role:<span class="text-danger fs-5">*</span>
                   </label>
                   <mat-form-field style="width: 70%" class="example-full-width">
-                    <mat-select formControlName="role">
-                      <mat-option value="teacher">Teacher</mat-option>
-                      <mat-option value="student">Student</mat-option>
+                    <mat-select formControlName="userRole">
+                      <mat-option value="admin" disabled>Admin</mat-option>
+                      <mat-option value="librarian" disabled>Librarian</mat-option>
+                      <mat-option value="user">User</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <div style="display: block" class="custom-error">
                     <mat-error
                       *ngIf="
-                        teacherForm?.get('role')?.touched &&
-                        teacherForm?.get('role')?.hasError('required')
+                        teacherForm?.get('userRole')?.touched &&
+                        teacherForm?.get('userRole')?.hasError('required')
                       "
                     >
-                      Role is required.
+                      User Role is required.
                     </mat-error>
                   </div>
                 </div>

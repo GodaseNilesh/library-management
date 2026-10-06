@@ -19,4 +19,6 @@ export interface Pagination {
   totalRecords: number;
 }
 
-export type UserRole = 'admin' | 'librarian' | 'student' | 'teacher' | 'user';
+export type UserRole = 'admin' | 'librarian' | 'user';
+
+export type UserType = 'student' | 'teacher';

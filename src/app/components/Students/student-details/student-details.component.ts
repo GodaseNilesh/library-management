@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormControl, FormGroup } from '@angular/forms';
-import { ActivatedRoute } from '@angular/router';
-import { forkJoin, map } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Student } from 'src/app/models/student.model';
 import { IssuedBook, IssuedBookResponse } from 'src/app/models/IssuedBook.model';
 import { IssuedBookService } from 'src/app/Services/issued-book.service';
@@ -22,6 +21,7 @@ export class StudentDetailsComponent implements OnInit {
     private route: ActivatedRoute,
     private studentService: StudentService,
     private issuedBookService: IssuedBookService,
+    private router: Router
   ) {
     this.studentDetailsForm = this.fb.group({
       studentId: new FormControl(''),
@@ -38,7 +38,7 @@ export class StudentDetailsComponent implements OnInit {
     { columnDef: 'book_title', header: 'Book Name' },
     { columnDef: 'issue_date', header: 'Issue Date' },
     { columnDef: 'due_date', header: 'Due Date' },
-    { columnDef: 'return_date', header: 'Return Days' },
+    { columnDef: 'return_date', header: 'Return Date' },
     { columnDef: 'overdue_days', header: 'Overdue Days' },
     { columnDef: 'fine_amount', header: 'Fine Amount(₹)' },
     { columnDef: 'fine_paid', header: 'Fine Paid' },
@@ -47,12 +47,14 @@ export class StudentDetailsComponent implements OnInit {
 
   studentsDisplayedColumns = this.StudentDataColumns.map((c) => c.columnDef);
   issuedBookDatasource: IssuedBook[] = [];
+  studentId = 0;
 
   ngOnInit(): void {
     this.isLoading = true;
     this.route.paramMap.subscribe((params) => {
       const id = params.get('id');
       if (id) {
+        this.studentId = Number(id);
         this.studentService.getStudentById(id).subscribe((student: Student) => {
           const studentInfo = student;
           this.studentDetailsForm.patchValue({
@@ -80,7 +82,7 @@ export class StudentDetailsComponent implements OnInit {
                   x.return_date = new Date(x.return_date)
                     .toLocaleDateString('en-GB')
                     .replace(/\//g, '-');
-                }
+                } else x.return_date = '-';
 
                 x.fine_paid =
                   x.fine_amount > 0 ? (x.fine_paid ? 'Paid' : 'Unpaid') : 'N/A';
@@ -88,12 +90,15 @@ export class StudentDetailsComponent implements OnInit {
                 if (!this.payFineBtnVisiable) this.payFineBtnVisiable = x.fine_paid === 'Unpaid';
               });
 
-
               this.issuedBookDatasource = issuedRecords.data;
               this.isLoading = false;
             });
         });
       }
     });
+  }
+
+  goToEditPage(){
+    this.router.navigate(['/student-list/create-student', this.studentId]);
   }
 }

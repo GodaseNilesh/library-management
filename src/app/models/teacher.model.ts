@@ -9,11 +9,11 @@ export interface Teacher {
   email: string;
   phoneNo: string;
   department: string;
-  employeeId: string;
+  employeeId?: string;
   joiningDate: Date;
   designation: string;
   status: boolean;
-  role: UserRole;
+  userRole: UserRole;
   password?: string;
 }
 

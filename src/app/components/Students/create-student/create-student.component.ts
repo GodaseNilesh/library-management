@@ -48,8 +48,8 @@ export class CreateStudentComponent implements OnInit {
       ]),
       admissionDate: new FormControl('', [Validators.required]),
       yearSemester: new FormControl('', [Validators.required]),
-      studentId: new FormControl('', [Validators.required]),
-      rollNo: new FormControl(''),
+      studentId: new FormControl({value:'', disabled: true}),
+      rollNo: new FormControl({value:'', disabled: true}),
       addressLine1: new FormControl('', [Validators.required]),
       addressLine2: new FormControl(''),
       state: new FormControl('', [Validators.required]),
@@ -108,7 +108,6 @@ export class CreateStudentComponent implements OnInit {
     this.isLoading = true;
     if (this.studentId == '') {
       const reqBody = {
-        studentId: 0,
         firstName: this.studentForm.value.firstName,
         lastName: this.studentForm.value.lastName,
         email: this.studentForm.value.email,
@@ -128,6 +127,7 @@ export class CreateStudentComponent implements OnInit {
         status: this.studentForm.value.status,
         libraryMembershipNo: this.studentForm.value.libraryMembershipNo,
         bloodGroup: this.studentForm.value.bloodGroup,
+        password: this.studentForm.value.firstName + '@2026'
       };
       this.student.saveStudent(reqBody).subscribe(
         (next) => {

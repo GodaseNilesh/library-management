@@ -22,10 +22,10 @@ export class BookListComponent {
     { columnDef: 'title', header: 'Book Name' },
     { columnDef: 'language', header: 'Language' },
     // { columnDef: 'author', header: 'Author' },
-    // { columnDef: 'publisher', header: 'Publisher' },
     { columnDef: 'isbn', header: 'ISBN' },
     { columnDef: 'subject', header: 'Subject' },
-    { columnDef: 'availableStatus', header: 'Status' },
+    { columnDef: 'isActive', header: 'Active' },
+    { columnDef: 'availableStatus', header: 'Available Status' },
     { columnDef: 'availableQuantity', header: 'Available Quantity' },
     { columnDef: 'totalQuantity', header: 'Total Quantity' },
     { columnDef: 'action', header: 'Action' },
@@ -45,8 +45,9 @@ export class BookListComponent {
       this.booksData = this.booksData.map((x: Book) => {
         return{
           ...x,
-          action: 'edit,delete,details',
+          action: x.isActive ? 'edit,deactivate,details' : 'edit,activate,details',
           availableStatus: x.availableStatus ? 'Available' : 'Unavailable',
+          isActive: x.isActive ? 'Active' : 'Inactive',
         }
       });
       this.booksDisplayedColumns = this.bookDataColumns.map((c) => c.columnDef);
@@ -78,24 +79,59 @@ export class BookListComponent {
     this.router.navigate([`book-list/book-details/${event.bookId}`]);
   }
 
-  onDeleteClicked(event: Book) {
+  onDeactivateClicked(event: Book) {
     const bookId = event.bookId;
     if(!bookId) return;
 
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
       data: {
-        status: 'Confirm!',
-        message: 'Are you sure you want to delete this book? This action cannot be undone.',
+        status: 'Deactivate Book?',
+        message: `This book will no longer be available for issuing.\n Existing records and history will be preserved.`,
         action: {
           cancel: true,
-          delete: true
+          deactivate: true
         },
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'delete') {
-        this.bookService.deleteBookById(bookId).subscribe(
+      if (result === 'deactivate') {
+        const book = event;
+        book.isActive = false;
+        book.availableStatus = book.availableStatus === 'Available';
+        this.bookService.updateBookById(bookId, book).subscribe(
+          (res) => {
+            this.loadData();
+          },
+          (err) => {
+            console.log(err);
+          },
+        );
+      }
+    });
+  }
+
+  onActivateClicked(event: Book) {
+    const bookId = event.bookId;
+    if(!bookId) return;
+
+    const dialogRef = this.dialog.open(CommonDialogComponent, {
+      disableClose: true,
+      data: {
+        status: 'Activate Book?',
+        message: `This book will be available for issuing again.\n Existing records and history will be preserved.`,
+        action: {
+          cancel: true,
+          activate: true
+        },
+      },
+    });
+    dialogRef.afterClosed().subscribe((result) => {
+      if (result === 'activate') {
+        const book = event;
+        book.isActive = true;
+        book.availableStatus = book.availableStatus === 'Available';
+        this.bookService.updateBookById(bookId, book).subscribe(
           (res) => {
             this.loadData();
           },

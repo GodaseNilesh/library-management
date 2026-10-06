@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { StudentService } from 'src/app/Services/student.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { Student, StudentTableData, StudentResponse } from 'src/app/models/student.model';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-student-list',
@@ -14,7 +15,8 @@ export class StudentListComponent implements OnInit {
   constructor(
     private router: Router,
     private studentService: StudentService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private userService: UserService
   ) {}
   StudentData: Student[] = [];
   isLoading: boolean = false;
@@ -22,7 +24,7 @@ export class StudentListComponent implements OnInit {
   showImportOptions: boolean = false;
 
   StudentDataColumns = [
-    { columnDef: 'studentName', header: 'Student Name' },
+    { columnDef: 'fullName', header: 'Student Name' },
     { columnDef: 'studentId', header: 'Student ID' },
     { columnDef: 'email', header: 'Email' },
     { columnDef: 'class', header: 'Class' },
@@ -46,8 +48,7 @@ export class StudentListComponent implements OnInit {
           (x: Student): StudentTableData => {
             return {
               ...x,
-              studentName: `${x.firstName} ${x.lastName}`,
-              action: 'edit,delete,details',
+              action: 'edit,deactivate,details',
               class: x.className,
             };
           },
@@ -90,32 +91,35 @@ export class StudentListComponent implements OnInit {
     this.router.navigate([`student-list/student-details/${event.studentId}`]);
   }
 
-  onDeleteClicked(event: Student) {
+  onDeactivateClicked(event: Student) {
     if(event.studentId === undefined) return;
-    const studentId = event.studentId;
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
       data: {
         status: 'Confirm!',
-        message: 'Do you want delete this record?',
+        message: `Are you sure you want to deactivate this user?\n You can restore this user later from the users list.`,
         action: {
           cancel: true,
+          deactivate: true,
         },
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'delete') {
+      if (result === 'deactivate') {
         this.isLoading = true;
-        this.studentService.deleteStudentById(studentId).subscribe(
-          (res) => {
-            console.log(res);
+        const payload = {
+          userRole: 'user',
+          status: 'inactive',
+          userId: event.userId ?? 0,
+        };
+        this.userService.updateUserById(payload).subscribe({
+          next: () => {
             this.loadData();
           },
-          (err) => {
-            console.log(err);
-          }
-        );
-        this.isLoading = false;
+          error: () => {
+            this.isLoading = false;
+          },
+        });
       }
     });
   }

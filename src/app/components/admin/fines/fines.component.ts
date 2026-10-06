@@ -78,7 +78,7 @@ export class FinesComponent {
         .map((record) => record.fine_amount)
         .reduce((acc, curr) => {
           return acc + curr;
-        });
+        }, 0);
 
       this.issuedBooksDataSource = this.issueBookRecords;
       this.isLoading = false;

@@ -9,7 +9,7 @@ export interface SummaryDetail {
 }
 
 export interface UserRoleCountDistribution {
-  role: UserRole;
+  userRole: UserRole;
   count: number;
 }
 

@@ -116,6 +116,10 @@ h2 {
   color: #f70f96;
 }
 
+.deleted-icon{
+  color: red;
+}
+
 .card-description {
   font-size: 12px;
 }

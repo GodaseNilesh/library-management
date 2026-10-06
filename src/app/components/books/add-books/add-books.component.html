@@ -296,8 +296,8 @@
                   </label>
                   <mat-form-field style="width: 70%" class="example-full-width">
                     <mat-select formControlName="availableStatus">
-                      <mat-option value="available">Available</mat-option>
-                      <mat-option value="unavailable">Unavailable</mat-option>
+                      <mat-option [value]="true">Available</mat-option>
+                      <mat-option [value]="false">Unavailable</mat-option>
                     </mat-select>
                   </mat-form-field>
                   <div style="display: block" class="custom-error">

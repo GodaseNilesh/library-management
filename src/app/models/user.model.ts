@@ -16,13 +16,13 @@ export interface LoginResponse {
 export interface signUpRequest {
   firstName: string;
   lastName: string;
-  emailId: string;
+  email: string;
   password: string;
-  userRole: string;
+  userType: string;
 }
 
 export interface UpdateUser {
-  role: string;
+  userRole: string;
   status: string;
   userId: number;
 }
@@ -38,7 +38,7 @@ export interface User {
   firstName: string;
   lastName: string;
   email: string;
-  role: UserRole;
+  userRole: UserRole;
   status: string;
   userId: number;
   studentId?: number;
@@ -53,7 +53,7 @@ export interface IssueUser {
   firstName: string;
   lastName: string;
   email: string;
-  role: UserRole;
+  userRole: UserRole;
   status: boolean;
   userId: number;
   studentId?: number;

@@ -6,4 +6,6 @@ export interface ApiResponseBody {
   data?: {
     message?: string;
   };
+
+  message?: string;
 }
