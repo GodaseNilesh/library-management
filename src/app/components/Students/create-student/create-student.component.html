@@ -280,17 +280,11 @@
                   </div>
 
                   <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">
-                    <label class="mx-1" style="width: 100%">Student ID:<span class="text-danger fs-6">*</span>
+                    <label class="mx-1" style="width: 100%">Student ID:
                     </label>
                     <mat-form-field class="example-full-width" style="width: 70%">
-                      <input type="text" matInput placeholder="Ex. S-748596" formControlName="studentId" />
+                      <input type="text" matInput formControlName="studentId"/>
                     </mat-form-field>
-                    <div style="display: block" class="custom-error">
-                      <mat-error
-                        *ngIf="studentForm?.get('studentId')?.touched && studentForm?.get('studentId')?.hasError('required')">
-                        Student Id is required.
-                      </mat-error>
-                    </div>
                   </div>
 
                   <div class="mb-4 d-block justify-content-center align-items-center" style="width: 32%">

@@ -17,6 +17,14 @@
                   matTooltipClass="custom-tooltip">
                   <mat-icon>delete</mat-icon>
                 </button>
+                <button *ngIf="act === 'deactivate'" mat-icon-button color="warn" (click)="onDeactivateClicked(element)" matTooltip="Deactivate"
+                  matTooltipClass="custom-tooltip">
+                  <mat-icon>highlight_off</mat-icon>
+                </button>
+                <button *ngIf="act === 'activate'" mat-icon-button color="success" (click)="onActivateClicked(element)" matTooltip="Activate"
+                  matTooltipClass="custom-tooltip">
+                  <mat-icon class="text-success">autorenew</mat-icon>
+                </button>
                 <button *ngIf="act === 'details'" mat-icon-button color="accent" (click)="onDetailsClicked(element)"
                   matTooltip="Details" matTooltipClass="custom-tooltip">
                   <mat-icon>info</mat-icon>
@@ -35,7 +43,7 @@
                 <button class="m-2" *ngIf="act === 'reject'" mat-raised-button color="warn" (click)="onRejectClicked(element)">
                   Reject<mat-icon>cancel</mat-icon>
                 </button>
-                <button *ngIf="!['edit', 'delete', 'details', 'approve', 'reject', 'remove', 'add'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
+                <button *ngIf="!['edit', 'delete', 'details', 'approve', 'reject', 'remove', 'add', 'deactivate', 'activate'].includes(act)" class="m-1 bg-primary" mat-stroked-button color="primary">
                   <span class="text-light">{{ act }}</span>
                 </button>
               </ng-container>
@@ -50,12 +58,12 @@
                   {{ element[column.columnDef] }}
                 </span>
               </ng-container>
-              <ng-container *ngIf="column.columnDef === 'status' || column.columnDef === 'fine_paid'">
+              <ng-container *ngIf="column.columnDef === 'status' || column.columnDef === 'fine_paid' || column.columnDef === 'isActive'">
                 <span class="fw-semibold status-badge" [ngClass]="{
                   'status-info': ['Issued', 'pending', 'inactive', 'N/A'].includes(element[column.columnDef]),
-                  'status-success': ['Returned', 'active', 'Paid'].includes(element[column.columnDef]),
+                  'status-success': ['Returned', 'active', 'Active', 'Paid'].includes(element[column.columnDef]),
                   'status-danger': ['Overdue', 'blocked', 'Unpaid'].includes(element[column.columnDef]),
-                  'status-warn': ['inactive'].includes(element[column.columnDef]),
+                  'status-warn': ['inactive', 'Inactive'].includes(element[column.columnDef]),
                 }">
                   {{ element[column.columnDef] }}
                 </span>
@@ -77,7 +85,8 @@
                   </span>
                 </div>
               </ng-container>
-              <ng-container *ngIf="column.columnDef !== 'availableStatus' && column.columnDef !== 'status' && column.columnDef !== 'studentName'  && column.columnDef !== 'fine_paid'">
+              <ng-container
+                *ngIf="column.columnDef !== 'availableStatus' && column.columnDef !== 'status' && column.columnDef !== 'studentName'  && column.columnDef !== 'fine_paid' && column.columnDef !== 'isActive'">
                 <ng-container *ngTemplateOutlet="defaultCell"></ng-container>
               </ng-container>
             </ng-template>

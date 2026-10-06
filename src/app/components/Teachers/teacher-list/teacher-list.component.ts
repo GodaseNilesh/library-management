@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { TeacherService } from 'src/app/Services/teacher.service';
 import { CommonDialogComponent } from '../../Shared/common-dialog/common-dialog.component';
 import { Teacher, TeacherResponse } from 'src/app/models/teacher.model';
+import { UserService } from 'src/app/Services/user.service';
 
 @Component({
   selector: 'app-teacher-list',
@@ -15,11 +16,13 @@ export class TeacherListComponent {
   constructor(
     private router: Router,
     private teacherService: TeacherService,
-    private dialog: MatDialog
+    private dialog: MatDialog,
+    private userService: UserService
   ) {}
 
   teacherDataColumns = [
     { columnDef: 'teacherId', header: 'Teacher ID' },
+    { columnDef: 'employeeId', header: 'Employee ID' },
     { columnDef: 'teacherName', header: 'Teacher Name' },
     { columnDef: 'email', header: 'Email' },
     { columnDef: 'department', header: 'Department' },
@@ -44,7 +47,7 @@ export class TeacherListComponent {
           return {
             ...x,
             teacherName: `${x.firstName} ${x.lastName}`,
-            action: 'edit,delete,details',
+            action: 'edit,deactivate,details',
           };
         });
         this.teacherDisplayedColumns = this.teacherDataColumns.map(
@@ -86,32 +89,35 @@ export class TeacherListComponent {
     this.router.navigate([`teacher-list/teacher-details/${event.teacherId}`]);
   }
 
-  onDeleteClicked(event: Teacher) {
-    if(event.teacherId === undefined) return;
+  onDeactivateClicked(event: Teacher) {
     const teacherId = Number(event.teacherId);
     const dialogRef = this.dialog.open(CommonDialogComponent, {
       disableClose: true,
       data: {
         status: 'Confirm!',
-        message: 'Do you want delete this record?',
+        message: `Are you sure you want to deactivate this user?\n You can restore this user later from the users list.`,
         action: {
           cancel: true,
+          deactivate: true,
         },
       },
     });
     dialogRef.afterClosed().subscribe((result) => {
-      if (result === 'delete') {
+      if (result === 'deactivate') {
         this.isLoading = true;
-        this.teacherService.deleteTeacherById(teacherId).subscribe(
-          (res) => {
-            console.log(res);
+        const payload = {
+          userRole: 'user',
+          status: 'inactive',
+          userId: event.userId ?? 0,
+        };
+        this.userService.updateUserById(payload).subscribe({
+          next: () => {
             this.loadData();
           },
-          (err) => {
-            console.log(err);
-          }
-        );
-        this.isLoading = false;
+          error: () => {
+            this.isLoading = false;
+          },
+        });
       }
     });
   }

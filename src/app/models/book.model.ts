@@ -12,6 +12,7 @@ export interface Book {
   totalQuantity: number;
   availableStatus: string | boolean;
   isbn: string;
+  isActive: boolean | string;
 }
 
 export interface BookResponse {

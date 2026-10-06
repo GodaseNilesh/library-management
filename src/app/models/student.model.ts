@@ -23,11 +23,10 @@ export interface Student {
   libraryMembershipNo: string;
   bloodGroup: BloodGroup;
   status: boolean;
-  role?: UserRole;
+  userRole?: UserRole;
 }
 
 export interface StudentTableData extends Student {
-  studentName: string;
   action: string;
   class: string;
 }

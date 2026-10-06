@@ -23,8 +23,8 @@ export class UserComponent {
   usersDataSource: User[] = this.allUsers;
   usersDataColumns = [
     { columnDef: 'fullName', header: 'Full Name' },
-    { columnDef: 'email', header: 'Email' },
-    { columnDef: 'role', header: 'User Role' },
+    { columnDef: 'userType', header: 'User Type' },
+    { columnDef: 'userRole', header: 'User Role' },
     { columnDef: 'status', header: 'Status' },
     { columnDef: 'lastUpdatedAt', header: 'Last Updated On' },
     { columnDef: 'action', header: 'Action' },
@@ -67,7 +67,8 @@ export class UserComponent {
 
   totalUsersCount: number = 0;
   activeUsersCount: number = 0;
-  totalRolesCount: number = 0;
+  inActiveUsersCount: number = 0;
+  totalRolesCount: number = 3;
 
   constructor(
     private fb: FormBuilder,
@@ -140,9 +141,9 @@ export class UserComponent {
         this.activeUsersCount = this.allUsers.filter(
           (x: User) => x.status === 'active',
         )?.length;
-        this.totalRolesCount = [
-          ...new Set(this.allUsers.map((x: User) => x.role)),
-        ]?.length;
+        this.inActiveUsersCount = this.allUsers.filter(
+          (x: User) => x.status === 'inactive',
+        )?.length;
         this.usersList = this.allUsers.map((user: User) => user.fullName);
         this.usersDataSource = this.allUsers;
         this.filteredUsers = this.usersList;
@@ -178,19 +179,15 @@ export class UserComponent {
     const roleCounts: RolesCount = {
       admin: 0,
       librarian: 0,
-      student: 0,
-      teacher: 0,
       user: 0,
     };
 
     this.allUsers.forEach((user: User) => {
-      roleCounts[user.role] = (roleCounts[user.role] || 0) + 1;
+      roleCounts[user.userRole] = (roleCounts[user.userRole] || 0) + 1;
     });
 
     const allRoles: UserRole[] = [
       'admin',
-      'teacher',
-      'student',
       'librarian',
       'user',
     ];
@@ -217,7 +214,7 @@ export class UserComponent {
   }
 
   goToDetails(row: User) {
-    if (['librarian', 'admin', 'teacher'].includes(row.role)) {
+    if (['librarian', 'admin', 'teacher'].includes(row.userRole)) {
       this.router.navigate([`/teacher-list/create-teacher/${row.teacherId}`]);
     } else {
       this.router.navigate([`/student-list/create-student/${row.studentId}`]);
@@ -229,7 +226,7 @@ export class UserComponent {
     if (this.drawerType === 'User') {
       const userFormData = this.userForm.getRawValue();
       const payload = {
-        role: userFormData.userRole,
+        userRole: userFormData.userRole,
         status: userFormData.status,
         userId: userFormData.userId,
       };
@@ -305,7 +302,7 @@ export class UserComponent {
         firstName: this.selectedUser.firstName,
         lastName: this.selectedUser.lastName,
         email: this.selectedUser.email,
-        userRole: this.selectedUser.role,
+        userRole: this.selectedUser.userRole,
         status: this.selectedUser.status,
         userId: this.selectedUser.userId,
       });
@@ -331,7 +328,7 @@ export class UserComponent {
     const unAssignedUsers = [];
 
     for (const user of this.allUsers) {
-      let isAssigned = user.role === this.selectedRole?.roleName;
+      let isAssigned = user.userRole === this.selectedRole?.roleName;
 
       // Apply pending changes
       if (this.removedUsers.some((u) => u.userId === user.userId)) {

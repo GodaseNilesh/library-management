@@ -37,11 +37,11 @@ export class CreateTeacherComponent {
         Validators.maxLength(10),
         Validators.pattern(/^\d*$/),
       ]),
-      employeeId: new FormControl('', [Validators.required]),
+      employeeId: new FormControl({ value: '', disabled: true }),
       joiningDate: new FormControl('', [Validators.required]),
       designation: new FormControl('', [Validators.required]),
       status: new FormControl('', [Validators.required]),
-      role: new FormControl('', [Validators.required]),
+      userRole: new FormControl('', [Validators.required]),
       password: new FormControl(''),
     });
   }
@@ -63,8 +63,8 @@ export class CreateTeacherComponent {
               employeeId: teacherInfo.employeeId,
               joiningDate: teacherInfo.joiningDate,
               designation: teacherInfo.designation,
-              status: teacherInfo.status,
-              role: teacherInfo.role,
+              status: teacherInfo.status === true ? 'active' : 'inactive',
+              userRole: teacherInfo.userRole,
               password: teacherInfo.password
             });
           },
@@ -84,11 +84,10 @@ export class CreateTeacherComponent {
       email: teacherFormValue.email,
       phoneNo: teacherFormValue.phoneNo,
       department: teacherFormValue.department,
-      employeeId: teacherFormValue.employeeId,
       joiningDate: teacherFormValue.joiningDate,
       designation: teacherFormValue.designation,
-      status: teacherFormValue.status === true,
-      role: teacherFormValue.role,
+      status: teacherFormValue.status,
+      userRole: teacherFormValue.userRole,
     };
     if (!this.teacherId) {
       requestBody.password = teacherFormValue.password;

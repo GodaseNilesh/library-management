@@ -27,7 +27,7 @@ export class ReportsComponent {
       width: 400,
     },
 
-    labels: ['Student', 'Teacher', 'Librarian', 'Admin', 'User'],
+    labels: ['Librarian', 'Admin', 'User'],
 
     colors: ['#1574f2', '#10B981', '#15c9f2', '#F59E0B', '#f214af'],
 
@@ -245,22 +245,26 @@ export class ReportsComponent {
         MonthlyBookStats[]
       ]) => {
         //Set the value for users chart
-        this.userChartOptions.labels.forEach((label) => {
-          const count =
+        const usersSeries = this.userChartOptions.labels.map((label) => {
+          return (
             allUsers.find(
-              (role) => role.role.toLowerCase() == label.toLowerCase(),
-            )?.count || 0;
-          this.userChartOptions.series.push(count);
+              (role) => role.userRole.toLowerCase() === label.toLowerCase(),
+            )?.count || 0
+          );
         });
+        this.userChartOptions.series = usersSeries;
 
         //Set the value for books chart
-        this.BooksDonutChartOptions.labels.forEach((label) => {
-          const count =
+        const booksLabel = allBooks.map((b)=> b.subject);
+        this.BooksDonutChartOptions.labels = booksLabel;
+        const booksSeries = this.BooksDonutChartOptions.labels.map((label) => {
+          return (
             allBooks.find(
               (book) => book.subject.toLowerCase() == label.toLowerCase(),
-            )?.count || 0;
-          this.BooksDonutChartOptions.series.push(count);
+            )?.count || 0
+          );
         });
+        this.BooksDonutChartOptions.series = booksSeries;
 
         //Set summary data
         this.summaryData = summary[0];

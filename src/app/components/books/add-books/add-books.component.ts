@@ -35,7 +35,7 @@ export class AddBooksComponent {
       publisher: new FormControl('', [Validators.required]),
       publicationDate: new FormControl(null, [Validators.required]),
       totalQuantity: new FormControl('', [Validators.required]),
-      availableStatus: new FormControl('available', [Validators.required]),
+      availableStatus: new FormControl(true, [Validators.required]),
     });
   }
 
@@ -60,7 +60,7 @@ export class AddBooksComponent {
             publisher: bookInfo.publisher,
             publicationDate: new Date(bookInfo.publicationDate),
             totalQuantity: bookInfo.totalQuantity,
-            availableStatus: bookInfo.availableStatus ? 'available' : 'unavailable',
+            availableStatus: bookInfo.availableStatus,
           });
         });
     });
@@ -76,8 +76,9 @@ export class AddBooksComponent {
       publisher: formValue.publisher,
       publicationDate: new Date(formValue.publicationDate).toLocaleDateString('en-CA'),
       totalQuantity: formValue.totalQuantity,
-      availableStatus: formValue.availableStatus === 'available' ? true : false,
-      isbn: String(formValue.isbn)
+      availableStatus: formValue.availableStatus,
+      isbn: String(formValue.isbn),
+      isActive: true
     };
     if (!this.bookId) {
       this.bookService.saveBook(reqBody).subscribe(
